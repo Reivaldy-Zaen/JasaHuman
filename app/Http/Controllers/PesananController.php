@@ -77,29 +77,29 @@ class PesananController extends Controller
         return view('pesanan.form', compact('pekerja'));
     }
 
-      public function simpanPesanan(Request $request, $pekerja_id)
-    {
-        $request->validate([
-            'nama_pemesan' => 'required|string|max:255',
-            'email_pemesan' => 'required|email|max:255',
-        ]);
+     public function simpanPesanan(Request $request, $pekerja_id)
+{
+    $request->validate([
+        'nama_pemesan' => 'required|string|max:255',
+        'email_pemesan' => 'required|email|max:255',
+    ]);
 
-        // cek klien berdasarkan email
-        $klien = Klien::firstOrCreate(
-            ['email' => $request->email_pemesan],
-            ['nama' => $request->nama_pemesan]
-        );
+    // buat klien baru setiap kali beli
+    $klien = Klien::create([
+        'nama'  => $request->nama_pemesan,
+        'email' => $request->email_pemesan,
+    ]);
 
-        // buat pesanan baru
-        Pesanan::create([
-            'pekerja_id'   => $pekerja_id,
-            'klien_id'     => $klien->id,
-            'nama_pemesan' => $request->nama_pemesan, // opsional (redundant)
-            'email_pemesan'=> $request->email_pemesan, // opsional
-        ]);
+    // buat pesanan baru
+    Pesanan::create([
+        'pekerja_id'   => $pekerja_id,
+        'klien_id'     => $klien->id,
+        'nama_pemesan' => $request->nama_pemesan,
+        'email_pemesan'=> $request->email_pemesan,
+    ]);
 
-        return redirect()->route('pesanan.sukses');
-    }
+    return redirect()->route('pesanan.sukses');
+}
 
     public function sukses()
 {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pesanan;
+use App\Models\Klien;
 
 class DashboardController extends Controller
 {
@@ -13,9 +14,10 @@ class DashboardController extends Controller
     public function index()
     {
 
-        $totalKlien = Pesanan::distinct('klien_id')->count('klien_id');
+    $totalKlien = Klien::count(); 
 
-        $totalPesanan = Pesanan::count();
+    // Total pesanan
+    $totalPesanan = Pesanan::count();
 
         return view('dashboard.index', compact('totalKlien', 'totalPesanan'));
     }
