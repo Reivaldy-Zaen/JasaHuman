@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pesanan;
 use App\Models\Klien;
+use App\Models\Pekerja;
 
 class DashboardController extends Controller
 {
@@ -14,13 +15,19 @@ class DashboardController extends Controller
     public function index()
     {
 
+    $totalPekerja = Pekerja::count();
+
     $totalKlien = Klien::count(); 
 
-    // Total pesanan
     $totalPesanan = Pesanan::count();
     $penugasanAktif = Pesanan::where('status', 'aktif')->count();
 
-        return view('dashboard.index', compact('totalKlien', 'totalPesanan', 'penugasanAktif'));
+      $daftarPekerjaTerbaru = Pesanan::with('pekerja', 'klien')
+        ->latest()
+        ->take(5)
+        ->get();
+
+        return view('dashboard.index', compact('totalKlien','totalPekerja', 'totalPesanan', 'daftarPekerjaTerbaru'));
     }
 
     /**
