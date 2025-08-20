@@ -21,7 +21,12 @@ class DashboardController extends Controller
 
     $totalPesanan = Pesanan::count();
 
-        return view('dashboard.index', compact('totalKlien','totalPekerja', 'totalPesanan'));
+      $daftarPekerjaTerbaru = Pesanan::with('pekerja', 'klien')
+        ->latest()
+        ->take(5)
+        ->get();
+
+        return view('dashboard.index', compact('totalKlien','totalPekerja', 'totalPesanan', 'daftarPekerjaTerbaru'));
     }
 
     /**

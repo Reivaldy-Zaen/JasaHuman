@@ -200,59 +200,45 @@
             <div class="lg:col-span-2 vintage-card p-6 rounded-xl vintage-shadow">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-xl font-bold text-[var(--text)] playfair flex items-center">
-                        <span class="mr-3 text-[var(--primary)]">📋</span>Daftar Pekerja Terbaru
+                        <span class="mr-3 text-[var(--primary)]">📋</span>Daftar Pembeli
                     </h2>
                     <button class="cultural-accent px-4 py-2 rounded-lg text-white font-medium hover:opacity-90 transition-opacity">
                         Lihat Semua
                     </button>
                 </div>
-                
-                <div class="overflow-hidden rounded-lg border border-[var(--accent)]">
-                    <table class="w-full">
-                        <thead class="cultural-accent text-white">
-                            <tr>
-                                <th class="p-4 text-left font-semibold">Nama</th>
-                                <th class="p-4 text-left font-semibold">Posisi</th>
-                                <th class="p-4 text-left font-semibold">Lokasi</th>
-                                <th class="p-4 text-left font-semibold">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-[var(--neutral)]">
-                            <tr class="border-b border-[var(--accent)]/30 hover:bg-[var(--accent)]/10 transition-colors">
-                                <td class="p-4 font-medium text-[var(--text)]">🧑 Andi Saputra</td>
-                                <td class="p-4 text-[var(--text-light)]">Security Heritage</td>
-                                <td class="p-4 text-[var(--text-light)]">Jakarta</td>
-                                <td class="p-4">
-                                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">✓ Aktif</span>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-[var(--accent)]/30 hover:bg-[var(--accent)]/10 transition-colors">
-                                <td class="p-4 font-medium text-[var(--text)]">👩 Siti Rahma</td>
-                                <td class="p-4 text-[var(--text-light)]">Cultural Curator</td>
-                                <td class="p-4 text-[var(--text-light)]">Bandung</td>
-                                <td class="p-4">
-                                    <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">⏳ Proses</span>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-[var(--accent)]/30 hover:bg-[var(--accent)]/10 transition-colors">
-                                <td class="p-4 font-medium text-[var(--text)]">🧑 Budi Santoso</td>
-                                <td class="p-4 text-[var(--text-light)]">Heritage Driver</td>
-                                <td class="p-4 text-[var(--text-light)]">Surabaya</td>
-                                <td class="p-4">
-                                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">✓ Aktif</span>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-[var(--accent)]/10 transition-colors">
-                                <td class="p-4 font-medium text-[var(--text)]">👩 Maya Sari</td>
-                                <td class="p-4 text-[var(--text-light)]">Traditional Guide</td>
-                                <td class="p-4 text-[var(--text-light)]">Yogyakarta</td>
-                                <td class="p-4">
-                                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">✓ Aktif</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="overflow-hidden rounded-lg border border-[var(--accent)]">
+    <table class="w-full">
+        <thead class="cultural-accent text-white">
+            <tr>
+                <th class="p-4 text-left font-semibold">Nama Pembeli</th>
+                <th class="p-4 text-left font-semibold">Pekerja</th>
+                <th class="p-4 text-left font-semibold">Lokasi</th>
+                <th class="p-4 text-left font-semibold">Status</th>
+            </tr>
+        </thead>
+        <tbody class="bg-[var(--neutral)]">
+            @foreach($daftarPekerjaTerbaru as $pesanan)
+            <tr class="border-b border-[var(--accent)]/30 hover:bg-[var(--accent)]/10 transition-colors">
+                <td class="p-4 font-medium text-[var(--text)]">
+                    {{ $pesanan->klien->nama }}
+                </td>
+                <td class="p-4 text-[var(--text-light)]">
+                    {{ $pesanan->pekerja->nama ?? 'N/A' }}
+                </td>
+                <td class="p-4 text-[var(--text-light)]">
+                    {{ $pesanan->pekerja->negara ?? 'N/A' }}
+                </td>
+                <td class="p-4">
+                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                        ✓ Aktif
+                    </span>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
             </div>
 
             <!-- Chart Section -->
