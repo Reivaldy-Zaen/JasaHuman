@@ -27,7 +27,7 @@ class DashboardController extends Controller
         ->take(5)
         ->get();
 
-        return view('dashboard.index', compact('totalKlien','totalPekerja', 'totalPesanan', 'daftarPekerjaTerbaru'));
+        return view('dashboard.index', compact('totalKlien','totalPekerja', 'totalPesanan', 'daftarPekerjaTerbaru','penugasanAktif'));
     }
 
     /**

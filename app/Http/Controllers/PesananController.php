@@ -126,7 +126,4 @@ public function store(Request $request)
     return redirect()->route('dashboard')->with('success', 'Pesanan berhasil dibuat!');
 }
 
-
-
-
 }
