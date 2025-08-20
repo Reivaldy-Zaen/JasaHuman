@@ -101,9 +101,9 @@
             <a href="#" class="group flex items-center py-3 px-4 rounded-xl transition-all duration-300">
                 <span class="mr-3 text-xl">📊</span>
                 <span class="font-medium">Dashboard</span>
-                <span class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-[var(--primary)]">→</span>
-            </a>
-            <a href="{{route('pekerja.index')}}" class="group flex items-center py-3 px-4 rounded-xl transition-all duration-300">
+                <span class="ml-auto            <a href="{{route('pekerja.index')}}" class="group flex items-center py-3 px-4 rounded-xl transition-all duration-300">
+         <a href="#" class="group flex items-center py-3 px-4 rounded-xl transition-all duration-300">
+>
                 <span class="mr-3 text-xl">👥</span>
                 <span class="font-medium">Pekerja</span>
                 <span class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-[var(--primary)]">→</span>
@@ -215,6 +215,8 @@
                                 <th class="p-4 text-left font-semibold">Posisi</th>
                                 <th class="p-4 text-left font-semibold">Lokasi</th>
                                 <th class="p-4 text-left font-semibold">Status</th>
+                                <th class="p-4 text-left font-semibold">Jam Kerja</th>
+                                <th class="p-4 text-left font-semibold">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-[var(--neutral)]">
@@ -225,6 +227,10 @@
                                 <td class="p-4">
                                     <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">✓ Aktif</span>
                                 </td>
+                                <td class="p-4 text-[var(--text-light)]">3 Jam tersisa</td>
+                                <td class="p-4">
+                                <button onclick="tambahJamKerja('Andi Saputra')" class="cultural-accent px-3 py-1 rounded-lg text-white hover:opacity-90">+ Jam</button>
+                                </td>
                             </tr>
                             <tr class="border-b border-[var(--accent)]/30 hover:bg-[var(--accent)]/10 transition-colors">
                                 <td class="p-4 font-medium text-[var(--text)]">👩 Siti Rahma</td>
@@ -232,6 +238,10 @@
                                 <td class="p-4 text-[var(--text-light)]">Bandung</td>
                                 <td class="p-4">
                                     <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">⏳ Proses</span>
+                                </td>
+                                <td class="p-4 text-[var(--text-light)]">3 Jam tersisa</td>
+                                <td class="p-4">
+                                <button onclick="tambahJamKerja('Andi Saputra')" class="cultural-accent px-3 py-1 rounded-lg text-white hover:opacity-90">+ Jam</button>
                                 </td>
                             </tr>
                             <tr class="border-b border-[var(--accent)]/30 hover:bg-[var(--accent)]/10 transition-colors">
@@ -241,6 +251,10 @@
                                 <td class="p-4">
                                     <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">✓ Aktif</span>
                                 </td>
+                                <td class="p-4 text-[var(--text-light)]">3 Jam tersisa</td>
+                                <td class="p-4">
+                                <button onclick="tambahJamKerja('Andi Saputra')" class="cultural-accent px-3 py-1 rounded-lg text-white hover:opacity-90">+ Jam</button>
+                                </td>
                             </tr>
                             <tr class="hover:bg-[var(--accent)]/10 transition-colors">
                                 <td class="p-4 font-medium text-[var(--text)]">👩 Maya Sari</td>
@@ -249,126 +263,52 @@
                                 <td class="p-4">
                                     <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">✓ Aktif</span>
                                 </td>
+                                <td class="p-4 text-[var(--text-light)]">3 Jam tersisa</td>
+                                <td class="p-4">
+                                <button onclick="tambahJamKerja('Andi Saputra')" class="cultural-accent px-3 py-1 rounded-lg text-white hover:opacity-90">+ Jam</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <!-- Chart Section -->
-            <div class="vintage-card p-6 rounded-xl vintage-shadow">
-                <h2 class="text-xl font-bold text-[var(--text)] playfair mb-4 flex items-center">
-                    <span class="mr-3 text-[var(--primary)]">📈</span>Tren Klien
-                </h2>
-                <div class="h-48">
-                    <canvas id="buyerChart" class="w-full h-full"></canvas>
-                </div>
-                
-                <!-- Additional Info -->
-                <div class="mt-6 space-y-3">
-                    <div class="flex items-center justify-between p-3 bg-[var(--neutral)] rounded-lg">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
-                            <span class="text-sm font-medium text-[var(--text)]">Klien Naik</span>
-                        </div>
-                        <span class="text-lg font-bold text-green-600">+15%</span>
-                    </div>
-                    <div class="flex items-center justify-between p-3 bg-[var(--neutral)] rounded-lg">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
-                            <span class="text-sm font-medium text-[var(--text)]">Klien Turun</span>
-                        </div>
-                        <span class="text-lg font-bold text-red-600">-5%</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Cultural Footer -->
-        <div class="mt-8 text-center">
-            <div class="flex items-center justify-center space-x-4 text-[var(--text-light)]">
-                <span class="text-[var(--primary)]">🏛</span>
-                <span class="text-sm">Melestarikan budaya dengan teknologi modern</span>
-                <span class="text-[var(--primary)]">⚡</span>
-            </div>
-        </div>
     </main>
 </div>
-
-<!-- Chart Script -->
+<div id="modalTambahJam" class="fixed inset-0 hidden bg-black/50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-xl w-96">
+        <h3 class="text-xl font-bold mb-4">Tambah Jam Kerja</h3>
+        <p id="namaPekerja" class="mb-3 text-[var(--text-light)]"></p>
+        <label class="block mb-2 font-medium">Jumlah Jam Tambahan</label>
+        <input type="number" id="jumlahJam" min="1" class="border rounded-lg w-full p-2 mb-4" />
+        <div class="flex justify-end gap-3">
+            <button onclick="closeModal()" class="px-4 py-2 border rounded-lg">Batal</button>
+            <button onclick="simpanTambahJam()" class="cultural-accent px-4 py-2 text-white rounded-lg">Simpan</button>
+        </div>
+    </div>
+</div>
 <script>
-const ctx = document.getElementById('buyerChart').getContext('2d');
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
-        datasets: [
-            {
-                label: 'Klien Naik',
-                data: [50, 70, 90, 120, 150, 180],
-                borderColor: '#16A34A',
-                backgroundColor: 'rgba(22, 163, 74, 0.1)',
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#16A34A',
-                pointBorderColor: '#ffffff',
-                pointBorderWidth: 2,
-                pointRadius: 5
-            },
-            {
-                label: 'Klien Turun',
-                data: [40, 35, 50, 70, 85, 75],
-                borderColor: '#DC2626',
-                backgroundColor: 'rgba(220, 38, 38, 0.1)',
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#DC2626',
-                pointBorderColor: '#ffffff',
-                pointBorderWidth: 2,
-                pointRadius: 5
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                grid: {
-                    color: 'rgba(44, 85, 48, 0.1)'
-                },
-                ticks: {
-                    color: '#2C5530',
-                    font: {
-                        size: 11
-                    }
-                }
-            },
-            x: {
-                grid: {
-                    color: 'rgba(44, 85, 48, 0.1)'
-                },
-                ticks: {
-                    color: '#2C5530',
-                    font: {
-                        size: 11
-                    }
-                }
-            }
-        },
-        elements: {
-            line: {
-                borderWidth: 3
-            }
-        }
+let pekerjaDipilih = null;
+
+function tambahJamKerja(nama) {
+    pekerjaDipilih = nama;
+    document.getElementById('namaPekerja').innerText = "Pekerja: " + nama;
+    document.getElementById('modalTambahJam').classList.remove('hidden');
+}
+
+function closeModal() {
+    document.getElementById('modalTambahJam').classList.add('hidden');
+}
+
+function simpanTambahJam() {
+    let jam = parseInt(document.getElementById('jumlahJam').value);
+    if (isNaN(jam) || jam <= 0) {
+        alert("Masukkan jumlah jam yang valid");
+        return;
     }
-});
+    alert(`Berhasil menambahkan ${jam} jam untuk ${pekerjaDipilih}`);
+    closeModal();
+}
 </script>
+
 </body>
 </html>
