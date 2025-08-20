@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Pesanan;
 
 class DashboardController extends Controller
 {
@@ -11,7 +12,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view("/dashboard");
+
+        $totalKlien = Pesanan::distinct('klien_id')->count('klien_id');
+
+        $totalPesanan = Pesanan::count();
+
+        return view('dashboard.index', compact('totalKlien', 'totalPesanan'));
     }
 
     /**

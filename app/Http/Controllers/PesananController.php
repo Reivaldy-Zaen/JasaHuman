@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pekerja;
 use App\Models\Pesanan;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Klien;
 class PesananController extends Controller
 {
     /**
@@ -63,7 +65,7 @@ class PesananController extends Controller
         //
     }
 
-      public function daftarPekerja()
+       public function daftarPekerja()
     {
         $pekerja = Pekerja::all();
         return view('pekerja.index', compact('pekerja'));
@@ -75,24 +77,34 @@ class PesananController extends Controller
         return view('pesanan.form', compact('pekerja'));
     }
 
-    public function simpanPesanan(Request $request, $pekerja_id)
+      public function simpanPesanan(Request $request, $pekerja_id)
     {
         $request->validate([
             'nama_pemesan' => 'required|string|max:255',
             'email_pemesan' => 'required|email|max:255',
         ]);
 
+        // cek klien berdasarkan email
+        $klien = Klien::firstOrCreate(
+            ['email' => $request->email_pemesan],
+            ['nama' => $request->nama_pemesan]
+        );
+
+        // buat pesanan baru
         Pesanan::create([
-            'pekerja_id' => $pekerja_id,
-            'nama_pemesan' => $request->nama_pemesan,
-            'email_pemesan' => $request->email_pemesan,
+            'pekerja_id'   => $pekerja_id,
+            'klien_id'     => $klien->id,
+            'nama_pemesan' => $request->nama_pemesan, // opsional (redundant)
+            'email_pemesan'=> $request->email_pemesan, // opsional
         ]);
 
         return redirect()->route('pesanan.sukses');
     }
 
     public function sukses()
-    {
-        return view('pesanan.sukses');
-    }
+{
+    return view('pesanan.sukses');
+}
+
+
 }
