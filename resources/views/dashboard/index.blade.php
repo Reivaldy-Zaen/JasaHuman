@@ -153,8 +153,8 @@
                     </div>
                 </div>
                 <h3 class="text-lg font-semibold text-[var(--text)] mb-1">Total Pekerja</h3>
-                <p class="text-4xl font-bold text-[var(--primary)] playfair">250</p>
-                <p class="text-sm text-[var(--text-light)] mt-2">+12% dari bulan lalu</p>
+                <p class="text-4xl font-bold text-[var(--primary)] playfair">{{$totalPekerja}}</p>
+                <p class="text-sm text-[var(--text-light)] mt-2">Semua Total Pekerja</p>
             </div>
             
             <div class="vintage-card p-6 rounded-xl vintage-shadow hover:scale-[1.02] transition-all duration-300">
@@ -166,7 +166,7 @@
                 </div>
                 <h3 class="text-lg font-semibold text-[var(--text)] mb-1">Total Klien</h3>
                 <p class="text-4xl font-bold text-[var(--primary)] playfair">{{ $totalKlien }}</p>
-                <p class="text-sm text-[var(--text-light)] mt-2">+8% dari bulan lalu</p>
+                <p class="text-sm text-[var(--text-light)] mt-2">Semua Total Klien</p>
             </div>
 
             
