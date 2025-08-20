@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PesananController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,11 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
+// Route::get('/pekerja', function () {
+//     return view('pekerja.pekerja');
+// });
+Route::get('/pekerja', [PesananController::class, 'daftarPekerja'])->name('pekerja.index');
+Route::get('/pesan/{pekerja}', [PesananController::class, 'formPesan'])->name('pesanan.form');
+Route::post('/pesan/{pekerja}', [PesananController::class, 'simpanPesanan'])->name('pesanan.simpan');
+Route::get('/pesanan-sukses', [PesananController::class, 'sukses'])->name('pesanan.sukses');
 
