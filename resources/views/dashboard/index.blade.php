@@ -178,7 +178,7 @@
                     </div>
                 </div>
                 <h3 class="text-lg font-semibold text-[var(--text)] mb-1">Penugasan Aktif</h3>
-                <p class="text-4xl font-bold text-[var(--primary)] playfair">45</p>
+                <p class="text-4xl font-bold text-[var(--primary)] playfair">{{ $penugasanAktif }}</p>
                 <p class="text-sm text-[var(--text-light)] mt-2">Sedang berjalan</p>
             </div>
             

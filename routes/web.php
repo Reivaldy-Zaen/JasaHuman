@@ -29,4 +29,8 @@ Route::get('/pekerja', [PesananController::class, 'daftarPekerja'])->name('peker
 Route::get('/pesan/{pekerja}', [PesananController::class, 'formPesan'])->name('pesanan.form');
 Route::post('/pesan/{pekerja}', [PesananController::class, 'simpanPesanan'])->name('pesanan.simpan');
 Route::get('/pesanan-sukses', [PesananController::class, 'sukses'])->name('pesanan.sukses');
+Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesanan.store');
+Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
+Route::post('/pesanan/{id}/selesai', [PesananController::class, 'selesai'])->name('pesanan.selesai');
+
 

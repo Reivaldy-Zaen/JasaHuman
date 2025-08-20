@@ -35,5 +35,7 @@ class PekerjaSeeder extends Seeder
             'jenis_kelamin' => 'Perempuan',
             'foto' => 'https://kaltimkita.com/po-content/uploads/raffi-ahmad-harta.jpg',
         ]);
+
+        
     }
 }

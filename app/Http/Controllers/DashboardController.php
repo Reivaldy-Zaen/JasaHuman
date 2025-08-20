@@ -20,6 +20,7 @@ class DashboardController extends Controller
     $totalKlien = Klien::count(); 
 
     $totalPesanan = Pesanan::count();
+    $penugasanAktif = Pesanan::where('status', 'aktif')->count();
 
       $daftarPekerjaTerbaru = Pesanan::with('pekerja', 'klien')
         ->latest()

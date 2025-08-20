@@ -13,9 +13,19 @@ class PesananController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
-    }
+{
+    $pesanan = Pesanan::all();
+    return view('pesanan.index', compact('pesanan'));
+}
+
+public function selesai($id)
+{
+    $pesanan = Pesanan::findOrFail($id);
+    $pesanan->update(['status' => 'selesai']);
+    
+    return redirect()->route('pesanan.index')->with('success', 'Pesanan berhasil diselesaikan!');
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -28,10 +38,10 @@ class PesananController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    // public function store(Request $request)
+    // {
+    //     //
+    // }
 
     /**
      * Display the specified resource.
@@ -96,6 +106,7 @@ class PesananController extends Controller
         'klien_id'     => $klien->id,
         'nama_pemesan' => $request->nama_pemesan,
         'email_pemesan'=> $request->email_pemesan,
+        'status'        => 'aktif', // default aktif
     ]);
 
     return redirect()->route('pesanan.sukses');
@@ -105,6 +116,17 @@ class PesananController extends Controller
 {
     return view('pesanan.sukses');
 }
+public function store(Request $request)
+{
+    Pesanan::create([
+        'nama' => $request->nama,
+        'status' => 'aktif'
+    ]);
+
+    return redirect()->route('dashboard')->with('success', 'Pesanan berhasil dibuat!');
+}
+
+
 
 
 }
