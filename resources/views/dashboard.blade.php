@@ -103,7 +103,7 @@
                 <span class="font-medium">Dashboard</span>
                 <span class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-[var(--primary)]">→</span>
             </a>
-            <a href="#" class="group flex items-center py-3 px-4 rounded-xl transition-all duration-300">
+            <a href="{{route('pekerja.index')}}" class="group flex items-center py-3 px-4 rounded-xl transition-all duration-300">
                 <span class="mr-3 text-xl">👥</span>
                 <span class="font-medium">Pekerja</span>
                 <span class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-[var(--primary)]">→</span>
