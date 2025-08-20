@@ -23,6 +23,12 @@
       <button type="submit" class="btn btn-success">Kirim Pesanan</button>
       <a href="{{ route('pekerja.index') }}" class="btn btn-secondary">Kembali</a>
     </form>
+    <form action="{{ route('pesanan.store') }}" method="POST">
+    @csrf
+    <input type="text" name="nama" placeholder="Nama Klien" required>
+    <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">Buat Pesanan</button>
+</form>
+
   </div>
 </body>
 </html>

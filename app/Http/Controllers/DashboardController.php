@@ -18,8 +18,9 @@ class DashboardController extends Controller
 
     // Total pesanan
     $totalPesanan = Pesanan::count();
+    $penugasanAktif = Pesanan::where('status', 'aktif')->count();
 
-        return view('dashboard.index', compact('totalKlien', 'totalPesanan'));
+        return view('dashboard.index', compact('totalKlien', 'totalPesanan', 'penugasanAktif'));
     }
 
     /**
