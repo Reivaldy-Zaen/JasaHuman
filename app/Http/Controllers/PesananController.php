@@ -89,6 +89,8 @@ public function selesai($id)
         'nomer'=> 'required|numeric|digits_between:10,14',
     ]);
 
+    $pekerja = Pekerja::findOrFail($pekerja_id);
+
     // buat klien baru setiap kali beli
     $klien = Klien::create([
         'nama'  => $request->nama_pemesan,
@@ -103,6 +105,7 @@ public function selesai($id)
         'nama_pemesan' => $request->nama_pemesan,
         'email_pemesan'=> $request->email_pemesan,
         'nomer'=> $request->nomer,
+        'nama_pekerja'=> $pekerja->nama,
         'status'        => 'aktif', // default aktif
     ]);
 
@@ -115,8 +118,10 @@ public function selesai($id)
 }
 public function store(Request $request)
 {
+       $pekerja = Pekerja::findOrFail($request->pekerja_id);
     Pesanan::create([
         'nama' => $request->nama,
+        'nama_pekerja' => $pekerja->nama,
         'status' => 'aktif'
     ]);
 

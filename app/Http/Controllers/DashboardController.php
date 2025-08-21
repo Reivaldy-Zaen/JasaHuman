@@ -22,12 +22,18 @@ class DashboardController extends Controller
     $totalPesanan = Pesanan::count();
     $penugasanAktif = Pesanan::where('status', 'aktif')->count();
 
-      $daftarPekerjaTerbaru = Pesanan::with('pekerja', 'klien')
+    $daftarPekerjaTerbaru = Pesanan::with('pekerja', 'klien')
         ->latest()
         ->take(5)
         ->get();
 
-        return view('dashboard.index', compact('totalKlien','totalPekerja', 'totalPesanan', 'daftarPekerjaTerbaru','penugasanAktif'));
+     $pekerjaTerlaris = Pekerja::withCount('pesanan')
+        ->having('pesanan_count', '>', 0)
+        ->orderBy('pesanan_count', 'desc')
+        ->take(5)
+        ->get();
+
+        return view('dashboard.index', compact('totalKlien','totalPekerja', 'totalPesanan', 'daftarPekerjaTerbaru','penugasanAktif','pekerjaTerlaris'));
     }
 
     /**

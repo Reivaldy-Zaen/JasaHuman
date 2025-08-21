@@ -10,7 +10,7 @@
   <div class="container py-5 text-center">
     <h2 class="text-success">✅ Pesanan Berhasil!</h2>
     <p class="lead">Terima kasih, pesanan anda sudah tercatat.</p>
-    <a href="{{ route('pekerja.index') }}" class="btn btn-primary mt-3">Kembali ke Daftar Pekerja</a>
+    <a href="{{ route('dashboard') }}" class="btn btn-primary mt-3">Kembali ke Daftar Pekerja</a>
   </div>
 </body>
 </html>
