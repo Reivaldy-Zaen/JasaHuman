@@ -9,6 +9,14 @@
 <body>
   <div class="container py-5">
     <h3 class="mb-4">Form Pemesanan untuk <span class="text-primary">{{ $pekerja->nama }}</span></h3>
+  <!-- Tambahkan foto pekerja -->
+  <div class="text-center mb-4">
+    <img src="{{ $pekerja->foto }}" alt="Foto {{ $pekerja->nama }}" 
+         class="rounded-circle" 
+         style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #e2e8f0;">
+  </div>
+
+
 
     <form method="POST" action="{{ route('pesanan.simpan', $pekerja->id) }}">
       @csrf
@@ -24,6 +32,34 @@
         <label class="form-label">Nomer Anda</label>
         <input type="number" name="nomer" class="form-control" required min="1000000000" max="99999999999999">
       </div>
+     <div class="mb-3">
+    <label class="form-label">Pilih Jam</label>
+    <div class="d-flex flex-wrap gap-2">
+        @foreach(['11:30', '14:05', '16:40', '19:15'] as $jam)
+            @php
+                $isBooked = \App\Models\Pesanan::where('pekerja_id', $pekerja->id)
+                            ->where('jam', $jam)
+                            ->where('status', 'aktif') // cuma blokir kalau pesanan aktif
+                            ->exists();
+            @endphp
+
+            <input type="radio"
+                   class="btn-check"
+                   name="jam"
+                   id="jam-{{ $loop->index }}"
+                   value="{{ $jam }}"
+                   {{ $isBooked ? 'disabled' : '' }} required>
+
+            <label class="btn btn-outline-primary {{ $isBooked ? 'disabled' : '' }}" 
+                   for="jam-{{ $loop->index }}">
+                   {{ $jam }} 
+                   @if($isBooked) (Sudah dibooking) @endif
+            </label>
+        @endforeach
+    </div>
+</div>
+
+
       <button type="submit" class="btn btn-success">Kirim Pesanan</button>
       <a href="{{ route('pekerja.index') }}" class="btn btn-secondary">Kembali</a>
     </form>

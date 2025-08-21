@@ -87,7 +87,17 @@ public function selesai($id)
         'nama_pemesan' => 'required|string|max:255',
         'email_pemesan' => 'required|email|max:255',
         'nomer'=> 'required|numeric|digits_between:10,14',
+        'jam' => 'required|string'
     ]);
+
+    $alreadyBooked = Pesanan::where('pekerja_id', $pekerja_id)
+    ->where('jam', $request->jam)
+    ->where('status', 'aktif')
+    ->exists();
+
+if ($alreadyBooked) {
+    return back()->withErrors(['jam' => 'Jam ini sudah dibooking orang lain!']);
+}
 
     // buat klien baru setiap kali beli
     $klien = Klien::create([
@@ -103,6 +113,7 @@ public function selesai($id)
         'nama_pemesan' => $request->nama_pemesan,
         'email_pemesan'=> $request->email_pemesan,
         'nomer'=> $request->nomer,
+        'jam'           => $request->jam,
         'status'        => 'aktif', // default aktif
     ]);
 
