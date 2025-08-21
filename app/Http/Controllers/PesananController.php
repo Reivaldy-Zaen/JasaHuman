@@ -86,12 +86,14 @@ public function selesai($id)
     $request->validate([
         'nama_pemesan' => 'required|string|max:255',
         'email_pemesan' => 'required|email|max:255',
+        'nomer'=> 'required|numeric|digits_between:10,14',
     ]);
 
     // buat klien baru setiap kali beli
     $klien = Klien::create([
         'nama'  => $request->nama_pemesan,
         'email' => $request->email_pemesan,
+        'nomer' => $request->nomer,
     ]);
 
     // buat pesanan baru
@@ -100,6 +102,7 @@ public function selesai($id)
         'klien_id'     => $klien->id,
         'nama_pemesan' => $request->nama_pemesan,
         'email_pemesan'=> $request->email_pemesan,
+        'nomer'=> $request->nomer,
         'status'        => 'aktif', // default aktif
     ]);
 

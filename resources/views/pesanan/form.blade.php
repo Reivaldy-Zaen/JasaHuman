@@ -20,6 +20,10 @@
         <label class="form-label">Email Anda</label>
         <input type="email" name="email_pemesan" class="form-control" required>
       </div>
+      <div class="mb-3">
+        <label class="form-label">Nomer Anda</label>
+        <input type="number" name="nomer" class="form-control" required min="1000000000" max="99999999999999">
+      </div>
       <button type="submit" class="btn btn-success">Kirim Pesanan</button>
       <a href="{{ route('pekerja.index') }}" class="btn btn-secondary">Kembali</a>
     </form>
