@@ -81,52 +81,53 @@ public function selesai($id)
         return view('pesanan.form', compact('pekerja'));
     }
 
-     public function simpanPesanan(Request $request, $pekerja_id)
+public function simpanPesanan(Request $request, $pekerja_id)
 {
     $request->validate([
-        'nama_pemesan' => 'required|string|max:255',
+        'nama_pemesan'  => 'required|string|max:255',
         'email_pemesan' => 'required|email|max:255',
-        'nomer'=> 'required|numeric|digits_between:10,14',
-        'jam' => 'required|string'
+        'nomer'         => 'required|numeric|digits_between:10,14',
+        'jam'           => 'required|array|min:1', // sekarang array
+        'jam.*'         => 'string' // setiap jam harus string
     ]);
-
-
-    $alreadyBooked = Pesanan::where('pekerja_id', $pekerja_id)
-    ->where('jam', $request->jam)
-    ->where('status', 'aktif')
-    ->exists();
-
-if ($alreadyBooked) {
-    return back()->withErrors(['jam' => 'Jam ini sudah dibooking orang lain!']);
-}
 
     $pekerja = Pekerja::findOrFail($pekerja_id);
 
-
-    // buat klien baru setiap kali beli
+    // buat klien baru setiap kali pesan
     $klien = Klien::create([
         'nama'  => $request->nama_pemesan,
         'email' => $request->email_pemesan,
         'nomer' => $request->nomer,
     ]);
 
-    // buat pesanan baru
-    Pesanan::create([
-        'pekerja_id'   => $pekerja_id,
-        'klien_id'     => $klien->id,
-        'nama_pemesan' => $request->nama_pemesan,
-        'email_pemesan'=> $request->email_pemesan,
-        'nomer'=> $request->nomer,
+    foreach ($request->jam as $jam) {
+        // cek kalau jam sudah dibooking orang lain
+        $alreadyBooked = Pesanan::where('pekerja_id', $pekerja_id)
+            ->where('jam', $jam)
+            ->where('status', 'aktif')
+            ->exists();
 
-        'jam'           => $request->jam,
+        if ($alreadyBooked) {
+            // kalau bentrok, skip jam ini dan lanjutkan
+            continue;
+        }
 
-        'nama_pekerja'=> $pekerja->nama,
-
-        'status'        => 'aktif', // default aktif
-    ]);
+        // buat pesanan baru
+        Pesanan::create([
+            'pekerja_id'    => $pekerja_id,
+            'klien_id'      => $klien->id,
+            'nama_pemesan'  => $request->nama_pemesan,
+            'email_pemesan' => $request->email_pemesan,
+            'nomer'         => $request->nomer,
+            'jam'           => $jam,
+            'nama_pekerja'  => $pekerja->nama,
+            'status'        => 'aktif', // default aktif
+        ]);
+    }
 
     return redirect()->route('pesanan.sukses');
 }
+
 
     public function sukses()
 {
