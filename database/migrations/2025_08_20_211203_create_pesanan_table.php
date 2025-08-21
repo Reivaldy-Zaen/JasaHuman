@@ -17,6 +17,7 @@ return new class extends Migration
     $table->foreignId('klien_id')->constrained('klien')->cascadeOnDelete();
     $table->string('nama_pemesan');
     $table->string('email_pemesan');
+    $table->string('nama_pekerja');
     $table->string('nomer');
     $table->string('jam')->nullable(); 
     $table->enum('status', ['aktif', 'selesai'])->default('aktif');
