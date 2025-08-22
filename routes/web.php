@@ -15,15 +15,11 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard');
 });
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// });
-// Route::get('/pekerja', function () {
-//     return view('pekerja.pekerja');
-// });
+
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/pekerja', [PesananController::class, 'daftarPekerja'])->name('pekerja.index');
 Route::get('/pesan/{pekerja}', [PesananController::class, 'formPesan'])->name('pesanan.form');
