@@ -21,7 +21,9 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 Route::get('/pekerja', [PesananController::class, 'daftarPekerja'])->name('pekerja.index');
+
 Route::get('/pesan/{pekerja}', [PesananController::class, 'formPesan'])->name('pesanan.form');
 Route::post('/pesan/{pekerja}', [PesananController::class, 'simpanPesanan'])->name('pesanan.simpan');
 Route::get('/pesanan-sukses', [PesananController::class, 'sukses'])->name('pesanan.sukses');

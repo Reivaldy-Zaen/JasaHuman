@@ -8,132 +8,122 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
     body { 
-      background: linear-gradient(135deg, #f8fffe 0%, #ecfdf5 100%);
+      background: #f8fafc;
       min-height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
+    /* Header yang lebih minimalis */
     .header-section {
-      background: linear-gradient(135deg, #22c55e, #16a34a);
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
       color: white;
-      border-radius: 20px;
-      padding: 3rem 2rem;
-      margin-bottom: 3rem;
-      box-shadow: 0 8px 32px rgba(34, 197, 94, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 16px rgba(30, 41, 59, 0.15);
       position: relative;
-      overflow: hidden;
     }
 
-    .header-section::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 200px;
-      height: 200px;
+    .header-section h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-section p {
+      font-size: 0.95rem;
+      opacity: 0.85;
+      margin-bottom: 0;
+    }
+
+    /* Tombol Back yang lebih subtle */
+    .btn-back {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
       background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+      text-decoration: none;
     }
 
-    .header-section::after {
-      content: '';
-      position: absolute;
-      bottom: -30%;
-      left: -10%;
-      width: 150px;
-      height: 150px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 50%;
+    .btn-back:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateX(-2px);
     }
 
+    /* Card yang lebih bersih */
     .modern-card {
-      border: none; 
-      border-radius: 20px; 
+      border: 1px solid #e2e8f0;
+      border-radius: 16px; 
       background: white;
-      box-shadow: 0 4px 20px rgba(34, 197, 94, 0.08);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       position: relative;
       overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: all 0.2s ease;
     }
 
     .modern-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 24px rgba(34, 197, 94, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      border-color: #cbd5e1;
     }
 
     .profile-img {
-      width: 120px; 
-      height: 120px; 
+      width: 80px; 
+      height: 80px; 
       object-fit: cover;
       border-radius: 50%; 
-      border: 4px solid #e5f3e7;
+      border: 3px solid #f1f5f9;
+      margin-bottom: 1rem;
     }
 
     .worker-name {
-      color: #1f2937;
+      color: #1e293b;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
     }
 
+    /* Gender badge yang lebih subtle */
     .gender-icon {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      padding: 8px 12px;
-      border-radius: 20px;
-      font-size: 0.85rem;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
       font-weight: 500;
       margin-bottom: 1rem;
     }
 
     .gender-male {
-      background: rgba(34, 197, 94, 0.1);
-      color: #16a34a;
-      border: 1px solid rgba(34, 197, 94, 0.2);
+      background: #f0f9ff;
+      color: #0284c7;
+      border: 1px solid #e0f2fe;
     }
 
     .gender-female {
-      background: rgba(236, 72, 153, 0.1);
+      background: #fdf2f8;
       color: #be185d;
-      border: 1px solid rgba(236, 72, 153, 0.2);
+      border: 1px solid #fce7f3;
     }
 
-    .btn-success-custom {
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-      border: none;
-      border-radius: 15px;
-      padding: 12px 24px;
-      font-weight: 600;
-      color: white;
-      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2);
-      transition: all 0.2s ease;
-    }
-
-    .btn-success-custom:hover {
-      background: linear-gradient(135deg, #16a34a, #15803d);
-      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.25);
-    }
-
-    .btn-back {
-      background: white;
-      color: #16a34a;
-      border-radius: 12px;
-      padding: 8px 18px;
-      font-weight: 500;
-      border: 1px solid #d1fae5;
-      transition: all 0.2s ease;
-    }
-
-    .btn-back:hover {
-      background: #f0fdf4;
-      color: #15803d;
-      border-color: #bbf7d0;
-    }
-
+    /* Stats yang lebih kompak */
     .card-stats {
       display: flex;
       justify-content: space-around;
       margin: 1rem 0;
-      padding: 1rem 0;
-      border-top: 1px solid #f3f4f6;
-      border-bottom: 1px solid #f3f4f6;
+      padding: 0.75rem 0;
+      border-top: 1px solid #f1f5f9;
+      border-bottom: 1px solid #f1f5f9;
     }
 
     .stat-item {
@@ -142,78 +132,117 @@
     }
 
     .stat-value {
-      font-weight: 700;
-      color: #16a34a;
-      font-size: 1.1rem;
+      font-weight: 600;
+      color: #334155;
+      font-size: 1.2rem;
     }
 
     .stat-label {
-      font-size: 0.8rem;
-      color: #6b7280;
+      font-size: 0.75rem;
+      color: #64748b;
       margin-top: 2px;
+    }
+
+    .btn-success-custom {
+      background: linear-gradient(135deg, #059669, #047857);
+      border: none;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: white;
+      box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .btn-success-custom:hover {
+      background: linear-gradient(135deg, #047857, #065f46);
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+      transform: translateY(-1px);
+      color: white;
     }
 
     @media (max-width: 768px) {
       .header-section {
-        padding: 2rem 1.5rem;
-        margin-bottom: 2rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .header-section h2 {
+        font-size: 1.5rem;
       }
       
       .modern-card {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
       }
+    }
+
+    .card-hover-effect {
+      cursor: pointer;
+    }
+
+    .card-hover-effect:hover .profile-img {
+      border-color: #d1fae5;
+    }
+
+    .card-hover-effect:hover .worker-name {
+      color: #059669;
     }
   </style>
 </head>
 <body>
   <div class="container py-4">
-    <!-- Header -->
-    <div class="header-section text-center">
-      <h2 class="fw-bold mb-3" style="font-size: 2.5rem;">Daftar Pekerja</h2>
-      <p class="mb-4 opacity-90" style="font-size: 1.1rem;">
-        Pilih pekerja terbaik sesuai kebutuhan Anda <br>
-        <span style="opacity: 0.85;">Profesional, terlatih, dan siap membantu</span>
-      </p>
-      <a href="{{ route('dashboard') }}" class="btn btn-back">
-        <i class="bi bi-arrow-left me-2"></i>Kembali ke Dashboard
-      </a>
+    <!-- Header yang lebih minimalis -->
+    <div class="header-section">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <a href="{{ route('dashboard') }}" class="btn-back">
+          <i class="bi bi-arrow-left"></i>
+        </a>
+        <div></div>
+      </div>
+      <div class="text-center">
+        <h2>Pilih Pekerja Profesional</h2>
+        <p>Temukan pekerja terbaik yang sesuai dengan kebutuhan Anda</p>
+      </div>
     </div>
 
-    <!-- Card List -->
-    <div class="row g-4">
+    <!-- Card List dengan spacing yang lebih baik -->
+    <div class="row g-3">
       @foreach($pekerja as $p)
-      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-        <div class="card modern-card h-100 text-center p-4">
-          <img src="{{ $p->foto }}" class="profile-img mx-auto mb-3" alt="Foto Pekerja">
-          
-          <h5 class="fw-semibold worker-name mb-2">{{ $p->nama }}</h5>
-          
-          <div class="card-stats">
-            <div class="stat-item">
-              <div class="stat-value">{{ $p->umur }}</div>
-              <div class="stat-label">Tahun</div>
+      <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="card modern-card h-100 text-center p-3 card-hover-effect">
+          <div class="pt-2">
+            <img src="{{ $p->foto }}" class="profile-img mx-auto" alt="Foto Pekerja">
+            
+            <h2 class="worker-name">{{ $p->nama }}</h2>
+            
+            <div class="mb-2">
+              @if($p->jenis_kelamin == 'Laki-laki')
+                <span class="gender-icon gender-male">
+                  <i class="bi bi-gender-male"></i> Laki-laki
+                </span>
+              @else
+                <span class="gender-icon gender-female">
+                  <i class="bi bi-gender-female"></i> Perempuan
+                </span>
+              @endif
             </div>
-            <div class="stat-item">
-              <div class="stat-value">{{ $p->negara }}</div>
-              <div class="stat-label">Negara</div>
-            </div>
-          </div>
 
-          <div class="mb-3">
-            @if($p->jenis_kelamin == 'Laki-laki')
-              <span class="gender-icon gender-male">
-                <i class="bi bi-gender-male"></i> Laki-laki
-              </span>
-            @else
-              <span class="gender-icon gender-female">
-                <i class="bi bi-gender-female"></i> Perempuan
-              </span>
-            @endif
+            <div class="card-stats">
+              <div class="stat-item">
+                <div class="stat-value">{{ $p->umur }} th</div>
+                <div class="stat-label">Usia</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">{{ $p->negara }}</div>
+                <div class="stat-label">Asal</div>
+              </div>
+            </div>
+            
+            <a href="{{ route('pesanan.form', $p->id) }}" class="btn btn-success-custom w-100">
+              <i class="bi bi-calendar-plus me-1"></i>Pesan
+            </a>
           </div>
-          
-          <a href="{{ route('pesanan.form', $p->id) }}" class="btn btn-success-custom w-100">
-            <i class="bi bi-calendar-check me-2"></i>Pesan Sekarang
-          </a>
         </div>
       </div>
       @endforeach
