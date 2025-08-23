@@ -14,13 +14,16 @@ class PesananController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        // Update status otomatis sebelum menampilkan
-        Pesanan::updateStatuses();
-        $pesanan = Pesanan::all();
-        return view('pesanan.index', compact('pesanan'));
-    }
+public function index()
+{
+    // Update status otomatis sebelum menampilkan
+    Pesanan::updateStatuses();
+
+    // Ambil semua pesanan dari yang terbaru
+    $pesanan = Pesanan::orderBy('created_at', 'desc')->get();
+
+    return view('pesanan.index', compact('pesanan'));
+}
 
     public function selesai($id)
     {

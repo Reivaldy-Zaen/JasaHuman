@@ -58,11 +58,13 @@
         <div class="lg:col-span-2 vintage-card p-6 rounded-xl vintage-shadow">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-xl font-bold text-[var(--text)] playfair flex items-center">
-                    <span class="mr-3 text-[var(--primary)]">📋</span>Daftar Pembeli
+                    <span class="mr-3 text-[var(--primary)]">📋</span>Daftar Pesanan
                 </h2>
-                <button class="cultural-accent px-4 py-2 rounded-lg text-white font-medium hover:opacity-90 transition-opacity">
+                <a href="{{ route('pesanan.index') }}" 
+                class="cultural-accent px-4 py-2 rounded-lg text-white font-medium hover:opacity-90 transition-opacity">
                     Lihat Semua
-                </button>
+                </a>
+
             </div>
             <div class="overflow-hidden rounded-lg border border-[var(--accent)]">
                 <table class="w-full">

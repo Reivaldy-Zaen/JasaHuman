@@ -15,7 +15,13 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Nama</th>
+                <th>No</th>
+                <th>Nama Pemesan</th>
+                <th>Email</th>
+                <th>Nama Pekerja</th>
+                <th>No. Telp</th>
+                <th>Jam Mulai</th>
+                <th>Durasi (Jam)</th>
                 <th>Status</th>
                 <th>Aksi</th>
             </tr>
@@ -23,7 +29,13 @@
         <tbody>
             @foreach($pesanan as $p)
                 <tr>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $p->nama_pemesan }}</td>
+                    <td>{{ $p->email_pemesan }}</td>
+                    <td>{{ $p->nama_pekerja }}</td>
+                    <td>{{ $p->nomer }}</td>
+                    <td>{{ $p->jam_mulai }}</td>
+                    <td>{{ $p->durasi_jam }}</td>
                     <td>{{ ucfirst($p->status) }}</td>
                     <td>
                         @if($p->status == 'aktif')
@@ -46,6 +58,6 @@
 
 @section('scripts')
 <script>
-    // console.log("Halaman pesanan siap dipakai!");
+    console.log("Halaman pesanan siap dipakai!");
 </script>
 @endsection

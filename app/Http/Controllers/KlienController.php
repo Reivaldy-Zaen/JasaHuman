@@ -13,7 +13,7 @@ class KlienController extends Controller
     public function index()
     {
         //
-         $klien = Klien::all();
+        $klien = Klien::all();
         return view('klien.index',compact('klien'));
     }
 
