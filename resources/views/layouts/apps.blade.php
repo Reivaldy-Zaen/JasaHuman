@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Jasa Human</title>
+    <title>@yield('title', 'Dashboard - Jasa Human')</title>
+
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --primary: #2C5530;
@@ -99,12 +112,12 @@
         
         <nav class="space-y-3 sidebar-nav">
             <a href="{{ route('dashboard') }}" class="group flex items-center py-3 px-4 rounded-xl transition-all duration-300">
-                <span class="mr-3 text-xl">📊</span>
+                <i class="bi bi-speedometer2 mr-2"></i>
                 <span class="font-medium">Dashboard</span>
                 <span class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-[var(--primary)]">→</span>
             </a>
             <a href="{{ route('pekerja.index') }}" class="group flex items-center py-3 px-4 rounded-xl transition-all duration-300">
-                <span class="mr-3 text-xl">👥</span>
+                <i class="bi bi-people-fill mr-2"></i>
                 <span class="font-medium">Pekerja</span>
                 <span class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-[var(--primary)]">→</span>
             </a>
@@ -129,10 +142,13 @@
         </div>
 
         <!-- Yield untuk konten dashboard -->
-        @yield('dashboard-content')
+        @yield('content')
 
     </main>
 </div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 @yield('scripts')
 
