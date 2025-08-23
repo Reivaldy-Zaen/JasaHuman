@@ -15,12 +15,14 @@ class DashboardController extends Controller
     public function index()
     {
 
+        // UPDATE STATUS OTOMATIS SEBELUM MENGHITUNG
+        Pesanan::updateStatuses();
+
     $totalPekerja = Pekerja::count();
-
     $totalKlien = Klien::count(); 
-
     $totalPesanan = Pesanan::count();
-    $penugasanAktif = Pesanan::where('status', 'aktif')->count();
+
+    $penugasanAktif = Pesanan::where('status', 'progres')->count();
 
     $daftarPekerjaTerbaru = Pesanan::with('pekerja', 'klien')
         ->latest()

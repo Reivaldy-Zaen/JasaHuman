@@ -19,8 +19,9 @@ return new class extends Migration
     $table->string('email_pemesan');
     $table->string('nama_pekerja');
     $table->string('nomer');
-    $table->string('jam')->nullable(); 
-    $table->enum('status', ['aktif', 'selesai'])->default('aktif');
+    $table->time('jam_mulai')->nullable();
+    $table->integer('durasi_jam')->default(1); 
+    $table->enum('status', ['pending', 'progres', 'selesai'])->default('pending');
     $table->timestamps();
 });
 
