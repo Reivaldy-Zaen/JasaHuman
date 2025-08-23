@@ -31,3 +31,4 @@ Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesana
 Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
 Route::post('/pesanan/{id}/selesai', [PesananController::class, 'selesai'])->name('pesanan.selesai');
 Route::get('/pesanan/available-times/{pekerja}', [PesananController::class, 'getAvailableTimes']);
+Route::get('/pekerja/list', [DashboardController::class, 'listPekerja'])->name('pekerja.list');

@@ -85,4 +85,10 @@ class DashboardController extends Controller
     {
         //
     }
+
+    public function listPekerja()
+{
+    $pekerja = Pekerja::all();
+    return view('dashboard.pekerja-list', compact('pekerja'));
+}
 }

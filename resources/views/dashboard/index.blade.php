@@ -1,7 +1,8 @@
 @extends('layouts.apps')
 
-@section('dashboard-content')
+@section('content')
     <!-- Stats Cards -->
+    <a href="{{ route('pekerja.list') }}">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="vintage-card p-6 rounded-xl vintage-shadow hover:scale-[1.02] transition-all duration-300 subtle-pulse">
             <div class="flex items-center justify-between mb-4">
