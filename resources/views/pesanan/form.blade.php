@@ -7,39 +7,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-    }
-    .time-slot {
-      border-radius: 8px;
-      cursor: pointer;
-      margin-bottom: 10px;
-      border: 1px solid #dee2e6;
-    }
-    .time-slot.selected {
-      background-color: #0d6efd;
-      color: white;
-      border-color: #0d6efd;
-    }
-    .time-slot.booked {
-      background-color: #6c757d;
-      color: white;
-      cursor: not-allowed;
-      opacity: 0.7;
-    }
-    .time-slot.available:hover {
-      background-color: #e9ecef;
-    }
-    .progress-bar {
-      height: 8px;
-      border-radius: 4px;
-    }
-    .worker-img {
-      border: 4px solid #e2e8f0;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
+    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+    .time-slot { border-radius: 8px; cursor: pointer; margin-bottom: 10px; border: 1px solid #dee2e6; }
+    .time-slot.selected { background-color: #0d6efd; color: white; border-color: #0d6efd; }
+    .time-slot.booked { background-color: #6c757d; color: white; cursor: not-allowed; opacity: 0.7; }
+    .time-slot.available:hover { background-color: #e9ecef; }
+    .progress-bar { height: 8px; border-radius: 4px; }
+    .worker-img { border: 4px solid #e2e8f0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body class="bg-light">
@@ -133,42 +107,6 @@
                 <div class="form-text" id="selectedTimeInfo"></div>
               </div>
 
-              <!-- Informasi Status -->
-              {{-- <div class="alert alert-info">
-                <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Informasi Status Pemesanan</h6>
-                <div class="d-flex mt-3 align-items-center">
-                  <div class="me-3 text-center">
-                    <div class="bg-info rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                      <i class="fas fa-clock text-white"></i>
-                    </div>
-                    <div class="mt-1 small">Pending</div>
-                  </div>
-                  <div class="flex-grow-1 mx-2">
-                    <div class="progress" style="height: 10px;">
-                      <div class="progress-bar bg-info" role="progressbar" style="width: 33%"></div>
-                    </div>
-                  </div>
-                  <div class="me-3 text-center">
-                    <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                      <i class="fas fa-spinner text-white"></i>
-                    </div>
-                    <div class="mt-1 small">Progres</div>
-                  </div>
-                  <div class="flex-grow-1 mx-2">
-                    <div class="progress" style="height: 10px;">
-                      <div class="progress-bar bg-primary" role="progressbar" style="width: 33%"></div>
-                    </div>
-                  </div>
-                  <div class="text-center">
-                    <div class="bg-success rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                      <i class="fas fa-check text-white"></i>
-                    </div>
-                    <div class="mt-1 small">Selesai</div>
-                  </div>
-                </div>
-                <p class="mb-0 mt-3">Status akan berubah otomatis sesuai dengan waktu pemesanan.</p>
-              </div> --}}
-
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <a href="{{ route('pekerja.index') }}" class="btn btn-secondary me-md-2"><i class="fas fa-arrow-left me-2"></i>Kembali</a>
                 <button type="submit" class="btn btn-success"><i class="fas fa-paper-plane me-2"></i>Kirim Pesanan</button>
@@ -181,49 +119,54 @@
   </div>
 
   <script>
-    // Fungsi untuk memilih timeslot
+    // pilih timeslot
     function selectTimeSlot(element) {
-      // Hapus selected dari semua timeslot
       document.querySelectorAll('.time-slot').forEach(slot => {
         if (slot.classList.contains('available')) {
           slot.classList.remove('selected');
         }
       });
-      
-      // Tambahkan selected ke timeslot yang dipilih
       element.classList.add('selected');
-      
-      // Set nilai input hidden
       const selectedTime = element.dataset.time;
       document.getElementById('selectedTime').value = selectedTime;
-      
-      // Tampilkan informasi jam selesai
       updateTimeInfo(selectedTime);
     }
     
-    // Fungsi untuk update informasi jam selesai
+    // update info jam selesai
     function updateTimeInfo(startTime) {
       const duration = parseInt(document.getElementById('durationSelect').value);
       const [hours, minutes] = startTime.split(':').map(Number);
-      
-      // Hitung jam selesai
       let endHours = hours + duration;
       if (endHours >= 24) endHours -= 24;
-      
       const endTime = `${endHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
       document.getElementById('selectedTimeInfo').textContent = 
         `Pemesanan akan berlangsung dari ${startTime} hingga ${endTime}`;
     }
-    
-    // Event listener untuk perubahan durasi
+
+    // refresh slot booked dari server
+    function refreshTimeSlots(pekerjaId) {
+      fetch(`/pesanan/available-times/${pekerjaId}`)
+        .then(res => res.json())
+        .then(data => {
+          data.forEach(item => {
+            const slot = document.querySelector(`.time-slot[data-time='${item.time}']`);
+            if (slot) {
+              if (!item.available) {
+                slot.classList.remove('available', 'selected');
+                slot.classList.add('booked');
+                slot.querySelector('.status-text').textContent = 'Sudah dipesan';
+                slot.onclick = null;
+              }
+            }
+          });
+        });
+    }
+
     document.getElementById('durationSelect').addEventListener('change', function() {
       const selectedTime = document.getElementById('selectedTime').value;
-      if (selectedTime) {
-        updateTimeInfo(selectedTime);
-      }
+      if (selectedTime) updateTimeInfo(selectedTime);
     });
-    
-    // Validasi form sebelum submit
+
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
       const selectedTime = document.getElementById('selectedTime').value;
       if (!selectedTime) {
@@ -231,14 +174,15 @@
         alert('Silakan pilih jam pemesanan terlebih dahulu.');
       }
     });
-    
-    // Inisialisasi
+
     document.addEventListener('DOMContentLoaded', function() {
-      // Jika ada waktu yang dipilih sebelumnya, update info
       const selectedTime = document.getElementById('selectedTime').value;
-      if (selectedTime) {
-        updateTimeInfo(selectedTime);
-      }
+      if (selectedTime) updateTimeInfo(selectedTime);
+
+      // auto refresh tiap 10 detik
+      const pekerjaId = "{{ $pekerja->id }}";
+      refreshTimeSlots(pekerjaId);
+      setInterval(() => refreshTimeSlots(pekerjaId), 10000);
     });
   </script>
 </body>
