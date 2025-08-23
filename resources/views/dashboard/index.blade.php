@@ -6,9 +6,9 @@
         <div class="vintage-card p-6 rounded-xl vintage-shadow hover:scale-[1.02] transition-all duration-300 subtle-pulse">
             <div class="flex items-center justify-between mb-4">
                 <div class="text-3xl text-[var(--primary)]">👥</div>
-                <div class="cultural-accent w-12 h-12 rounded-full flex items-center justify-center">
+                <a href="{{ route('pekerja.namapekerja') }}" class="cultural-accent w-12 h-12 rounded-full flex items-center justify-center">
                     <span class="text-white font-bold">↑</span>
-                </div>
+                </a>
             </div>
             <h3 class="text-lg font-semibold text-[var(--text)] mb-1">Total Pekerja</h3>
             <p class="text-4xl font-bold text-[var(--primary)] playfair">{{ $totalPekerja }}</p>

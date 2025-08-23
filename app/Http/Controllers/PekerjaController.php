@@ -3,39 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pesanan;
-use App\Models\Klien;
 use App\Models\Pekerja;
 
-class DashboardController extends Controller
+class PekerjaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-        // UPDATE STATUS OTOMATIS SEBELUM MENGHITUNG
-        Pesanan::updateStatuses();
-
-    $totalPekerja = Pekerja::count();
-    $totalKlien = Klien::count(); 
-    $totalPesanan = Pesanan::count();
-
-    $penugasanAktif = Pesanan::where('status', 'progres')->count();
-
-    $daftarPekerjaTerbaru = Pesanan::with('pekerja', 'klien')
-        ->latest()
-        ->take(5)
-        ->get();
-
-     $pekerjaTerlaris = Pekerja::withCount('pesanan')
-        ->having('pesanan_count', '>', 0)
-        ->orderBy('pesanan_count', 'desc')
-        ->take(5)
-        ->get();
-
-        return view('dashboard.index', compact('totalKlien','totalPekerja', 'totalPesanan', 'daftarPekerjaTerbaru','penugasanAktif','pekerjaTerlaris'));
+        //
+         $namapekerja = Pekerja::all();
+        return view('pekerja.namapekerja',compact('namapekerja'));
     }
 
     /**
@@ -85,10 +64,4 @@ class DashboardController extends Controller
     {
         //
     }
-
-    public function listPekerja()
-{
-    $pekerja = Pekerja::all();
-    return view('dashboard.pekerja-list', compact('pekerja'));
-}
 }

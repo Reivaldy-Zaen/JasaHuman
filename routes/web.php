@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KlienController;
+use App\Http\Controllers\PekerjaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,5 +33,5 @@ Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesana
 Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
 Route::post('/pesanan/{id}/selesai', [PesananController::class, 'selesai'])->name('pesanan.selesai');
 Route::get('/pesanan/available-times/{pekerja}', [PesananController::class, 'getAvailableTimes']);
-
 Route::get('/klien', [KlienController::class, 'index'])->name('klien.index');
+Route::get('/namapekerja', [PekerjaController::class, 'index'])->name('pekerja.namapekerja');
