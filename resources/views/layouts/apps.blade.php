@@ -100,7 +100,7 @@
     </style>
 </head>
 <body class="vintage-bg culture-pattern min-h-screen inter">
-
+@yield('nav')
 <div class="flex min-h-screen">
     <!-- Sidebar -->
     <aside class="w-72 glass-effect text-[var(--text)] p-6 vintage-shadow">

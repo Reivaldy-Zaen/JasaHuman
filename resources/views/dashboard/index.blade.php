@@ -1,6 +1,6 @@
 @extends('layouts.apps')
 
-@section('dashboard-content')
+@section('content')
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="vintage-card p-6 rounded-xl vintage-shadow hover:scale-[1.02] transition-all duration-300 subtle-pulse">
@@ -18,14 +18,15 @@
         <div class="vintage-card p-6 rounded-xl vintage-shadow hover:scale-[1.02] transition-all duration-300">
             <div class="flex items-center justify-between mb-4">
                 <div class="text-3xl text-[var(--primary)]">🏢</div>
-                <div class="cultural-accent w-12 h-12 rounded-full flex items-center justify-center">
+                <a href="{{ route('klien.index') }}" class="cultural-accent w-12 h-12 rounded-full flex items-center justify-center">
                     <span class="text-white font-bold">↑</span>
-                </div>
+                </a>
             </div>
             <h3 class="text-lg font-semibold text-[var(--text)] mb-1">Total Klien</h3>
             <p class="text-4xl font-bold text-[var(--primary)] playfair">{{ $totalKlien }}</p>
             <p class="text-sm text-[var(--text-light)] mt-2">Semua Total Klien</p>
         </div>
+
 
         <div class="vintage-card p-6 rounded-xl vintage-shadow hover:scale-[1.02] transition-all duration-300">
             <div class="flex items-center justify-between mb-4">
