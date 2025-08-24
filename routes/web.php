@@ -52,3 +52,5 @@ Route::get('/pesanan/available-times/{pekerja}', [PesananController::class, 'get
 
 // ====================== KLIEN ======================
 Route::get('/klien', [KlienController::class, 'index'])->name('klien.index');
+Route::get('/namapekerja', [PekerjaController::class, 'index'])->name('pekerja.namapekerja');
+Route::get('/pekerja/{id}/profile', [PekerjaController::class, 'pro'])->name('pekerja.profile');
