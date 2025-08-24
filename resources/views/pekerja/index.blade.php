@@ -230,26 +230,60 @@
   </style>
 </head>
 <body>
+   <div class="container py-4">
+    <!-- Alert Selamat Datang untuk Klien -->
+    {{-- @if(session('welcome_message'))
+    <div class="mb-4 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+        <div class="flex items-center">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-blue-700">
+                    <strong>Selamat datang!</strong> {{ session('welcome_message') }}
+                </p>
+            </div>
+            <div class="ml-auto pl-3">
+                <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-blue-500 hover:text-blue-700">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif --}}
   <div class="container py-4">
-    <!-- Header yang lebih minimalis -->
+    <!-- Header dengan Logout di Pojok Kanan -->
     <div class="header-section">
       <div class="d-flex align-items-center justify-content-between mb-3">
+        @if(Auth::user()->role === 'admin')
         <a href="{{ route('dashboard.index') }}" class="btn-back">
           <i class="bi bi-arrow-left"></i>
         </a>
-        <div></div>
+         @endif
+        
+        <!-- Logout Button di Pojok Kanan -->
+        <form action="{{ route('logout') }}" method="POST" class="m-0">
+          @csrf
+          <button type="submit" class="btn-logout" title="Logout">
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </form>
       </div>
       <div class="text-center">
         <h2>Pilih Pekerja Profesional</h2>
         <p>Temukan pekerja terbaik yang sesuai dengan kebutuhan Anda</p>
       </div>
     </div>
-<form action="{{ route('logout') }}" method="POST">
+{{-- <form action="{{ route('logout') }}" method="POST">
     @csrf
     <button type="submit" class="w-full text-left py-2 px-4 hover:bg-gray-100 rounded">
         <i class="bi bi-box-arrow-right mr-2"></i> Logout
     </button>
-</form>
+</form> --}}
 
     <!-- Card List dengan spacing yang lebih baik -->
     <div class="row g-3">

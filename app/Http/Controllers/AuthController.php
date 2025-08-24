@@ -32,9 +32,12 @@ class AuthController extends Controller
 
             // Cek role user
             if (Auth::user()->role === 'admin') {
-                return redirect()->route('dashboard.index')->with('success', 'Selamat datang Admin!');
+              session()->flash('welcome_message', 'Selamat datang Admin!');
+              return redirect()->route('dashboard.index');
+
             } elseif (Auth::user()->role === 'klien') {
-                return redirect()->route('pekerja.index')->with('success', 'Login berhasil sebagai Klien!');
+                session()->flash('welcome_message', 'Selamat datang! Temukan pekerja terbaik untuk Anda.');
+                return redirect()->route('pekerja.index');
             } else {
                 // Kalau role tidak dikenali
                 Auth::logout();
