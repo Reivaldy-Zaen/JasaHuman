@@ -48,6 +48,9 @@ Route::get('/pekerja/{id}/profile', [PekerjaController::class, 'profile'])
 Route::get('/pesan/{pekerja}', [PesananController::class, 'formPesan'])
     ->middleware('auth')
     ->name('pesanan.form');
+Route::get('/pesanan', [PesananController::class, 'index'])
+    ->middleware('auth')
+    ->name('pesanan.index');
 
 Route::post('/pesan/{pekerja}', [PesananController::class, 'simpanPesanan'])
     ->middleware('auth')
