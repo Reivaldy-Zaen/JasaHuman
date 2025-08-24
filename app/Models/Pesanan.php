@@ -39,14 +39,15 @@ class Pesanan extends Model
     }
 
     // Method untuk cek apakah jam sudah dipesan
-    public static function isBooked($pekerjaId, $tanggalPemesanan, $jamMulai)
-    {
-        return self::where('pekerja_id', $pekerjaId)
-            ->where('tanggal_pemesanan', $tanggalPemesanan)
-            ->whereIn('status', ['pending', 'progres'])
-            ->where('jam_mulai', $jamMulai)
-            ->exists();
-    }
+    // PASTIKAN method isBooked() seperti ini:
+public static function isBooked($pekerjaId, $tanggalPemesanan, $jamMulai)
+{
+    return self::where('pekerja_id', $pekerjaId)
+        ->where('tanggal_pemesanan', $tanggalPemesanan)
+        ->whereIn('status', ['pending', 'progres'])
+        ->where('jam_mulai', $jamMulai)
+        ->exists();
+}
 
     // Method untuk cek apakah waktu sudah lewat
     public static function isTimePassed($tanggalPemesanan, $jamMulai)

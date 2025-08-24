@@ -99,8 +99,10 @@
                 <div class="row g-2" id="timeSlotsContainer">
                   @foreach(['11:30', '14:05', '16:40', '19:15', '22:50'] as $jam)
                     @php
-                        $isBooked = \App\Models\Pesanan::isBooked($pekerja->id, $jam);
-                    @endphp
+    // Gunakan tanggal hari ini sebagai default
+    $tanggalHariIni = now()->format('Y-m-d');
+    $isBooked = \App\Models\Pesanan::isBooked($pekerja->id, $tanggalHariIni, $jam);
+@endphp
 
                     <div class="col-sm-6 col-md-3">
                       <div class="time-slot p-3 text-center {{ $isBooked ? 'booked' : 'available' }} {{ old('jam_mulai') == $jam ? 'selected' : '' }}"
@@ -153,23 +155,41 @@
     }
 
     // refresh slot booked dari server
-    function refreshTimeSlots(pekerjaId) {
-      fetch(`/pesanan/available-times/${pekerjaId}`)
-        .then(res => res.json())
-        .then(data => {
-          data.forEach(item => {
-            const slot = document.querySelector(`.time-slot[data-time='${item.time}']`);
-            if (slot) {
-              if (!item.available) {
-                slot.classList.remove('available', 'selected');
-                slot.classList.add('booked');
-                slot.querySelector('.status-text').textContent = 'Sudah dipesan';
-                slot.onclick = null;
-              }
-            }
-          });
-        });
-    }
+    // GANTI fungsi refreshTimeSlots() dengan ini:
+function refreshTimeSlots(pekerjaId, tanggal) {
+  fetch(`/pesanan/available-times/${pekerjaId}/${tanggal}`)
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById('timeSlotsContainer');
+      let html = '';
+      
+      data.forEach(item => {
+        const isSelected = document.getElementById('selectedTime').value === item.time;
+        const isToday = tanggal === new Date().toISOString().split('T')[0];
+        const now = new Date();
+        const currentTime = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+        const isTimePassed = isToday && item.time <= currentTime;
+        
+        html += `
+          <div class="col-sm-6 col-md-3">
+            <div class="time-slot p-3 text-center 
+                 ${!item.available || isTimePassed ? 'booked' : 'available'} 
+                 ${isSelected ? 'selected' : ''}"
+                 data-time="${item.time}"
+                 onclick="${item.available && !isTimePassed ? 'selectTimeSlot(this)' : ''}">
+              <div class="fw-bold">${item.time}</div>
+              <small class="status-text">
+                ${!item.available ? 'Sudah dipesan' : 
+                  isTimePassed ? 'Sudah lewat' : 'Tersedia'}
+              </small>
+            </div>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html;
+    });
+}
 
     document.getElementById('durationSelect').addEventListener('change', function() {
       const selectedTime = document.getElementById('selectedTime').value;
@@ -249,6 +269,7 @@ function loadTimeSlotsByDate() {
 }
 
 // Update fungsi selectTimeSlot untuk menangani tanggal
+// pilih timeslot
 function selectTimeSlot(element) {
   document.querySelectorAll('.time-slot').forEach(slot => {
     if (slot.classList.contains('available')) {
@@ -261,7 +282,7 @@ function selectTimeSlot(element) {
   updateTimeInfo(selectedTime);
 }
 
-// Update fungsi updateTimeInfo untuk menampilkan tanggal juga
+// update info jam selesai
 function updateTimeInfo(startTime) {
   const tanggal = document.getElementById('tanggalInput').value;
   const duration = parseInt(document.getElementById('durationSelect').value);
@@ -280,26 +301,77 @@ function updateTimeInfo(startTime) {
     `<i class="fas fa-info-circle me-1"></i> Pemesanan pada <strong>${formattedDate}</strong> dari <strong>${startTime}</strong> hingga <strong>${endTime}</strong>`;
 }
 
+// refresh slot booked dari server berdasarkan tanggal
+function refreshTimeSlots(pekerjaId, tanggal) {
+  fetch(`/pesanan/available-times/${pekerjaId}/${tanggal}`)
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById('timeSlotsContainer');
+      let html = '';
+      
+      data.forEach(item => {
+        const isSelected = document.getElementById('selectedTime').value === item.time;
+        const isToday = tanggal === new Date().toISOString().split('T')[0];
+        const now = new Date();
+        const currentTime = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+        const isTimePassed = isToday && item.time <= currentTime;
+        
+        html += `
+          <div class="col-sm-6 col-md-3">
+            <div class="time-slot p-3 text-center 
+                 ${!item.available || isTimePassed ? 'booked' : 'available'} 
+                 ${isSelected ? 'selected' : ''}"
+                 data-time="${item.time}"
+                 onclick="${item.available && !isTimePassed ? 'selectTimeSlot(this)' : ''}">
+              <div class="fw-bold">${item.time}</div>
+              <small class="status-text">
+                ${!item.available ? 'Sudah dipesan' : 
+                  isTimePassed ? 'Sudah lewat' : 'Tersedia'}
+              </small>
+            </div>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html;
+    });
+}
+
+document.getElementById('durationSelect').addEventListener('change', function() {
+  const selectedTime = document.getElementById('selectedTime').value;
+  if (selectedTime) updateTimeInfo(selectedTime);
+});
+
 // Tambahkan event listener untuk perubahan tanggal
 document.getElementById('tanggalInput').addEventListener('change', function() {
-  loadTimeSlotsByDate();
+  const pekerjaId = "{{ $pekerja->id }}";
+  const tanggal = this.value;
+  refreshTimeSlots(pekerjaId, tanggal);
   document.getElementById('selectedTime').value = '';
   document.getElementById('selectedTimeInfo').textContent = '';
 });
 
-// Update DOMContentLoaded
+document.getElementById('bookingForm').addEventListener('submit', function(e) {
+  const selectedTime = document.getElementById('selectedTime').value;
+  if (!selectedTime) {
+    e.preventDefault();
+    alert('Silakan pilih jam pemesanan terlebih dahulu.');
+  }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
   // Load time slots berdasarkan tanggal default
-  loadTimeSlotsByDate();
+  const pekerjaId = "{{ $pekerja->id }}";
+  const tanggal = document.getElementById('tanggalInput').value;
+  refreshTimeSlots(pekerjaId, tanggal);
   
   const selectedTime = document.getElementById('selectedTime').value;
   if (selectedTime) updateTimeInfo(selectedTime);
 
-  // Auto refresh setiap 30 detik (bisa dikurangi frekuensinya)
-  const pekerjaId = "{{ $pekerja->id }}";
+  // Auto refresh setiap 30 detik
   setInterval(() => {
     const currentDate = document.getElementById('tanggalInput').value;
-    loadTimeSlotsByDate();
+    refreshTimeSlots(pekerjaId, currentDate);
   }, 30000);
 });
   </script>

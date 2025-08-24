@@ -152,11 +152,15 @@ public function index()
     }
 
     // LOGIC JAM DARI CODE 2: API untuk mendapatkan jam yang tersedia
-    public function getAvailableTimes($pekerjaId)
+    public function getAvailableTimes($pekerjaId, $tanggal = null)
     {
         $availableTimes = ['11:30', '14:05', '16:40', '19:15', '22:50'];
+        if (!$tanggal) {
+        $tanggal = now()->format('Y-m-d');
+    }
          
         $bookedTimes = Pesanan::where('pekerja_id', $pekerjaId)
+                            ->where('tanggal_pemesanan', $tanggal)
                             ->whereIn('status', ['pending', 'progres']) // disesuaikan dengan status aktif
                             ->pluck('jam_mulai')
                             ->toArray();

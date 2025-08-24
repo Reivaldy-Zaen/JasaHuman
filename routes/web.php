@@ -49,7 +49,8 @@ Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesana
 Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
 Route::post('/pesanan/{id}/selesai', [PesananController::class, 'selesai'])->name('pesanan.selesai');
 
-Route::get('/pesanan/available-times/{pekerja}', [PesananController::class, 'getAvailableTimes'])->name('pesanan.available-times');
+// PASTIKAN route nya seperti ini:
+Route::get('/pesanan/available-times/{pekerja}/{tanggal?}', [PesananController::class, 'getAvailableTimes']);
 
 // ====================== KLIEN ======================
 Route::get('/klien', [KlienController::class, 'index'])->name('klien.index');
