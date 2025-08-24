@@ -28,14 +28,6 @@
                 <input type="password" name="password" class="w-full p-2 border rounded focus:ring-2 focus:ring-green-400" required>
             </div>
 
-            <div>
-                <label class="block text-gray-700">Role</label>
-                <select name="role" class="w-full p-2 border rounded focus:ring-2 focus:ring-green-400" required>
-                    <option value="admin">Admin</option>
-                    <option value="klien">Klien</option>
-                </select>
-            </div>
-
             <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded">
                 Login
             </button>
