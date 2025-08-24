@@ -35,3 +35,4 @@ Route::post('/pesanan/{id}/selesai', [PesananController::class, 'selesai'])->nam
 Route::get('/pesanan/available-times/{pekerja}', [PesananController::class, 'getAvailableTimes']);
 Route::get('/klien', [KlienController::class, 'index'])->name('klien.index');
 Route::get('/namapekerja', [PekerjaController::class, 'index'])->name('pekerja.namapekerja');
+Route::get('/pekerja/{id}/profile', [PekerjaController::class, 'pro'])->name('pekerja.profile');

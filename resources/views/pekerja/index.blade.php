@@ -83,6 +83,7 @@
       border-radius: 50%; 
       border: 3px solid #f1f5f9;
       margin-bottom: 1rem;
+      transition: all 0.3s ease;
     }
 
     .worker-name {
@@ -90,6 +91,20 @@
       font-size: 1.5rem;
       font-weight: 600;
       margin-bottom: 0.75rem;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    /* Menghilangkan garis bawah pada link */
+    .block {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    
+    .block:hover {
+      text-decoration: none;
+      color: inherit;
     }
 
     /* Gender badge yang lebih subtle */
@@ -162,6 +177,29 @@
       color: white;
     }
 
+    /* PERBAIKAN: Link Lihat Profile yang lebih baik */
+    .profile-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #64748b;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background-color: #f8fafc;
+      text-decoration: none;
+    }
+    
+    .profile-link:hover {
+      color: #3b82f6;
+      background-color: #eff6ff;
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
     @media (max-width: 768px) {
       .header-section {
         padding: 1.5rem;
@@ -183,6 +221,7 @@
 
     .card-hover-effect:hover .profile-img {
       border-color: #d1fae5;
+      transform: scale(1.05);
     }
 
     .card-hover-effect:hover .worker-name {
@@ -212,9 +251,13 @@
       <div class="col-xl-3 col-lg-4 col-md-6">
         <div class="card modern-card h-100 text-center p-3 card-hover-effect">
           <div class="pt-2">
-            <img src="{{ $p->foto }}" class="profile-img mx-auto" alt="Foto Pekerja">
+            <a href="{{ route('pekerja.profile', $p->id) }}" class="block">
+              <img src="{{ $p->foto }}" class="profile-img mx-auto" alt="Foto Pekerja">
+            </a>
             
-            <h2 class="worker-name">{{ $p->nama }}</h2>
+            <a href="{{ route('pekerja.profile', $p->id) }}" class="block">
+              <h2 class="worker-name">{{ $p->nama }}</h2>
+            </a>
             
             <div class="mb-2">
               @if($p->jenis_kelamin == 'Laki-laki')
@@ -238,9 +281,14 @@
                 <div class="stat-label">Asal</div>
               </div>
             </div>
+
+            <!-- PERBAIKAN: Link Lihat Profile Lengkap -->
+            <a href="{{ route('pekerja.profile', $p->id) }}" class="profile-link">
+              <i class="bi bi-eye"></i> Lihat Profile Lengkap
+            </a>
             
             <a href="{{ route('pesanan.form', $p->id) }}" class="btn btn-success-custom w-100">
-              <i class="bi bi-calendar-plus me-1"></i>Pesan
+              <i class="bi bi-calendar-plus me-1"></i> Pesan
             </a>
           </div>
         </div>
