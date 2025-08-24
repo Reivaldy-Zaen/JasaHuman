@@ -37,6 +37,7 @@ Route::get('/dashboard/klien', function () {
 // ====================== PEKERJA ======================
 Route::get('/pekerja', [PesananController::class, 'daftarPekerja'])->name('pekerja.index');
 Route::get('/namapekerja', [PekerjaController::class, 'index'])->name('pekerja.namapekerja');
+Route::get('/pekerja/{id}/profile', [PekerjaController::class, 'profile'])->name('pekerja.profile');
 
 // ====================== PESANAN ======================
 Route::get('/pesan/{pekerja}', [PesananController::class, 'formPesan'])->name('pesanan.form');
@@ -52,5 +53,3 @@ Route::get('/pesanan/available-times/{pekerja}', [PesananController::class, 'get
 
 // ====================== KLIEN ======================
 Route::get('/klien', [KlienController::class, 'index'])->name('klien.index');
-Route::get('/namapekerja', [PekerjaController::class, 'index'])->name('pekerja.namapekerja');
-Route::get('/pekerja/{id}/profile', [PekerjaController::class, 'pro'])->name('pekerja.profile');
