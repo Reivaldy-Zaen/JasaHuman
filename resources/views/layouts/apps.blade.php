@@ -100,6 +100,20 @@
     </style>
 </head>
 <body class="vintage-bg culture-pattern min-h-screen inter">
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  {{ session('error') }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  {{ session('success') }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+
 
 <div class="flex min-h-screen">
     <!-- Sidebar -->
@@ -111,7 +125,7 @@
         </div>
         
         <nav class="space-y-3 sidebar-nav">
-            <a href="{{ route('dashboard') }}" class="group flex items-center py-3 px-4 rounded-xl transition-all duration-300">
+            <a href="{{ route('dashboard.index') }}" class="group flex items-center py-3 px-4 rounded-xl transition-all duration-300">
                 <i class="bi bi-speedometer2 mr-2"></i>
                 <span class="font-medium">Dashboard</span>
                 <span class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-[var(--primary)]">→</span>

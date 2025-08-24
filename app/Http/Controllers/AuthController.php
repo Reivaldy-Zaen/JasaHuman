@@ -32,7 +32,7 @@ class AuthController extends Controller
 
             // Cek role user
             if (Auth::user()->role === 'admin') {
-                return redirect()->route('dashboard')->with('success', 'Selamat datang Admin!');
+                return redirect()->route('dashboard.index')->with('success', 'Selamat datang Admin!');
             } elseif (Auth::user()->role === 'klien') {
                 return redirect()->route('pekerja.index')->with('success', 'Login berhasil sebagai Klien!');
             } else {
@@ -51,12 +51,12 @@ class AuthController extends Controller
     /**
      * Logout user
      */
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+public function logout(Request $request)
+{
+    Auth::logout(); // Hapus session login
+    $request->session()->invalidate(); // Invalidasi session
+    $request->session()->regenerateToken(); // Regenerate CSRF token
 
-        return redirect()->route('login')->with('success', 'Berhasil logout!');
-    }
+    return redirect()->route('login')->with('success', 'Anda berhasil logout.');
+}
 }

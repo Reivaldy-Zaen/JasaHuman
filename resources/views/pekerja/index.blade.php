@@ -234,7 +234,7 @@
     <!-- Header yang lebih minimalis -->
     <div class="header-section">
       <div class="d-flex align-items-center justify-content-between mb-3">
-        <a href="{{ route('dashboard') }}" class="btn-back">
+        <a href="{{ route('dashboard.index') }}" class="btn-back">
           <i class="bi bi-arrow-left"></i>
         </a>
         <div></div>
@@ -244,6 +244,12 @@
         <p>Temukan pekerja terbaik yang sesuai dengan kebutuhan Anda</p>
       </div>
     </div>
+<form action="{{ route('logout') }}" method="POST">
+    @csrf
+    <button type="submit" class="w-full text-left py-2 px-4 hover:bg-gray-100 rounded">
+        <i class="bi bi-box-arrow-right mr-2"></i> Logout
+    </button>
+</form>
 
     <!-- Card List dengan spacing yang lebih baik -->
     <div class="row g-3">

@@ -13,43 +13,67 @@ use App\Http\Controllers\AuthController;
 |--------------------------------------------------------------------------
 */
 
-// Redirect ke dashboard
+// Redirect ke login
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
-// Dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // ====================== AUTH ======================
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
-// Dashboard role
-Route::get('/dashboard/admin', function () {
-    return "Selamat datang Admin!";
-})->name('dashboard.admin');
+// Logout
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-Route::get('/dashboard/klien', function () {
-    return "Selamat datang Klien!";
-})->name('dashboard.klien');
+// ====================== DASHBOARD ======================
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'role:admin'])
+    ->name('dashboard.index');
+
+Route::get('/pekerja', [PesananController::class, 'daftarPekerja'])
+    ->middleware(['auth', 'role:klien'])
+    ->name('pekerja.index');
 
 // ====================== PEKERJA ======================
-Route::get('/pekerja', [PesananController::class, 'daftarPekerja'])->name('pekerja.index');
-Route::get('/namapekerja', [PekerjaController::class, 'index'])->name('pekerja.namapekerja');
-Route::get('/pekerja/{id}/profile', [PekerjaController::class, 'profile'])->name('pekerja.profile');
+Route::get('/namapekerja', [PekerjaController::class, 'index'])
+    ->middleware('auth')
+    ->name('pekerja.namapekerja');
+
+Route::get('/pekerja/{id}/profile', [PekerjaController::class, 'profile'])
+    ->middleware('auth')
+    ->name('pekerja.profile');
 
 // ====================== PESANAN ======================
-Route::get('/pesan/{pekerja}', [PesananController::class, 'formPesan'])->name('pesanan.form');
-Route::post('/pesan/{pekerja}', [PesananController::class, 'simpanPesanan'])->name('pesanan.simpan');
+Route::get('/pesan/{pekerja}', [PesananController::class, 'formPesan'])
+    ->middleware('auth')
+    ->name('pesanan.form');
 
-Route::get('/pesanan-sukses', [PesananController::class, 'sukses'])->name('pesanan.sukses');
-Route::post('/pesanan/store', [PesananController::class, 'store'])->name('pesanan.store');
+Route::post('/pesan/{pekerja}', [PesananController::class, 'simpanPesanan'])
+    ->middleware('auth')
+    ->name('pesanan.simpan');
 
-Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan.index');
-Route::post('/pesanan/{id}/selesai', [PesananController::class, 'selesai'])->name('pesanan.selesai');
+Route::get('/pesanan-sukses', [PesananController::class, 'sukses'])
+    ->middleware('auth')
+    ->name('pesanan.sukses');
 
-Route::get('/pesanan/available-times/{pekerja}', [PesananController::class, 'getAvailableTimes'])->name('pesanan.available-times');
+Route::post('/pesanan/store', [PesananController::class, 'store'])
+    ->middleware('auth')
+    ->name('pesanan.store');
+
+Route::get('/pesanan', [PesananController::class, 'index'])
+    ->middleware('auth')
+    ->name('pesanan.index');
+
+Route::post('/pesanan/{id}/selesai', [PesananController::class, 'selesai'])
+    ->middleware('auth')
+    ->name('pesanan.selesai');
+
+Route::get('/pesanan/available-times/{pekerja}', [PesananController::class, 'getAvailableTimes'])
+    ->middleware('auth')
+    ->name('pesanan.available-times');
 
 // ====================== KLIEN ======================
-Route::get('/klien', [KlienController::class, 'index'])->name('klien.index');
+Route::get('/klien', [KlienController::class, 'index'])
+    ->middleware('auth')
+    ->name('klien.index');

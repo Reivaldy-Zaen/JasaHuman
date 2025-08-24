@@ -52,6 +52,12 @@
             <p class="text-sm text-[var(--text-light)] mt-2">Rupiah per bulan</p>
         </div>
     </div>
+<form action="{{ route('logout') }}" method="POST">
+    @csrf
+    <button type="submit" class="w-full text-left py-2 px-4 hover:bg-gray-100 rounded">
+        <i class="bi bi-box-arrow-right mr-2"></i> Logout
+    </button>
+</form>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Tabel Data -->
