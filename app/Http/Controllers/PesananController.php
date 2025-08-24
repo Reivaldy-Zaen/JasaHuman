@@ -97,13 +97,18 @@ public function index()
             'nama_pemesan'  => 'required|string|max:255',
             'email_pemesan' => 'required|email|max:255',
             'nomer'         => 'required|numeric|digits_between:10,14',
+            'tanggal_pemesanan' => 'required|date|after_or_equal:today', // Validasi tanggal
             // LOGIC JAM DARI CODE 2: Menggunakan jam_mulai dan durasi_jam
             'jam_mulai' => 'required',
             'durasi_jam' => 'required|integer|min:1|max:8'
         ]);
 
-        // LOGIC JAM DARI CODE 2: Periksa apakah jam sudah dipesan
-        $isBooked = Pesanan::isBooked($pekerja_id, $request->jam_mulai);
+        if (Pesanan::isTimePassed($request->tanggal_pemesanan, $request->jam_mulai)) {
+            return back()->withErrors(['jam_mulai' => 'Waktu yang dipilih sudah lewat. Silakan pilih waktu yang akan datang.'])->withInput();
+        }
+
+        // Periksa apakah jam sudah dipesan
+        $isBooked = Pesanan::isBooked($pekerja_id, $request->tanggal_pemesanan, $request->jam_mulai);
         
         if ($isBooked) {
             return back()->withErrors(['jam_mulai' => 'Jam yang dipilih sudah dipesan. Silakan pilih jam lain.'])->withInput();
@@ -129,6 +134,7 @@ public function index()
                 'email_pemesan' => $request->email_pemesan,
                 'nomer'         => $request->nomer,
                 'nama_pekerja'  => $pekerja->nama,
+                'tanggal_pemesanan' => $request->tanggal_pemesanan, // tambahkan tanggal
                 'jam_mulai'     => $request->jam_mulai, // dari Code 2
                 'durasi_jam'    => $request->durasi_jam, // dari Code 2
                 'status'        => 'pending' // tetap menggunakan status aktif sesuai Code 1
@@ -146,10 +152,15 @@ public function index()
     }
 
     // LOGIC JAM DARI CODE 2: API untuk mendapatkan jam yang tersedia
-    public function getAvailableTimes($pekerjaId)
+    public function getAvailableTimes($pekerjaId, $tanggal = null)
     {
         $availableTimes = ['11:30', '14:05', '16:40', '19:15', '22:50'];
+        if (!$tanggal) {
+        $tanggal = now()->format('Y-m-d');
+    }
+         
         $bookedTimes = Pesanan::where('pekerja_id', $pekerjaId)
+                            ->where('tanggal_pemesanan', $tanggal)
                             ->whereIn('status', ['pending', 'progres']) // disesuaikan dengan status aktif
                             ->pluck('jam_mulai')
                             ->toArray();

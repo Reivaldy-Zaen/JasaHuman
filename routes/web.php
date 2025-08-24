@@ -57,21 +57,8 @@ Route::get('/pesanan-sukses', [PesananController::class, 'sukses'])
     ->middleware('auth')
     ->name('pesanan.sukses');
 
-Route::post('/pesanan/store', [PesananController::class, 'store'])
-    ->middleware('auth')
-    ->name('pesanan.store');
-
-Route::get('/pesanan', [PesananController::class, 'index'])
-    ->middleware('auth')
-    ->name('pesanan.index');
-
-Route::post('/pesanan/{id}/selesai', [PesananController::class, 'selesai'])
-    ->middleware('auth')
-    ->name('pesanan.selesai');
-
-Route::get('/pesanan/available-times/{pekerja}', [PesananController::class, 'getAvailableTimes'])
-    ->middleware('auth')
-    ->name('pesanan.available-times');
+// PASTIKAN route nya seperti ini:
+Route::get('/pesanan/available-times/{pekerja}/{tanggal?}', [PesananController::class, 'getAvailableTimes']);
 
 // ====================== KLIEN ======================
 Route::get('/klien', [KlienController::class, 'index'])
