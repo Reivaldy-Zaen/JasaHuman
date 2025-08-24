@@ -233,12 +233,14 @@
   <div class="container py-4">
     <!-- Header yang lebih minimalis -->
     <div class="header-section">
-      <div class="d-flex align-items-center justify-content-between mb-3">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      @if(Auth::check() && Auth::user()->role === 'admin')
         <a href="{{ route('dashboard.index') }}" class="btn-back">
           <i class="bi bi-arrow-left"></i>
         </a>
-        <div></div>
-      </div>
+      @endif
+      <div></div>
+    </div>
       <div class="text-center">
         <h2>Pilih Pekerja Profesional</h2>
         <p>Temukan pekerja terbaik yang sesuai dengan kebutuhan Anda</p>

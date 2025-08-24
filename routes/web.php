@@ -23,47 +23,53 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
 // Logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
 
 // ====================== DASHBOARD ======================
-
+// Dashboard hanya untuk admin
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'role:admin'])
     ->name('dashboard.index');
 
+// ====================== PEKERJA ======================
+// Daftar pekerja bisa diakses klien & admin
 Route::get('/pekerja', [PesananController::class, 'daftarPekerja'])
-    ->middleware(['auth', 'role:klien'])
+    ->middleware(['auth', 'role:klien,admin'])
     ->name('pekerja.index');
 
-// ====================== PEKERJA ======================
 Route::get('/namapekerja', [PekerjaController::class, 'index'])
-    ->middleware('auth')
+    ->middleware(['auth', 'role:klien,admin'])
     ->name('pekerja.namapekerja');
 
 Route::get('/pekerja/{id}/profile', [PekerjaController::class, 'profile'])
-    ->middleware('auth')
+    ->middleware(['auth', 'role:klien,admin'])
     ->name('pekerja.profile');
 
 // ====================== PESANAN ======================
 Route::get('/pesan/{pekerja}', [PesananController::class, 'formPesan'])
-    ->middleware('auth')
+    ->middleware(['auth', 'role:klien,admin'])
     ->name('pesanan.form');
-Route::get('/pesanan', [PesananController::class, 'index'])
-    ->middleware('auth')
-    ->name('pesanan.index');
 
 Route::post('/pesan/{pekerja}', [PesananController::class, 'simpanPesanan'])
-    ->middleware('auth')
+    ->middleware(['auth', 'role:klien,admin'])
     ->name('pesanan.simpan');
 
 Route::get('/pesanan-sukses', [PesananController::class, 'sukses'])
-    ->middleware('auth')
+    ->middleware(['auth', 'role:klien,admin'])
     ->name('pesanan.sukses');
 
-// PASTIKAN route nya seperti ini:
-Route::get('/pesanan/available-times/{pekerja}/{tanggal?}', [PesananController::class, 'getAvailableTimes']);
+Route::get('/pesanan', [PesananController::class, 'index'])
+    ->middleware(['auth', 'role:klien,admin'])
+    ->name('pesanan.index');
+
+// Ambil waktu yang tersedia
+Route::get('/pesanan/available-times/{pekerja}/{tanggal?}', [PesananController::class, 'getAvailableTimes'])
+    ->middleware(['auth', 'role:klien,admin'])
+    ->name('pesanan.available-times');
 
 // ====================== KLIEN ======================
 Route::get('/klien', [KlienController::class, 'index'])
-    ->middleware('auth')
+    ->middleware(['auth', 'role:klien,admin'])
     ->name('klien.index');

@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        <a href="{{ route('dashboard') }}" 
+        <a href="{{ route('dashboard.index') }}" 
            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-green-500 hover:bg-green-600 text-white mb-4 shadow">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
