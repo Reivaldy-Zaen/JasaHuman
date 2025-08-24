@@ -4,9 +4,9 @@
 <div class="max-w-4xl mx-auto">
     <!-- Header -->
     <div class="text-center mb-8">
-        <a href="{{ route('pekerja.index') }}" class="inline-flex items-center text-[var(--primary)] hover:text-[var(--primary-light)] mb-4">
+        {{-- <a href="{{ route('pekerja.index') }}" class="inline-flex items-center text-[var(--primary)] hover:text-[var(--primary-light)] mb-4">
             <i class="bi bi-arrow-left mr-2"></i> Kembali ke Daftar Pekerja
-        </a>
+        </a> --}}
         <h1 class="text-4xl font-bold playfair text-[var(--text)] mb-2">Profile Pekerja</h1>
         <p class="text-[var(--text-light)]">Informasi lengkap tentang pekerja</p>
         <div class="w-32 h-1 cultural-accent rounded-full mx-auto mt-4"></div>
