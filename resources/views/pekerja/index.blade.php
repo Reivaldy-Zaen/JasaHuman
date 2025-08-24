@@ -13,6 +13,139 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
+    /* IMPROVED ALERT STYLING */
+    .welcome-alert {
+      background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #22c55e;
+      border-radius: 0 16px 16px 0;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.1), 0 2px 4px -1px rgba(34, 197, 94, 0.06);
+      animation: slideInRight 0.5s ease-out;
+      transition: all 0.3s ease;
+    }
+
+    .welcome-alert:hover {
+      box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.1), 0 4px 6px -2px rgba(34, 197, 94, 0.05);
+    }
+
+    .alert-icon-container {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 4px rgba(34, 197, 94, 0.2);
+      animation: scaleIn 0.6s ease-out 0.2s both;
+    }
+
+    .alert-icon {
+      width: 16px;
+      height: 16px;
+      color: white;
+    }
+
+    .alert-content {
+      flex: 1;
+      margin-left: 16px;
+      animation: fadeInLeft 0.6s ease-out 0.3s both;
+    }
+
+    .alert-title {
+      font-weight: 700;
+      color: #166534;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .alert-message {
+      color: #15803d;
+      font-size: 13px;
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    .alert-close {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: #16a34a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      margin-left: 12px;
+    }
+
+    .alert-close:hover {
+      background: rgba(34, 197, 94, 0.1);
+      color: #15803d;
+      transform: scale(1.1);
+    }
+
+    .alert-close svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Animations */
+    @keyframes slideInRight {
+      0% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes scaleIn {
+      0% {
+        transform: scale(0);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeInLeft {
+      0% {
+        transform: translateX(-20px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+    }
+
+    .alert-fade-out {
+      animation: fadeOut 0.3s ease-in forwards;
+    }
+
     /* Header yang lebih minimalis */
     .header-section {
       background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
@@ -213,6 +346,12 @@
       .modern-card {
         margin-bottom: 1rem;
       }
+
+      .welcome-alert {
+        margin-left: -15px;
+        margin-right: -15px;
+        border-radius: 0;
+      }
     }
 
     .card-hover-effect {
@@ -231,31 +370,28 @@
 </head>
 <body>
    <div class="container py-4">
-    <!-- Alert Selamat Datang untuk Klien -->
-    {{-- @if(session('welcome_message'))
-    <div class="mb-4 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
-        <div class="flex items-center">
-            <div class="flex-shrink-0">
-                <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+    <!-- Alert Selamat Datang untuk Klien - IMPROVED VERSION -->
+    @if(session('welcome_message'))
+    <div class="welcome-alert" id="welcomeAlert">
+        <div class="d-flex align-items-center">
+            <div class="alert-icon-container">
+                <svg class="alert-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
             </div>
-            <div class="ml-3">
-                <p class="text-sm text-blue-700">
-                    <strong>Selamat datang!</strong> {{ session('welcome_message') }}
-                </p>
+            <div class="alert-content">
+                <div class="alert-title">Selamat datang, Klient!</div>
+                <p class="alert-message">{{ session('welcome_message') }}</p>
             </div>
-            <div class="ml-auto pl-3">
-                <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-blue-500 hover:text-blue-700">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+            <button type="button" class="alert-close" onclick="closeAlert()">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
     </div>
-    @endif --}}
-  <div class="container py-4">
+    @endif
+
     <!-- Header dengan Logout di Pojok Kanan -->
     <div class="header-section">
       <div class="d-flex align-items-center justify-content-between mb-3">
@@ -268,9 +404,11 @@
         <!-- Logout Button di Pojok Kanan -->
         <form action="{{ route('logout') }}" method="POST" class="m-0">
           @csrf
+          @if(Auth::user()->role != 'admin')
           <button type="submit" class="btn-logout" title="Logout">
             <i class="bi bi-box-arrow-right"></i>
           </button>
+          @endif
         </form>
       </div>
       <div class="text-center">
@@ -278,12 +416,6 @@
         <p>Temukan pekerja terbaik yang sesuai dengan kebutuhan Anda</p>
       </div>
     </div>
-{{-- <form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit" class="w-full text-left py-2 px-4 hover:bg-gray-100 rounded">
-        <i class="bi bi-box-arrow-right mr-2"></i> Logout
-    </button>
-</form> --}}
 
     <!-- Card List dengan spacing yang lebih baik -->
     <div class="row g-3">
@@ -322,7 +454,7 @@
               </div>
             </div>
 
-            <!-- PERBAIKAN: Link Lihat Profile Lengkap -->
+            <!-- Link Lihat Profile Lengkap -->
             <a href="{{ route('pekerja.profile', $p->id) }}" class="profile-link">
               <i class="bi bi-eye"></i> Lihat Profile Lengkap
             </a>
@@ -338,5 +470,23 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- JavaScript untuk Alert -->
+  <script>
+    function closeAlert() {
+        const alert = document.getElementById('welcomeAlert');
+        if (alert) {
+            alert.classList.add('alert-fade-out');
+            setTimeout(() => {
+                alert.remove();
+            }, 300);
+        }
+    }
+
+    // Auto hide alert after 5 seconds
+    setTimeout(() => {
+        closeAlert();
+    }, 5000);
+  </script>
 </body>
 </html>
