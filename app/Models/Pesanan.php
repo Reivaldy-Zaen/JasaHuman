@@ -10,7 +10,7 @@ class Pesanan extends Model
 {
     use HasFactory;
     protected $table = 'pesanan'; 
-    protected $fillable = ['pekerja_id', 'klien_id', 'nama_pemesan', 'email_pemesan' , 'nomer' ,'status','nama_pekerja', "jam_mulai", "durasi_jam"];
+    protected $fillable = ['pekerja_id', 'klien_id', 'nama_pemesan', 'email_pemesan' , 'nomer' ,'status','nama_pekerja', "jam_mulai", "durasi_jam", 'tanggal_pemesanan'];
 
     public function klien()
     {
@@ -21,28 +21,40 @@ class Pesanan extends Model
     {
         return $this->belongsTo(Pekerja::class);
     }
-     public static function updateStatuses()
+       public static function updateStatuses()
     {
         $now = now();
         
         // Update pesanan yang sudah melewati waktu menjadi selesai
         self::where('status', 'progres')
+            ->whereDate('tanggal_pemesanan', '<=', $now->format('Y-m-d'))
             ->whereRaw('ADDTIME(jam_mulai, SEC_TO_TIME(durasi_jam * 3600)) <= ?', [$now->format('H:i:s')])
             ->update(['status' => 'selesai']);
             
         // Update pesanan yang sudah mulai menjadi progres
         self::where('status', 'pending')
+            ->whereDate('tanggal_pemesanan', '<=', $now->format('Y-m-d'))
             ->where('jam_mulai', '<=', $now->format('H:i:s'))
             ->update(['status' => 'progres']);
     }
 
-    // Method untuk cek apakah jam sudah dipesan (dari Code 1)
-    public static function isBooked($pekerjaId, $jamMulai)
+    // Method untuk cek apakah jam sudah dipesan
+    public static function isBooked($pekerjaId, $tanggalPemesanan, $jamMulai)
     {
         return self::where('pekerja_id', $pekerjaId)
+            ->where('tanggal_pemesanan', $tanggalPemesanan)
             ->whereIn('status', ['pending', 'progres'])
             ->where('jam_mulai', $jamMulai)
             ->exists();
+    }
+
+    // Method untuk cek apakah waktu sudah lewat
+    public static function isTimePassed($tanggalPemesanan, $jamMulai)
+    {
+        $now = now();
+        $selectedDateTime = Carbon::createFromFormat('Y-m-d H:i', $tanggalPemesanan . ' ' . $jamMulai);
+        
+        return $selectedDateTime->lt($now);
     }
 
     // Accessor untuk mendapatkan jam selesai

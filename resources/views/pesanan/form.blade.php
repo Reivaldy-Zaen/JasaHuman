@@ -70,6 +70,15 @@
                 </div>
                 <div class="form-text">Contoh: 081234567890</div>
               </div>
+              <!-- Tambahkan setelah input nomor telepon -->
+<div class="mb-3">
+  <label class="form-label">Tanggal Pemesanan</label>
+  <div class="input-group">
+    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+    <input type="date" name="tanggal_pemesanan" id="tanggalInput" class="form-control" 
+           required min="{{ date('Y-m-d') }}" value="{{ old('tanggal_pemesanan', date('Y-m-d')) }}">
+  </div>
+</div>
 
               <div class="mb-3">
                 <label class="form-label">Durasi (jam)</label>
@@ -184,6 +193,115 @@
       refreshTimeSlots(pekerjaId);
       setInterval(() => refreshTimeSlots(pekerjaId), 10000);
     });
+    // Tambahkan fungsi untuk memuat slot waktu berdasarkan tanggal
+function loadTimeSlotsByDate() {
+  const tanggal = document.getElementById('tanggalInput').value;
+  const pekerjaId = "{{ $pekerja->id }}";
+  
+  if (!tanggal) return;
+  
+  fetch(`/pesanan/available-times/${pekerjaId}/${tanggal}`)
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById('timeSlotsContainer');
+      let html = '';
+      
+      data.forEach(item => {
+        const isSelected = document.getElementById('selectedTime').value === item.time;
+        const isToday = tanggal === new Date().toISOString().split('T')[0];
+        const now = new Date();
+        const currentTime = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+        const isTimePassed = isToday && item.time <= currentTime;
+        
+        html += `
+          <div class="col-sm-6 col-md-3">
+            <div class="time-slot p-3 text-center 
+                 ${!item.available || isTimePassed ? 'booked' : 'available'} 
+                 ${isSelected ? 'selected' : ''}"
+                 data-time="${item.time}"
+                 onclick="${item.available && !isTimePassed ? 'selectTimeSlot(this)' : ''}">
+              <div class="fw-bold">${item.time}</div>
+              <small class="status-text">
+                ${!item.available ? 'Sudah dipesan' : 
+                  isTimePassed ? 'Sudah lewat' : 'Tersedia'}
+              </small>
+            </div>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html;
+      
+      // Reset selected time jika tidak tersedia
+      const selectedTime = document.getElementById('selectedTime').value;
+      if (selectedTime) {
+        const isStillAvailable = data.find(item => 
+          item.time === selectedTime && item.available && 
+          !(tanggal === new Date().toISOString().split('T')[0] && selectedTime <= currentTime)
+        );
+        
+        if (!isStillAvailable) {
+          document.getElementById('selectedTime').value = '';
+          document.getElementById('selectedTimeInfo').textContent = '';
+        }
+      }
+    });
+}
+
+// Update fungsi selectTimeSlot untuk menangani tanggal
+function selectTimeSlot(element) {
+  document.querySelectorAll('.time-slot').forEach(slot => {
+    if (slot.classList.contains('available')) {
+      slot.classList.remove('selected');
+    }
+  });
+  element.classList.add('selected');
+  const selectedTime = element.dataset.time;
+  document.getElementById('selectedTime').value = selectedTime;
+  updateTimeInfo(selectedTime);
+}
+
+// Update fungsi updateTimeInfo untuk menampilkan tanggal juga
+function updateTimeInfo(startTime) {
+  const tanggal = document.getElementById('tanggalInput').value;
+  const duration = parseInt(document.getElementById('durationSelect').value);
+  const [hours, minutes] = startTime.split(':').map(Number);
+  
+  let endHours = hours + duration;
+  if (endHours >= 24) endHours -= 24;
+  const endTime = `${endHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  
+  // Format tanggal
+  const dateObj = new Date(tanggal);
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = dateObj.toLocaleDateString('id-ID', options);
+  
+  document.getElementById('selectedTimeInfo').innerHTML = 
+    `<i class="fas fa-info-circle me-1"></i> Pemesanan pada <strong>${formattedDate}</strong> dari <strong>${startTime}</strong> hingga <strong>${endTime}</strong>`;
+}
+
+// Tambahkan event listener untuk perubahan tanggal
+document.getElementById('tanggalInput').addEventListener('change', function() {
+  loadTimeSlotsByDate();
+  document.getElementById('selectedTime').value = '';
+  document.getElementById('selectedTimeInfo').textContent = '';
+});
+
+// Update DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Load time slots berdasarkan tanggal default
+  loadTimeSlotsByDate();
+  
+  const selectedTime = document.getElementById('selectedTime').value;
+  if (selectedTime) updateTimeInfo(selectedTime);
+
+  // Auto refresh setiap 30 detik (bisa dikurangi frekuensinya)
+  const pekerjaId = "{{ $pekerja->id }}";
+  setInterval(() => {
+    const currentDate = document.getElementById('tanggalInput').value;
+    loadTimeSlotsByDate();
+  }, 30000);
+});
   </script>
 </body>
 </html>
