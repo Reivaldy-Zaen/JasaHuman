@@ -18,38 +18,43 @@ class AuthController extends Controller
     /**
      * Proses login user
      */
-    public function login(Request $request)
-    {
-        // Validasi input
-        $credentials = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|min:6',
-        ]);
+   public function login(Request $request)
+{
+    $request->validate([
+        'email'    => 'required|string',
+        'password' => 'required|min:6',
+    ]);
 
-        // Coba login
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+    $loginInput = $request->input('email'); 
+    $password   = $request->input('password');
 
-            // Cek role user
-            if (Auth::user()->role === 'admin') {
-              session()->flash('welcome_message', 'Selamat datang Admin!');
-              return redirect()->route('dashboard.index');
+    $fieldType = filter_var($loginInput, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
 
-            } elseif (Auth::user()->role === 'klien') {
-                session()->flash('welcome_message', 'Selamat datang! Temukan pekerja terbaik untuk Anda.');
-                return redirect()->route('pekerja.index');
-            } else {
-                // Kalau role tidak dikenali
-                Auth::logout();
-                return redirect()->route('login')->withErrors(['role' => 'Role tidak dikenali.']);
-            }
+    $credentials = [
+        $fieldType => $loginInput,
+        'password' => $password,
+    ];
+
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+
+        if (Auth::user()->role === 'admin') {
+            session()->flash('welcome_message', 'Selamat datang Admin!');
+            return redirect()->route('dashboard.index');
+
+        } elseif (Auth::user()->role === 'klien') {
+            session()->flash('welcome_message', 'Selamat datang! Temukan pekerja terbaik untuk Anda.');
+            return redirect()->route('pekerja.index');
+        } else {
+            Auth::logout();
+            return redirect()->route('login')->withErrors(['role' => 'Role tidak dikenali.']);
         }
-
-        // Jika gagal login
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->withInput();
     }
+
+    return back()->withErrors([
+        'email' => 'Email/Name atau password salah.',
+    ])->withInput();
+}
 
     /**
      * Logout user

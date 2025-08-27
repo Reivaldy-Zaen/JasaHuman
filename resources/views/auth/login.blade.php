@@ -255,7 +255,7 @@
                 @csrf
                 <div class="input-group">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" name="email" placeholder="Alamat Email" required>
+                    <input type="text" name="email" placeholder="Alamat Email/Name" required>
                 </div>
 
                 <div class="input-group">
@@ -268,11 +268,11 @@
                 </button>
             </form>
 
-            <div class="divider">
+            {{-- <div class="divider">
                 <span>Atau masuk dengan</span>
-            </div>
+            </div> --}}
 
-            <div class="social-login">
+            {{-- <div class="social-login">
                 <a href="#" class="social-btn facebook">
                     <i class="fab fa-facebook-f"></i>
                 </a>
@@ -282,7 +282,7 @@
                 <a href="#" class="social-btn twitter">
                     <i class="fab fa-twitter"></i>
                 </a>
-            </div>
+            </div> --}}
 
             <div class="footer-text">
                 Belum punya akun? <a href="#">Daftar di sini</a><br>
