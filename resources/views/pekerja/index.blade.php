@@ -169,7 +169,7 @@
       margin-bottom: 0;
     }
 
-    /* Tombol Back yang lebih subtle */
+    /* Tombol Back */
     .btn-back {
       display: inline-flex;
       justify-content: center;
@@ -192,7 +192,34 @@
       transform: translateX(-2px);
     }
 
-    /* Card yang lebih bersih */
+    /* Tombol Logout (ikon saja, rapi) */
+    .btn-logout {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-logout:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #000000; /* merah soft saat hover */
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateX(2px);
+    }
+
+    .btn-logout i {
+      pointer-events: none;
+    }
+
+    /* Card */
     .modern-card {
       border: 1px solid #e2e8f0;
       border-radius: 16px; 
@@ -228,7 +255,6 @@
       transition: color 0.3s ease;
     }
 
-    /* Menghilangkan garis bawah pada link */
     .block {
       text-decoration: none;
       color: inherit;
@@ -240,7 +266,6 @@
       color: inherit;
     }
 
-    /* Gender badge yang lebih subtle */
     .gender-icon {
       display: inline-flex;
       align-items: center;
@@ -264,7 +289,6 @@
       border: 1px solid #fce7f3;
     }
 
-    /* Stats yang lebih kompak */
     .card-stats {
       display: flex;
       justify-content: space-around;
@@ -310,7 +334,6 @@
       color: white;
     }
 
-    /* PERBAIKAN: Link Lihat Profile yang lebih baik */
     .profile-link {
       display: inline-flex;
       align-items: center;
@@ -370,7 +393,7 @@
 </head>
 <body>
    <div class="container py-4">
-    <!-- Alert Selamat Datang untuk Klien - IMPROVED VERSION -->
+    <!-- Alert Selamat Datang -->
     @if(session('welcome_message'))
     <div class="welcome-alert" id="welcomeAlert">
         <div class="d-flex align-items-center">
@@ -379,9 +402,15 @@
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
             </div>
+            @if ($roles=Auth::user()->role === 'klien')
             <div class="alert-content">
                 <div class="alert-title">Selamat datang, Klient!</div>
                 <p class="alert-message">{{ session('welcome_message') }}</p>
+            </div>
+            @endif
+            <div class="alert-content">
+              <div class="alert-title">Selamat datang, Pekerja!</div>
+              <p class="alert-message">{{ session('welcome_message') }}</p>
             </div>
             <button type="button" class="alert-close" onclick="closeAlert()">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -392,16 +421,16 @@
     </div>
     @endif
 
-    <!-- Header dengan Logout di Pojok Kanan -->
+    <!-- Header -->
     <div class="header-section">
       <div class="d-flex align-items-center justify-content-between mb-3">
         @if(Auth::user()->role === 'admin')
         <a href="{{ route('dashboard.index') }}" class="btn-back">
           <i class="bi bi-arrow-left"></i>
         </a>
-         @endif
+        @endif
         
-        <!-- Logout Button di Pojok Kanan -->
+        <!-- Logout Button -->
         <form action="{{ route('logout') }}" method="POST" class="m-0">
           @csrf
           @if(Auth::user()->role != 'admin')
@@ -417,7 +446,7 @@
       </div>
     </div>
 
-    <!-- Card List dengan spacing yang lebih baik -->
+    <!-- Card List -->
     <div class="row g-3">
       @foreach($pekerja as $p)
       <div class="col-xl-3 col-lg-4 col-md-6">

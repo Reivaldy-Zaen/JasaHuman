@@ -306,8 +306,8 @@
                         <i class="fas fa-venus-mars"></i>
                         <select name="gender" required>
                             <option value="">Jenis Kelamin</option>
-                            <option value="L">Laki-laki</option>
-                            <option value="P">Perempuan</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
                         </select>
                     </div>
 
@@ -319,13 +319,13 @@
                         </span>
                     </div>
 
-                    <div class="input-group">
+                    {{-- <div class="input-group">
                         <i class="fas fa-lock"></i>
                         <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Konfirmasi Kata Sandi" required>
                         <span class="password-toggle" onclick="togglePassword('password_confirmation')">
                             <i class="fas fa-eye"></i>
                         </span>
-                    </div>
+                    </div> --}}
 
                     <div class="role-section">
                         <label class="role-label">Daftar Sebagai</label>
@@ -398,26 +398,26 @@
         });
         
         // Handle form submission (demo)
-        function handleSubmit(event) {
-            event.preventDefault();
-            
             // Simulate form validation
-            const form = event.target;
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData);
+        // function handleSubmit(event) {
+        //     event.preventDefault();
             
-            if (data.password !== data.password_confirmation) {
-                showAlert('error', 'Konfirmasi password tidak cocok');
-                return;
-            }
+        //     const form = event.target;
+        //     const formData = new FormData(form);
+        //     const data = Object.fromEntries(formData);
             
-            if (!data.role) {
-                showAlert('error', 'Pilih peran Anda terlebih dahulu');
-                return;
-            }
+        //     if (data.password !== data.password_confirmation) {
+        //         showAlert('error', 'Konfirmasi password tidak cocok');
+        //         return;
+        //     }
             
-            showAlert('success', 'Pendaftaran berhasil!');
-        }
+        //     if (!data.role) {
+        //         showAlert('error', 'Pilih peran Anda terlebih dahulu');
+        //         return;
+        //     }
+            
+        //     showAlert('success', 'Pendaftaran berhasil!');
+        // }
         
         function showAlert(type, message) {
             const errorAlert = document.getElementById('errorAlert');

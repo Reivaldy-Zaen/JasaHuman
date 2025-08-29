@@ -27,8 +27,8 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|string|max:15',
-            'gender' => 'nullable|in:L,P',
-            'password' => 'required|min:6|confirmed',
+            'gender' => 'nullable|in:Laki-laki,Perempuan',
+            'password' => 'required|min:6',
             'role' => 'required|in:pekerja,klien',
         ]);
 

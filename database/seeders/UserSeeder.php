@@ -15,18 +15,30 @@ class UserSeeder extends Seeder
     {
         // Admin
         User::create([
-            'name' => 'Admin Utama',
+            'name' => 'Admin ',
             'email' => 'admin@example.com',
+            'phone' => '081211419625',
+            'gender' => 'Laki-laki',
             'password' => Hash::make('password123'),
             'role' => 'admin',
         ]);
 
         // Klien
         User::create([
-            'name' => 'Klien Pertama',
+            'name' => 'Klien ',
             'email' => 'klien@example.com',
+            'phone' => '081211419626',
+            'gender' => 'Laki-laki',
             'password' => Hash::make('password123'),
             'role' => 'klien',
+        ]);
+        User::create([
+            'name' => 'Pekerja',
+            'email' => 'pekerja@example.com',
+            'phone' => '081211419627',
+            'gender' => 'Laki-laki',
+            'password' => Hash::make('password123'),
+            'role' => 'pekerja',
         ]);
     }
 }

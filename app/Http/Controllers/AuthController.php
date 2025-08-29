@@ -45,6 +45,9 @@ class AuthController extends Controller
         } elseif (Auth::user()->role === 'klien') {
             session()->flash('welcome_message', 'Selamat datang! Temukan pekerja terbaik untuk Anda.');
             return redirect()->route('pekerja.index');
+        } elseif (Auth::user()->role === 'pekerja') {
+            session()->flash('welcome_message', 'Selamat datang! Temukan Keberhasilan Mu');
+            return redirect()->route('pekerja.index');
         } else {
             Auth::logout();
             return redirect()->route('login')->withErrors(['role' => 'Role tidak dikenali.']);
