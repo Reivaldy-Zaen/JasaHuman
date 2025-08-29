@@ -284,7 +284,8 @@
             </div>
 
             <!-- Form Daftar -->
-            <form action="#" method="POST" onsubmit="handleSubmit(event)">
+            <form action="{{route("register.process")}}" method="POST" onsubmit="handleSubmit(event)">
+                @csrf
                 <div class="form-grid">
                     <div class="input-group">
                         <i class="fas fa-user"></i>
@@ -415,7 +416,7 @@
                 return;
             }
             
-            showAlert('success', 'Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi.');
+            showAlert('success', 'Pendaftaran berhasil!');
         }
         
         function showAlert(type, message) {
