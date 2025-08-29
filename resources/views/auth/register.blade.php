@@ -30,12 +30,13 @@
             border-radius: 12px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 500px;
-            padding: 2.5rem;
+            max-width: 900px;
+            padding: 2rem;
             transform: translateY(0);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: fit-content;
+            max-height: 85vh;
             overflow-y: auto;
-            max-height: 90vh;
         }
         
         .register-card:hover {
@@ -49,56 +50,85 @@
         }
         
         .logo i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: #4caf50;
             background: #e8f5e9;
-            padding: 15px;
+            padding: 12px;
             border-radius: 50%;
         }
         
         .logo h1 {
             color: #333;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             margin-top: 0.8rem;
             font-weight: 700;
         }
         
         .form-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 1rem;
+            margin-bottom: 1rem;
         }
         
-        @media (min-width: 640px) {
+        @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr 1fr;
             }
-            
-            .full-width {
+            .register-card {
+                max-width: 600px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .register-card {
+                max-width: 400px;
+                padding: 1.5rem;
+            }
+        }
+        
+        .span-2 {
+            grid-column: span 2;
+        }
+        
+        .span-3 {
+            grid-column: span 3;
+        }
+        
+        @media (max-width: 768px) {
+            .span-3 {
                 grid-column: span 2;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .span-2, .span-3 {
+                grid-column: span 1;
             }
         }
         
         .input-group {
             position: relative;
-            margin-bottom: 1rem;
         }
         
         .input-group i {
             position: absolute;
-            left: 15px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: #888;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
         .input-group input, .input-group select {
             width: 100%;
-            padding: 14px 20px 14px 45px;
+            padding: 12px 16px 12px 40px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             transition: all 0.3s;
         }
         
@@ -108,20 +138,37 @@
             outline: none;
         }
         
+        .role-section {
+            grid-column: span 3;
+        }
+        
+        @media (max-width: 768px) {
+            .role-section {
+                grid-column: span 2;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .role-section {
+                grid-column: span 1;
+            }
+        }
+        
         .role-options {
             display: flex;
             gap: 10px;
-            margin-bottom: 1rem;
+            margin-top: 8px;
         }
         
         .role-option {
             flex: 1;
             text-align: center;
-            padding: 12px;
+            padding: 10px;
             border: 2px solid #ddd;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.9rem;
         }
         
         .role-option.selected {
@@ -135,16 +182,17 @@
         
         .btn-register {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: #4caf50;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: background 0.3s, transform 0.2s;
             box-shadow: 0 4px 6px rgba(76, 175, 80, 0.3);
+            margin-top: 1rem;
         }
         
         .btn-register:hover {
@@ -159,7 +207,7 @@
         .alert {
             padding: 12px 16px;
             border-radius: 8px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -181,63 +229,9 @@
             font-size: 1.2rem;
         }
         
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 1.5rem 0;
-        }
-        
-        .divider span {
-            padding: 0 10px;
-            color: #777;
-            font-size: 0.9rem;
-        }
-        
-        .divider::before, .divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #ddd;
-        }
-        
-        .social-login {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 1.5rem;
-        }
-        
-        .social-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            transition: transform 0.3s;
-        }
-        
-        .social-btn:hover {
-            transform: scale(1.1);
-        }
-        
-        .facebook {
-            background: #3b5998;
-        }
-        
-        .google {
-            background: #dd4b39;
-        }
-        
-        .twitter {
-            background: #1da1f2;
-        }
-        
         .footer-text {
             text-align: center;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             color: #777;
             font-size: 0.9rem;
         }
@@ -260,6 +254,13 @@
             cursor: pointer;
             color: #888;
         }
+        
+        .role-label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -271,54 +272,45 @@
             </div>
 
             <!-- Alert Error -->
-            @if($errors->any())
-                <div class="alert alert-error">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <span>
-                        @foreach($errors->all() as $error)
-                            {{ $error }}<br>
-                        @endforeach
-                    </span>
-                </div>
-            @endif
+            <div class="alert alert-error" style="display: none;" id="errorAlert">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText">Terjadi kesalahan</span>
+            </div>
 
             <!-- Alert Success -->
-            @if(session('success'))
-                <div class="alert alert-success">
-                    <i class="fas fa-check-circle"></i>
-                    <span>{{ session('success') }}</span>
-                </div>
-            @endif
+            <div class="alert alert-success" style="display: none;" id="successAlert">
+                <i class="fas fa-check-circle"></i>
+                <span id="successText">Pendaftaran berhasil</span>
+            </div>
 
             <!-- Form Daftar -->
-            <form action="{{ route('register.process') }}" method="POST">
-                @csrf
+            <form action="#" method="POST" onsubmit="handleSubmit(event)">
                 <div class="form-grid">
-                    <div class="input-group full-width">
+                    <div class="input-group">
                         <i class="fas fa-user"></i>
-                        <input type="text" name="name" placeholder="Nama Lengkap" value="{{ old('name') }}" required>
+                        <input type="text" name="name" placeholder="Nama Lengkap" required>
                     </div>
 
-                    <div class="input-group full-width">
+                    <div class="input-group">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" name="email" placeholder="Alamat Email" value="{{ old('email') }}" required>
+                        <input type="email" name="email" placeholder="Alamat Email" required>
                     </div>
 
                     <div class="input-group">
                         <i class="fas fa-phone"></i>
-                        <input type="tel" name="phone" placeholder="Nomor HP" value="{{ old('phone') }}" required>
+                        <input type="tel" name="phone" placeholder="Nomor HP" required>
                     </div>
 
                     <div class="input-group">
                         <i class="fas fa-venus-mars"></i>
-                        <select name="gender">
+                        <select name="gender" required>
                             <option value="">Jenis Kelamin</option>
-                            <option value="L" {{ old('gender') == 'L' ? 'selected' : '' }}>Laki-laki</option>
-                            <option value="P" {{ old('gender') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
                         </select>
                     </div>
 
-                    <div class="input-group full-width">
+                    <div class="input-group">
                         <i class="fas fa-lock"></i>
                         <input type="password" name="password" id="password" placeholder="Kata Sandi" required>
                         <span class="password-toggle" onclick="togglePassword('password')">
@@ -326,52 +318,36 @@
                         </span>
                     </div>
 
-                    <div class="input-group full-width">
+                    <div class="input-group">
                         <i class="fas fa-lock"></i>
                         <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Konfirmasi Kata Sandi" required>
                         <span class="password-toggle" onclick="togglePassword('password_confirmation')">
                             <i class="fas fa-eye"></i>
                         </span>
                     </div>
-                </div>
 
-                <div class="full-width">
-                    <label style="display: block; margin-bottom: 10px; font-weight: 500; color: #555;">Daftar Sebagai</label>
-                    <div class="role-options">
-                        <label class="role-option {{ old('role') == 'pekerja' ? 'selected' : '' }}" id="workerOption">
-                            <input type="radio" name="role" value="pekerja" {{ old('role') == 'pekerja' ? 'checked' : '' }} required>
-                            Pekerja
-                        </label>
-                        <label class="role-option {{ old('role') == 'klien' ? 'selected' : '' }}" id="clientOption">
-                            <input type="radio" name="role" value="klien" {{ old('role') == 'klien' ? 'checked' : '' }}>
-                            Klien
-                        </label>
+                    <div class="role-section">
+                        <label class="role-label">Daftar Sebagai</label>
+                        <div class="role-options">
+                            <label class="role-option" id="workerOption">
+                                <input type="radio" name="role" value="pekerja" required>
+                                <i class="fas fa-tools"></i> Pekerja
+                            </label>
+                            <label class="role-option" id="clientOption">
+                                <input type="radio" name="role" value="klien">
+                                <i class="fas fa-briefcase"></i> Klien
+                            </label>
+                        </div>
                     </div>
                 </div>
 
                 <button type="submit" class="btn-register">
-                    <i class="fas fa-user-plus"></i> Daftar
+                    <i class="fas fa-user-plus"></i> Daftar Sekarang
                 </button>
             </form>
 
-            <div class="divider">
-                <span>Atau daftar dengan</span>
-            </div>
-
-            <div class="social-login">
-                <a href="#" class="social-btn facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="social-btn google">
-                    <i class="fab fa-google"></i>
-                </a>
-                <a href="#" class="social-btn twitter">
-                    <i class="fab fa-twitter"></i>
-                </a>
-            </div>
-
             <div class="footer-text">
-                Sudah punya akun? <a href="{{ route('login') }}">Masuk di sini</a>
+                Sudah punya akun? <a href="{{route('login')}}">Masuk di sini</a>
             </div>
         </div>
     </div>
@@ -419,6 +395,45 @@
                 input.parentElement.querySelector('i').style.color = '#888';
             });
         });
+        
+        // Handle form submission (demo)
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // Simulate form validation
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            
+            if (data.password !== data.password_confirmation) {
+                showAlert('error', 'Konfirmasi password tidak cocok');
+                return;
+            }
+            
+            if (!data.role) {
+                showAlert('error', 'Pilih peran Anda terlebih dahulu');
+                return;
+            }
+            
+            showAlert('success', 'Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi.');
+        }
+        
+        function showAlert(type, message) {
+            const errorAlert = document.getElementById('errorAlert');
+            const successAlert = document.getElementById('successAlert');
+            
+            // Hide both alerts first
+            errorAlert.style.display = 'none';
+            successAlert.style.display = 'none';
+            
+            if (type === 'error') {
+                document.getElementById('errorText').textContent = message;
+                errorAlert.style.display = 'flex';
+            } else {
+                document.getElementById('successText').textContent = message;
+                successAlert.style.display = 'flex';
+            }
+        }
     </script>
 </body>
 </html>

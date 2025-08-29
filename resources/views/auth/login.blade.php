@@ -285,7 +285,7 @@
             </div> --}}
 
             <div class="footer-text">
-                Belum punya akun? <a href="#">Daftar di sini</a><br>
+                Belum punya akun? <a href="{{route('register')}}">Daftar di sini</a><br>
                 <a href="#">Lupa kata sandi?</a>
             </div>
         </div>
