@@ -6,6 +6,7 @@ use App\Http\Controllers\PesananController;
 use App\Http\Controllers\KlienController;
 use App\Http\Controllers\PekerjaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,4 +73,8 @@ Route::get('/pesanan/available-times/{pekerja}/{tanggal?}', [PesananController::
 // ====================== KLIEN ======================
 Route::get('/klien', [KlienController::class, 'index'])
     ->middleware(['auth', 'role:klien,admin'])
-    ->name('klien.index');
+    ->name('klien.index');  
+
+    // Rute untuk pendaftaran
+Route::get('/daftar', [RegisterController::class, 'showRegister'])->name('register');
+Route::post('/daftar', [RegisterController::class, 'register'])->name('register.process');
