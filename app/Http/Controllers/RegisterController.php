@@ -58,7 +58,7 @@ class RegisterController extends Controller
             'foto' => $fotoPath,
         ]);
 
-        // Login user setelah berhasil mendaftar
+        // Login user setelah berhasil mendaftar    
         auth()->login($user);
 
         // Redirect berdasarkan role
