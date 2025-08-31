@@ -9,7 +9,7 @@ class Pekerja extends Model
 {
     use HasFactory;
       protected $table = 'pekerja';
-    protected $fillable = ['nama','umur','negara','gender','foto'];
+    protected $fillable = ['name','umur','negara','gender','foto'];
 
     public function pesanan() {
         return $this->hasMany(Pesanan::class);

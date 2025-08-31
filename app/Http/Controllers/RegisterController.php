@@ -11,31 +11,34 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    /**
-     * Tampilkan form pendaftaran
-     */
     public function showRegister()
     {
         return view('auth.register');
     }
 
-    /**
-     * Proses pendaftaran user baru
-     */
     public function register(Request $request)
     {
-        // Validasi input
-        $validator = Validator::make($request->all(), [
+        // Tampilkan data yang masuk untuk debugging (hapus setelah selesai)
+        // dd($request->all());
+
+        // Validasi input dengan aturan dinamis berdasarkan role
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|string|max:15',
             'gender' => 'nullable|in:Laki-laki,Perempuan',
             'password' => 'required|min:6',
             'role' => 'required|in:pekerja,klien',
-            'umur' => 'required|integer|min:1|max:100',
-            'negara' => 'required|string',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        ];
+        
+        // Tambahkan validasi umur, negara, dan foto hanya untuk role pekerja
+        if ($request->role === 'pekerja') {
+            $rules['umur'] = 'required|integer|min:1|max:100';
+            $rules['negara'] = 'required|string';
+            $rules['foto'] = 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return redirect()->back()
@@ -43,21 +46,21 @@ class RegisterController extends Controller
                 ->withInput();
         }
 
-        // Simpan file foto jika ada
+        // Simpan file foto hanya jika role adalah pekerja
         $fotoPath = null;
-        if ($request->hasFile('foto')) {
+        if ($request->hasFile('foto') && $request->role === 'pekerja') {
             $fotoPath = $request->file('foto')->store('profiles', 'public');
         }
 
-        $user= User::create ([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'gender' => $request->gender,
             'password' => Hash::make($request->password),
-            'umur' => $request->umur,
-            'negara' => $request->negara,
-            'foto' => $request->fotoPath,
+            // 'umur' => $request->umur ?? null,
+            // 'negara' => $request->negara ?? null,
+            'foto' => $fotoPath, // Hanya diisi jika pekerja dan foto diunggah
             'role' => $request->role,
         ]);
 
@@ -65,12 +68,12 @@ class RegisterController extends Controller
         if ($user->role === 'klien') {
             Klien::create([
                 'name' => $user->name,
-                'email' => $request->email,
-                'umur' => $request->umur,
+                'email' => $user->email,
+                // 'umur' => $request->umur ?? null,
             ]);
         } elseif ($user->role === 'pekerja') {
             Pekerja::create([
-                'name' => $user->umur,
+                'name' => $user->name,
                 'umur' => $request->umur,
                 'negara' => $request->negara,
                 'gender' => $request->gender,

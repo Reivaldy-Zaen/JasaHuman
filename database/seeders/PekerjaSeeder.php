@@ -17,14 +17,14 @@ class PekerjaSeeder extends Seeder
             'nama' => 'Lia Tang',
             'umur' => 25,
             'negara' => 'Indonesia',
-            'jenis_kelamin' => 'Perempuan',
+            'gender' => 'Perempuan',
             'foto' => 'https://kaltimkita.com/po-content/uploads/raffi-ahmad-harta.jpg',
         ]);
         Pekerja::create([
             'nama' => 'Jessika',
             'umur' => 15,
             'negara' => 'Rusia',
-            'jenis_kelamin' => 'Perempuan',
+            'gender' => 'Perempuan',
             'foto' => 'https://kaltimkita.com/po-content/uploads/raffi-ahmad-harta.jpg',
         ]);
 
@@ -32,7 +32,7 @@ class PekerjaSeeder extends Seeder
             'nama' => 'Jane Smith',
             'umur' => 30,
             'negara' => 'Malaysia',
-            'jenis_kelamin' => 'Perempuan',
+            'gender' => 'Perempuan',
             'foto' => 'https://kaltimkita.com/po-content/uploads/raffi-ahmad-harta.jpg',
         ]);
 

@@ -332,7 +332,7 @@
             </div>
 
             <!-- Form Daftar -->
-            <form action="{{route('register.process')}}" method="POST" onsubmit="handleSubmit(event)" id="registerForm" style="display: none;" enctype="multipart/form-data">
+            <form action="{{route('register.process')}}" method="POST" id="registerForm" style="display: none;" enctype="multipart/form-data">
                 @csrf
                 <button type="button" class="btn-back" onclick="goBack()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -342,31 +342,31 @@
                 <div class="form-grid">
                     <div class="input-group">
                         <i class="fas fa-user"></i>
-                        <input type="text" name="name" placeholder="Nama Lengkap" required>
+                        <input type="text" name="name" placeholder="Nama Lengkap" value="{{ old('name') }}" required>
                     </div>
 
                     <div class="input-group">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" name="email" placeholder="Alamat Email" required>
+                        <input type="email" name="email" placeholder="Alamat Email" value="{{ old('email') }}" required>
                     </div>
 
                     <div class="input-group">
                         <i class="fas fa-phone"></i>
-                        <input type="tel" name="phone" placeholder="Nomor HP" required>
+                        <input type="tel" name="phone" placeholder="Nomor HP" value="{{ old('phone') }}" required>
                     </div>
 
                     <div class="input-group">
                         <i class="fas fa-venus-mars"></i>
                         <select name="gender" required>
                             <option value="">Jenis Kelamin</option>
-                            <option value="Laki-laki">Laki-laki</option>
-                            <option value="Perempuan">Perempuan</option>
+                            <option value="Laki-laki" {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                            <option value="Perempuan" {{ old('gender') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                         </select>
                     </div>
 
                     <div class="input-group">
                         <i class="fas fa-lock"></i>
-                        <input type="password" name="password" id="password" placeholder="Kata Sandi" required>
+                        <input type="password" name="password" id="password" placeholder="Kata Sandi" value="{{ old('password') }}" required>
                         <span class="password-toggle" onclick="togglePassword('password')">
                             <i class="fas fa-eye"></i>
                         </span>
@@ -377,12 +377,17 @@
                 <div id="workerExtra" class="form-grid" style="display:none; margin-top:10px;">
                     <div class="input-group">
                         <i class="fas fa-birthday-cake"></i>
-                        <input type="number" name="umur" placeholder="Umur" min="18">
+                        <input type="number" name="umur" placeholder="Umur" value="{{ old('umur') }}" min="1" max="100">
                     </div>
 
                     <div class="input-group">
                         <i class="fas fa-globe"></i>
-                        <input type="text" name="negara" placeholder="Negara">
+                        <input type="text" name="negara" placeholder="Negara" value="{{ old('negara') }}">
+                    </div>
+
+                    <div class="input-group span-3">
+                        <i class="fas fa-image"></i>
+                        <input type="file" name="foto" accept="image/*">
                     </div>
                 </div>
 
@@ -474,6 +479,20 @@
                 document.getElementById('successText').textContent = message;
                 successAlert.style.display = 'flex';
             }
+        }
+        
+        // Fungsi untuk menangani submit form
+        function handleSubmit(event) {
+            event.preventDefault(); // Hentikan submit default
+            const role = document.querySelector('input[name="role"]:checked');
+            
+            if (!role) {
+                showAlert('error', 'Silakan pilih role (Pekerja atau Klien) sebelum mendaftar.');
+                return;
+            }
+            
+            // Jika role dipilih, submit form
+            registerForm.submit();
         }
     </script>
 </body>

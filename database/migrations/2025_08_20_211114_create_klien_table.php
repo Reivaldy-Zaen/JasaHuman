@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('email');
-            $table->string('umur');
+            // $table->string('umur');
             $table->timestamps();
         });
     }
