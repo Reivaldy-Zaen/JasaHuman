@@ -45,29 +45,30 @@ class RegisterController extends Controller
         $fotoPath = $request->file('foto')->store('profiles', 'public');
         }
 
-        // Buat user baru
-        $user = User::create([
+        $user= User::create ([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'gender' => $request->gender,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
             'umur' => $request->umur,
             'negara' => $request->negara,
-            'foto' => $fotoPath,
+            'foto' => $request->fotoPath,
+            'role' => $request->role,
         ]);
+
+        // ✅ JIKA PEKERJA, TAMBAHKAN DATA LENGKAP
+        if ($request->role === 'pekerja') {
+            $user['umur'] = $request->umur;
+            $user['negara'] = $request->negara;
+            $user['foto'] = $fotoPath;
+        }
 
         // Login user setelah berhasil mendaftar
         auth()->login($user);
 
         // Redirect berdasarkan role
-        if ($user->role === 'klien' || $user->role === 'pekerja') {
-            session()->flash('welcome_message', 'Selamat datang! Temukan pekerja terbaik untuk Anda.');
-            return redirect()->route('pekerja.index');
-        } else {
-            session()->flash('welcome_message', 'Selamat datang! Temukan pekerjaan yang sesuai dengan keahlian Anda.');
-            return redirect()->route('pekerja.index');
-        }
+        session()->flash('welcome_message', 'Selamat datang!');
+        return redirect()->route('pekerja.index');
     }
 }
