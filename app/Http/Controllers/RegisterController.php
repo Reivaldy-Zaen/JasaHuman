@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Klien;
+use App\Models\Pekerja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -40,9 +42,11 @@ class RegisterController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+
+        // Simpan file foto jika ada
         $fotoPath = null;
         if ($request->hasFile('foto')) {
-        $fotoPath = $request->file('foto')->store('profiles', 'public');
+            $fotoPath = $request->file('foto')->store('profiles', 'public');
         }
 
         // Buat user baru
@@ -58,11 +62,28 @@ class RegisterController extends Controller
             'foto' => $fotoPath,
         ]);
 
+        // Simpan data ke tabel Klien atau Pekerja berdasarkan role
+        if ($user->role === 'klien') {
+            Klien::create([
+                'name' => $user->name,
+                'email' => $request->email,
+                'umur' => $request->umur,
+            ]);
+        } elseif ($user->role === 'pekerja') {
+            Pekerja::create([
+                'name' => $user->umur,
+                'umur' => $request->umur,
+                'negara' => $request->negara,
+                'gender' => $request->gender,
+                'foto' => $fotoPath,
+            ]);
+        }
+
         // Login user setelah berhasil mendaftar    
         auth()->login($user);
 
         // Redirect berdasarkan role
-        if ($user->role === 'klien' || $user->role === 'pekerja') {
+        if ($user->role === 'klien') {
             session()->flash('welcome_message', 'Selamat datang! Temukan pekerja terbaik untuk Anda.');
             return redirect()->route('pekerja.index');
         } else {
