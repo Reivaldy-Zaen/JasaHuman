@@ -457,11 +457,11 @@
             </a>
             
             <a href="{{ route('pekerja.profile', $p->id) }}" class="block">
-              <h2 class="worker-name">{{ $p->nama }}</h2>
+              <h2 class="worker-name">{{ $p->name }}</h2>
             </a>
             
             <div class="mb-2">
-              @if($p->jenis_kelamin == 'Laki-laki')
+              @if($p->gender == 'Laki-laki')
                 <span class="gender-icon gender-male">
                   <i class="bi bi-gender-male"></i> Laki-laki
                 </span>

@@ -14,4 +14,13 @@ class Pekerja extends Model
     public function pesanan() {
         return $this->hasMany(Pesanan::class);
     }
+
+    public function getFotoUrlAttribute()
+{
+        if ($this->foto && file_exists(storage_path('app/public/' . $this->foto))) {
+            return asset('storage/' . $this->foto);
+        }
+        
+        return asset('images/default-avatar.png');
+    }
 }
