@@ -13,7 +13,7 @@ public function up(): void
 {
     Schema::create('pekerja', function (Blueprint $table) {
         $table->id();
-        $table->string('nama');
+        $table->string('name');
         $table->integer('umur');
         $table->string('negara');
         $table->enum('gender', ['Laki-laki', 'Perempuan']);

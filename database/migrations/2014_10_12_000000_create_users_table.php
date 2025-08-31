@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'klien','pekerja'])->default('klien');
             $table->integer('umur')->nullable();
             $table->string('negara')->nullable();
-            // $table->string('foto')->nullable()->default('default-avatar.png');
+            $table->string('foto')->nullable()->default('default-avatar.png');
             $table->rememberToken();
             $table->timestamps();
         });

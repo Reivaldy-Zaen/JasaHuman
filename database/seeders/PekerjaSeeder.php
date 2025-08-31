@@ -14,14 +14,14 @@ class PekerjaSeeder extends Seeder
  public function run(): void
     {
         Pekerja::create([
-            'nama' => 'Lia Tang',
+            'name' => 'Lia Tang',
             'umur' => 25,
             'negara' => 'Indonesia',
             'gender' => 'Perempuan',
             'foto' => 'https://kaltimkita.com/po-content/uploads/raffi-ahmad-harta.jpg',
         ]);
         Pekerja::create([
-            'nama' => 'Jessika',
+            'name' => 'Jessika',
             'umur' => 15,
             'negara' => 'Rusia',
             'gender' => 'Perempuan',
@@ -29,7 +29,7 @@ class PekerjaSeeder extends Seeder
         ]);
 
         Pekerja::create([
-            'nama' => 'Jane Smith',
+            'name' => 'Jane Smith',
             'umur' => 30,
             'negara' => 'Malaysia',
             'gender' => 'Perempuan',

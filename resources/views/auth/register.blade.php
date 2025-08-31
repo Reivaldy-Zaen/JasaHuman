@@ -294,6 +294,10 @@
             margin-bottom: 8px;
             display: block;
         }
+        
+        .hidden-role-input {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -334,6 +338,9 @@
             <!-- Form Daftar -->
             <form action="{{route('register.process')}}" method="POST" id="registerForm" style="display: none;" enctype="multipart/form-data">
                 @csrf
+                <!-- Input tersembunyi untuk menyimpan nilai role -->
+                <input type="hidden" name="role" id="selectedRole" value="">
+                
                 <button type="button" class="btn-back" onclick="goBack()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
@@ -371,21 +378,22 @@
                             <i class="fas fa-eye"></i>
                         </span>
                     </div>
+
+                    <!-- Field umur untuk semua pengguna (required) -->
+                    <div class="input-group">
+                        <i class="fas fa-birthday-cake"></i>
+                        <input type="number" name="umur" placeholder="Umur *" value="{{ old('umur') }}" min="1" max="100" required>
+                    </div>
                 </div>
 
                 <!-- Bagian tambahan hanya untuk pekerja -->
                 <div id="workerExtra" class="form-grid" style="display:none; margin-top:10px;">
                     <div class="input-group">
-                        <i class="fas fa-birthday-cake"></i>
-                        <input type="number" name="umur" placeholder="Umur" value="{{ old('umur') }}" min="1" max="100">
-                    </div>
-
-                    <div class="input-group">
                         <i class="fas fa-globe"></i>
                         <input type="text" name="negara" placeholder="Negara" value="{{ old('negara') }}">
                     </div>
 
-                    <div class="input-group span-3">
+                    <div class="input-group span-2">
                         <i class="fas fa-image"></i>
                         <input type="file" name="foto" accept="image/*">
                     </div>
@@ -402,98 +410,111 @@
         </div>
     </div>
 
-    <script>
-        // Fungsi untuk toggle password visibility
-        function togglePassword(inputId) {
-            const passwordInput = document.getElementById(inputId);
-            const toggleIcon = passwordInput.nextElementSibling.querySelector('i');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
+   <script>
+    // Fungsi untuk toggle password visibility
+    function togglePassword(inputId) {
+        const passwordInput = document.getElementById(inputId);
+        const toggleIcon = passwordInput.nextElementSibling.querySelector('i');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
         }
-        
-        // Fungsi untuk menangani pemilihan role
-        const workerOption = document.getElementById('workerOption');
-        const clientOption = document.getElementById('clientOption');
-        const workerExtra = document.getElementById('workerExtra');
-        const registerForm = document.getElementById('registerForm');
-        const roleSelection = document.getElementById('roleSelection');
-        
-        workerOption.addEventListener('click', () => {
-            workerOption.classList.add('selected');
-            clientOption.classList.remove('selected');
-            document.querySelector('input[name="role"][value="pekerja"]').checked = true;
-            workerExtra.style.display = "grid"; 
-            registerForm.style.display = "block";
-            roleSelection.style.display = "none"; 
-        });
-        
-        clientOption.addEventListener('click', () => {
-            clientOption.classList.add('selected');
-            workerOption.classList.remove('selected');
-            document.querySelector('input[name="role"][value="klien"]').checked = true;
-            workerExtra.style.display = "none"; 
-            registerForm.style.display = "block"; 
-            roleSelection.style.display = "none"; 
-        });
+    }
+    
+    // Fungsi untuk menangani pemilihan role
+    const workerOption = document.getElementById('workerOption');
+    const clientOption = document.getElementById('clientOption');
+    const workerExtra = document.getElementById('workerExtra');
+    const registerForm = document.getElementById('registerForm');
+    const roleSelection = document.getElementById('roleSelection');
+    const selectedRoleInput = document.getElementById('selectedRole');
+    
+    workerOption.addEventListener('click', () => {
+        workerOption.classList.add('selected');
+        clientOption.classList.remove('selected');
+        selectedRoleInput.value = 'pekerja';
+        workerExtra.style.display = "grid"; 
+        registerForm.style.display = "block";
+        roleSelection.style.display = "none"; 
+    });
+    
+    clientOption.addEventListener('click', () => {
+        clientOption.classList.add('selected');
+        workerOption.classList.remove('selected');
+        selectedRoleInput.value = 'klien';
+        workerExtra.style.display = "none"; 
+        registerForm.style.display = "block"; 
+        roleSelection.style.display = "none"; 
+    });
 
-        function goBack() {
-            registerForm.style.display = "none";
-            roleSelection.style.display = "block";
-            workerOption.classList.remove('selected');
-            clientOption.classList.remove('selected');
-            document.querySelector('input[name="role"][value="pekerja"]').checked = false;
-            document.querySelector('input[name="role"][value="klien"]').checked = false;
-            workerExtra.style.display = "none"; 
-            registerForm.reset();
-        }
-        
-        document.querySelectorAll('input, select').forEach(input => {
-            input.addEventListener('focus', () => {
-                input.parentElement.querySelector('i').style.color = '#4caf50';
-            });
-            
-            input.addEventListener('blur', () => {
-                input.parentElement.querySelector('i').style.color = '#888';
-            });
+    function goBack() {
+        registerForm.style.display = "none";
+        roleSelection.style.display = "block";
+        workerOption.classList.remove('selected');
+        clientOption.classList.remove('selected');
+        selectedRoleInput.value = '';
+        workerExtra.style.display = "none"; 
+        registerForm.reset();
+    }
+    
+    document.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('focus', () => {
+            input.parentElement.querySelector('i').style.color = '#4caf50';
         });
         
-        function showAlert(type, message) {
-            const errorAlert = document.getElementById('errorAlert');
-            const successAlert = document.getElementById('successAlert');
-            
-            errorAlert.style.display = 'none';
-            successAlert.style.display = 'none';
-            
-            if (type === 'error') {
-                document.getElementById('errorText').textContent = message;
-                errorAlert.style.display = 'flex';
-            } else {
-                document.getElementById('successText').textContent = message;
-                successAlert.style.display = 'flex';
-            }
+        input.addEventListener('blur', () => {
+            input.parentElement.querySelector('i').style.color = '#888';
+        });
+    });
+    
+    function showAlert(type, message) {
+        const errorAlert = document.getElementById('errorAlert');
+        const successAlert = document.getElementById('successAlert');
+        
+        errorAlert.style.display = 'none';
+        successAlert.style.display = 'none';
+        
+        if (type === 'error') {
+            document.getElementById('errorText').textContent = message;
+            errorAlert.style.display = 'flex';
+        } else {
+            document.getElementById('successText').textContent = message;
+            successAlert.style.display = 'flex';
+        }
+    }
+    
+    registerForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        if (!selectedRoleInput.value) {
+            showAlert('error', 'Silakan pilih role (Pekerja atau Klien) sebelum mendaftar.');
+            return;
         }
         
-        // Fungsi untuk menangani submit form
-        function handleSubmit(event) {
-            event.preventDefault(); // Hentikan submit default
-            const role = document.querySelector('input[name="role"]:checked');
-            
-            if (!role) {
-                showAlert('error', 'Silakan pilih role (Pekerja atau Klien) sebelum mendaftar.');
-                return;
+        this.submit(); 
+    });
+
+    @if($errors->any())
+        showAlert('error', '{{ $errors->first() }}');
+
+        @if(old('role'))
+            document.getElementById('selectedRole').value = '{{ old('role') }}';
+            if ('{{ old('role') }}' === 'pekerja') {
+                workerOption.classList.add('selected');
+                workerExtra.style.display = "grid";
+            } else {
+                clientOption.classList.add('selected');
             }
-            
-            // Jika role dipilih, submit form
-            registerForm.submit();
-        }
-    </script>
+            registerForm.style.display = "block";
+            roleSelection.style.display = "none";
+        @endif
+    @endif
+</script>
 </body>
 </html>
