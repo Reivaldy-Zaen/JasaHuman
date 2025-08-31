@@ -60,7 +60,7 @@ class RegisterController extends Controller
                 'password' => Hash::make($request->password),
                 'umur' => $request->umur ?? null,
                 'negara' => $request->negara ?? null,
-                'foto' => $fotoPath,
+                'foto' => $fotoPath ?? null,
                 'role' => $request->role,
             ]);
             Log::info('User Created: ', $user->toArray());
@@ -78,7 +78,7 @@ class RegisterController extends Controller
                     'umur' => $user->umur,
                     'negara' => $user->negara,
                     'gender' => $user->gender,
-                    'foto' => $user->foto,
+                    'foto' => $fotoPath,
                 ]);
                 Log::info('Pekerja Created: ', $pekerja->toArray());
             }

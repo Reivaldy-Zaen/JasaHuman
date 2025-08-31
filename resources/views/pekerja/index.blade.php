@@ -453,7 +453,7 @@
         <div class="card modern-card h-100 text-center p-3 card-hover-effect">
           <div class="pt-2">
             <a href="{{ route('pekerja.profile', $p->id) }}" class="block">
-              <img src="{{ $p->foto }}" class="profile-img mx-auto" alt="Foto Pekerja">
+              <img src="{{ $p->foto_url }}" class="profile-img mx-auto" alt="Foto Pekerja">
             </a>
             
             <a href="{{ route('pekerja.profile', $p->id) }}" class="block">
