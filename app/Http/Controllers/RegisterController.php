@@ -49,17 +49,16 @@ class RegisterController extends Controller
             $fotoPath = $request->file('foto')->store('profiles', 'public');
         }
 
-        // Buat user baru
-        $user = User::create([
+        $user= User::create ([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'gender' => $request->gender,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
             'umur' => $request->umur,
             'negara' => $request->negara,
-            'foto' => $fotoPath,
+            'foto' => $request->fotoPath,
+            'role' => $request->role,
         ]);
 
         // Simpan data ke tabel Klien atau Pekerja berdasarkan role

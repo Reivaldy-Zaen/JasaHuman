@@ -16,7 +16,7 @@ public function up(): void
         $table->string('nama');
         $table->integer('umur');
         $table->string('negara');
-        $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+        $table->enum('gender', ['Laki-laki', 'Perempuan']);
         $table->string('foto')->nullable();
         $table->timestamps();
     });
