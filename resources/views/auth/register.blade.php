@@ -37,6 +37,7 @@
             height: fit-content;
             max-height: 85vh;
             overflow-y: auto;
+            position: relative;
         }
         
         .register-card:hover {
@@ -204,6 +205,38 @@
             transform: translateY(0);
         }
         
+        .btn-back {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 8px;
+            background: #888;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-back:hover {
+            background: #6b6b6b;
+            transform: translateY(-1px);
+        }
+        
+        .btn-back:active {
+            transform: translateY(0);
+        }
+        
+        .btn-back svg {
+            width: 16px;
+            height: 16px;
+        }
+        
         .alert {
             padding: 12px 16px;
             border-radius: 8px;
@@ -283,9 +316,29 @@
                 <span id="successText">Pendaftaran berhasil</span>
             </div>
 
+            <!-- Role Selection -->
+            <div class="role-section" id="roleSelection">
+                <label class="role-label">Daftar Sebagai</label>
+                <div class="role-options">
+                    <label class="role-option" id="workerOption">
+                        <input type="radio" name="role" value="pekerja" required>
+                        <i class="fas fa-tools"></i> Pekerja
+                    </label>
+                    <label class="role-option" id="clientOption">
+                        <input type="radio" name="role" value="klien">
+                        <i class="fas fa-briefcase"></i> Klien
+                    </label>
+                </div>
+            </div>
+
             <!-- Form Daftar -->
-            <form action="{{route("register.process")}}" method="POST" onsubmit="handleSubmit(event)">
+            <form action="{{route('register.process')}}" method="POST" onsubmit="handleSubmit(event)" id="registerForm" style="display: none;">
                 @csrf
+                <button type="button" class="btn-back" onclick="goBack()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
+                    </svg>
+                </button>
                 <div class="form-grid">
                     <div class="input-group">
                         <i class="fas fa-user"></i>
@@ -318,27 +371,18 @@
                             <i class="fas fa-eye"></i>
                         </span>
                     </div>
+                </div>
 
-                    {{-- <div class="input-group">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Konfirmasi Kata Sandi" required>
-                        <span class="password-toggle" onclick="togglePassword('password_confirmation')">
-                            <i class="fas fa-eye"></i>
-                        </span>
-                    </div> --}}
+                <!-- Bagian tambahan hanya untuk pekerja -->
+                <div id="workerExtra" class="form-grid" style="display:none; margin-top:10px;">
+                    <div class="input-group">
+                        <i class="fas fa-birthday-cake"></i>
+                        <input type="number" name="umur" placeholder="Umur" min="18">
+                    </div>
 
-                    <div class="role-section">
-                        <label class="role-label">Daftar Sebagai</label>
-                        <div class="role-options">
-                            <label class="role-option" id="workerOption">
-                                <input type="radio" name="role" value="pekerja" required>
-                                <i class="fas fa-tools"></i> Pekerja
-                            </label>
-                            <label class="role-option" id="clientOption">
-                                <input type="radio" name="role" value="klien">
-                                <i class="fas fa-briefcase"></i> Klien
-                            </label>
-                        </div>
+                    <div class="input-group">
+                        <i class="fas fa-globe"></i>
+                        <input type="text" name="negara" placeholder="Negara">
                     </div>
                 </div>
 
@@ -373,20 +417,39 @@
         // Fungsi untuk menangani pemilihan role
         const workerOption = document.getElementById('workerOption');
         const clientOption = document.getElementById('clientOption');
+        const workerExtra = document.getElementById('workerExtra');
+        const registerForm = document.getElementById('registerForm');
+        const roleSelection = document.getElementById('roleSelection');
         
         workerOption.addEventListener('click', () => {
             workerOption.classList.add('selected');
             clientOption.classList.remove('selected');
             document.querySelector('input[name="role"][value="pekerja"]').checked = true;
+            workerExtra.style.display = "grid"; 
+            registerForm.style.display = "block";
+            roleSelection.style.display = "none"; 
         });
         
         clientOption.addEventListener('click', () => {
             clientOption.classList.add('selected');
             workerOption.classList.remove('selected');
             document.querySelector('input[name="role"][value="klien"]').checked = true;
+            workerExtra.style.display = "none"; 
+            registerForm.style.display = "block"; 
+            roleSelection.style.display = "none"; 
         });
+
+        function goBack() {
+            registerForm.style.display = "none";
+            roleSelection.style.display = "block";
+            workerOption.classList.remove('selected');
+            clientOption.classList.remove('selected');
+            document.querySelector('input[name="role"][value="pekerja"]').checked = false;
+            document.querySelector('input[name="role"][value="klien"]').checked = false;
+            workerExtra.style.display = "none"; 
+            registerForm.reset();
+        }
         
-        // Menambahkan efek interaktif pada input
         document.querySelectorAll('input, select').forEach(input => {
             input.addEventListener('focus', () => {
                 input.parentElement.querySelector('i').style.color = '#4caf50';
@@ -397,33 +460,10 @@
             });
         });
         
-        // Handle form submission (demo)
-            // Simulate form validation
-        // function handleSubmit(event) {
-        //     event.preventDefault();
-            
-        //     const form = event.target;
-        //     const formData = new FormData(form);
-        //     const data = Object.fromEntries(formData);
-            
-        //     if (data.password !== data.password_confirmation) {
-        //         showAlert('error', 'Konfirmasi password tidak cocok');
-        //         return;
-        //     }
-            
-        //     if (!data.role) {
-        //         showAlert('error', 'Pilih peran Anda terlebih dahulu');
-        //         return;
-        //     }
-            
-        //     showAlert('success', 'Pendaftaran berhasil!');
-        // }
-        
         function showAlert(type, message) {
             const errorAlert = document.getElementById('errorAlert');
             const successAlert = document.getElementById('successAlert');
             
-            // Hide both alerts first
             errorAlert.style.display = 'none';
             successAlert.style.display = 'none';
             

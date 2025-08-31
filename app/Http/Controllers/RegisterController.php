@@ -52,12 +52,12 @@ class RegisterController extends Controller
         auth()->login($user);
 
         // Redirect berdasarkan role
-        if ($user->role === 'klien') {
+        if ($user->role === 'klien' || $user->role === 'pekerja') {
             session()->flash('welcome_message', 'Selamat datang! Temukan pekerja terbaik untuk Anda.');
             return redirect()->route('pekerja.index');
         } else {
             session()->flash('welcome_message', 'Selamat datang! Temukan pekerjaan yang sesuai dengan keahlian Anda.');
-            return redirect()->route('dashboard');
+            return redirect()->route('pekerja.index');
         }
     }
 }
