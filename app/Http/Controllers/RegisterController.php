@@ -30,7 +30,7 @@ class RegisterController extends Controller
             'gender' => 'nullable|in:Laki-laki,Perempuan',
             'password' => 'required|min:6',
             'role' => 'required|in:pekerja,klien',
-            'age' => 'required|integer|min:1|max:100',
+            'umur' => 'required|integer|min:1|max:100',
             'negara' => 'required|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -53,7 +53,7 @@ class RegisterController extends Controller
             'gender' => $request->gender,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-            'age' => $request->age,
+            'umur' => $request->umur,
             'negara' => $request->negara,
             'foto' => $fotoPath,
         ]);
