@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->enum('gender', ['Laki-laki', 'Perempuan']);
             $table->enum('role', ['admin', 'klien','pekerja'])->default('klien');
-             $table->integer('age')->nullable();
+            $table->integer('umur')->nullable();
             $table->string('negara')->nullable();
             $table->string('foto')->nullable()->default('default-avatar.png');
             $table->rememberToken();
