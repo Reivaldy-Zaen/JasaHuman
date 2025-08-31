@@ -332,7 +332,7 @@
             </div>
 
             <!-- Form Daftar -->
-            <form action="{{route('register.process')}}" method="POST" onsubmit="handleSubmit(event)" id="registerForm" style="display: none;">
+            <form action="{{route('register.process')}}" method="POST" onsubmit="handleSubmit(event)" id="registerForm" style="display: none;" enctype="multipart/form-data">
                 @csrf
                 <button type="button" class="btn-back" onclick="goBack()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">

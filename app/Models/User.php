@@ -23,7 +23,10 @@ class User extends Authenticatable
         'phone',
         'gender',
         'password',
-        'role'
+        'role',
+        'age',
+        'negara',
+        'foto'
     ];
 
     /**
@@ -49,4 +52,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pesanan::class, 'klien_id');
     }
+
+public function getFotoUrlAttribute()
+{
+    if ($this->foto) {
+        return asset('storage/' . $this->foto);
+    }
+    return asset('images/default-avatar.png');
+}
 }
