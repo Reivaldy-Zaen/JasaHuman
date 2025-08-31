@@ -284,7 +284,7 @@
             </div>
 
             <!-- Form Daftar -->
-            <form action="{{route("register.process")}}" method="POST" onsubmit="handleSubmit(event)">
+            <form action="{{route("register.process")}}" method="POST" onsubmit="handleSubmit(event)" enctype="multipart/form-data">
                 @csrf
                 <div class="form-grid">
                     <div class="input-group">

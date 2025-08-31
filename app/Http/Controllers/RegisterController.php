@@ -30,12 +30,19 @@ class RegisterController extends Controller
             'gender' => 'nullable|in:Laki-laki,Perempuan',
             'password' => 'required|min:6',
             'role' => 'required|in:pekerja,klien',
+            'age' => 'required|integer|min:1|max:100',
+            'negara' => 'required|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
+        }
+        $fotoPath = null;
+        if ($request->hasFile('foto')) {
+        $fotoPath = $request->file('foto')->store('profiles', 'public');
         }
 
         // Buat user baru
@@ -46,6 +53,9 @@ class RegisterController extends Controller
             'gender' => $request->gender,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'age' => $request->age,
+            'negara' => $request->negara,
+            'foto' => $fotoPath,
         ]);
 
         // Login user setelah berhasil mendaftar
