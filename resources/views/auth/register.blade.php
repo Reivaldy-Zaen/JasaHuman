@@ -298,6 +298,30 @@
         .hidden-role-input {
             display: none;
         }
+        /* Tambahkan style ini di bagian CSS */
+.custom-file-input {
+    display: none;
+}
+
+.custom-file-label {
+    display: block;
+    padding: 12px 16px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #888;
+}
+
+.custom-file-label:hover {
+    border-color: #4caf50;
+    color: #4caf50;
+}
+
+.custom-file-label i {
+    margin-right: 8px;
+}
     </style>
 </head>
 <body>
@@ -346,6 +370,15 @@
                         <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
                     </svg>
                 </button>
+                
+                <!-- Preview foto - Hanya untuk pekerja -->
+                <div class="photo-preview-container" style="text-align: center; margin-bottom: 1.5rem; display: none;" id="photoPreviewContainer">
+                    <div class="photo-preview" style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; margin: 0 auto; border: 3px solid #4caf50; background-color: #f0f0f0;">
+                        <img id="photoPreview" src="" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="margin-top: 10px; color: #555; font-size: 0.9rem;">Foto Profil</p>
+                </div>
+                
                 <div class="form-grid">
                     <div class="input-group">
                         <i class="fas fa-user"></i>
@@ -393,9 +426,12 @@
                         <input type="text" name="negara" placeholder="Negara" value="{{ old('negara') }}">
                     </div>
 
+                    <!-- Input file foto HANYA untuk pekerja -->
                     <div class="input-group span-2">
-                        <i class="fas fa-image"></i>
-                        <input type="file" name="foto" accept="image/*">
+                        <label class="custom-file-label" for="fotoInput">
+                            <i class="fas fa-upload"></i> Pilih Foto Profil
+                        </label>
+                        <input type="file" name="foto" id="fotoInput" class="custom-file-input" accept="image/*" onchange="previewImage(event)">
                     </div>
                 </div>
 
@@ -434,6 +470,7 @@
     const registerForm = document.getElementById('registerForm');
     const roleSelection = document.getElementById('roleSelection');
     const selectedRoleInput = document.getElementById('selectedRole');
+    const photoPreviewContainer = document.getElementById('photoPreviewContainer');
     
     workerOption.addEventListener('click', () => {
         workerOption.classList.add('selected');
@@ -442,6 +479,12 @@
         workerExtra.style.display = "grid"; 
         registerForm.style.display = "block";
         roleSelection.style.display = "none"; 
+
+        // Tampilkan preview jika sudah ada gambar
+        const preview = document.getElementById('photoPreview');
+        if (preview.src) {
+            photoPreviewContainer.style.display = 'block';
+        }
     });
     
     clientOption.addEventListener('click', () => {
@@ -451,6 +494,9 @@
         workerExtra.style.display = "none"; 
         registerForm.style.display = "block"; 
         roleSelection.style.display = "none"; 
+        
+        // Sembunyikan preview foto untuk klien
+        photoPreviewContainer.style.display = 'none';
     });
 
     function goBack() {
@@ -460,6 +506,7 @@
         clientOption.classList.remove('selected');
         selectedRoleInput.value = '';
         workerExtra.style.display = "none"; 
+        photoPreviewContainer.style.display = 'none';
         registerForm.reset();
     }
     
@@ -499,6 +546,29 @@
         
         this.submit(); 
     });
+    
+    // Fungsi untuk preview gambar
+    function previewImage(event) {
+        const input = event.target;
+        const previewContainer = document.getElementById('photoPreviewContainer');
+        const preview = document.getElementById('photoPreview');
+        
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                // Hanya tampilkan preview jika role adalah pekerja
+                if (selectedRoleInput.value === 'pekerja') {
+                    previewContainer.style.display = 'block';
+                }
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            previewContainer.style.display = 'none';
+        }
+    }
 
     @if($errors->any())
         showAlert('error', '{{ $errors->first() }}');
@@ -508,13 +578,18 @@
             if ('{{ old('role') }}' === 'pekerja') {
                 workerOption.classList.add('selected');
                 workerExtra.style.display = "grid";
+                // Tampilkan preview jika ada file foto yang diupload sebelumnya
+                if (document.getElementById('fotoInput').files.length > 0) {
+                    document.getElementById('photoPreviewContainer').style.display = 'block';
+                }
             } else {
                 clientOption.classList.add('selected');
+                document.getElementById('photoPreviewContainer').style.display = 'none';
             }
             registerForm.style.display = "block";
             roleSelection.style.display = "none";
         @endif
     @endif
-</script>
+   </script>
 </body>
 </html>
