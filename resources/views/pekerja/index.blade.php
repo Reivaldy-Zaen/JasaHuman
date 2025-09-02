@@ -492,11 +492,11 @@
       <div class="col-xl-3 col-lg-4 col-md-6">
         <div class="card modern-card h-100 text-center p-3 card-hover-effect">
           <div class="pt-2">
-            <a href="{{ route('pekerja.profile', $p->id) }}" class="block">
+            <a href="{{ route('pekerja.profiledetail', $p->id) }}" class="block">
               <img src="{{ $p->foto_url }}" class="profile-img mx-auto" alt="Foto Pekerja">
             </a>
             
-            <a href="{{ route('pekerja.profile', $p->id) }}" class="block">
+            <a href="{{ route('pekerja.profiledetail', $p->id) }}" class="block">
               <h2 class="worker-name">{{ $p->name }}</h2>
             </a>
             
@@ -524,7 +524,7 @@
             </div>
 
             <!-- Link Lihat Profile Lengkap -->
-            <a href="{{ route('pekerja.profile', $p->id) }}" class="profile-link">
+            <a href="{{ route('pekerja.profiledetail', $p->id) }}" class="profile-link">
               <i class="bi bi-eye"></i> Lihat Profile Lengkap
             </a>
             

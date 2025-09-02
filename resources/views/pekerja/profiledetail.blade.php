@@ -26,7 +26,7 @@
                 <div class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-[var(--text-light)] mb-1">Nama Lengkap</label>
-                        <p class="text-lg font-semibold text-[var(--text)]">{{ $pekerja->nama }}</p>
+                        <p class="text-lg font-semibold text-[var(--text)]">{{ $pekerja->name }}</p>
                     </div>
 
                     <div>

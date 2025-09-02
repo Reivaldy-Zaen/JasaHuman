@@ -45,9 +45,9 @@ Route::get('/namapekerja', [PekerjaController::class, 'index'])
     ->middleware(['auth', 'role:klien,admin,pekerja'])
     ->name('pekerja.namapekerja');
 
-Route::get('/pekerja/{id}/profile', [PekerjaController::class, 'profile'])
+Route::get('/pekerja/{id}/profiledetail', [PekerjaController::class, 'profile'])
     ->middleware(['auth', 'role:klien,admin,pekerja'])
-    ->name('pekerja.profile');
+    ->name('pekerja.profiledetail');
 
 // ====================== PESANAN ======================
 Route::get('/pesan/{pekerja}', [PesananController::class, 'formPesan'])

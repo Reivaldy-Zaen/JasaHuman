@@ -67,7 +67,6 @@ class PekerjaController extends Controller
     public function profile($id)
 {
     $pekerja = Pekerja::findOrFail($id);
-    return view('pekerja.profile', compact('pekerja'));
+    return view('pekerja.profiledetail', compact('pekerja'));
 }
 }
-    
