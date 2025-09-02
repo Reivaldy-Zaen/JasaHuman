@@ -447,7 +447,6 @@
     </div>
 
 <script>
-    // Fungsi untuk toggle password visibility
     function togglePassword(inputId) {
         const passwordInput = document.getElementById(inputId);
         const toggleIcon = passwordInput.nextElementSibling.querySelector('i');
@@ -462,8 +461,7 @@
             toggleIcon.classList.add('fa-eye');
         }
     }
-    
-    // Fungsi untuk menangani pemilihan role
+  
     const workerOption = document.getElementById('workerOption');
     const clientOption = document.getElementById('clientOption');
     const workerExtra = document.getElementById('workerExtra');
@@ -471,7 +469,7 @@
     const roleSelection = document.getElementById('roleSelection');
     const selectedRoleInput = document.getElementById('selectedRole');
     const photoPreviewContainer = document.getElementById('photoPreviewContainer');
-    const logoContainer = document.getElementById('logoContainer'); // ✅ tambahan untuk kontrol logo
+    const logoContainer = document.getElementById('logoContainer'); 
     
     workerOption.addEventListener('click', () => {
         workerOption.classList.add('selected');
@@ -481,10 +479,8 @@
         registerForm.style.display = "block";
         roleSelection.style.display = "none"; 
 
-        // ✅ Sembunyikan logo untuk pekerja
         logoContainer.style.display = 'none';
 
-        // Tampilkan preview jika sudah ada gambar
         const preview = document.getElementById('photoPreview');
         if (preview.src) {
             photoPreviewContainer.style.display = 'block';
@@ -498,11 +494,9 @@
         workerExtra.style.display = "none"; 
         registerForm.style.display = "block"; 
         roleSelection.style.display = "none"; 
-        
-        // ✅ Tampilkan logo untuk klien
+
         logoContainer.style.display = 'block';
 
-        // Sembunyikan preview foto untuk klien
         photoPreviewContainer.style.display = 'none';
     });
 
@@ -516,7 +510,6 @@
         photoPreviewContainer.style.display = 'none';
         registerForm.reset();
 
-        // ✅ Kembalikan logo kalau ke halaman awal
         logoContainer.style.display = 'block';
     }
     
@@ -556,8 +549,7 @@
         
         this.submit(); 
     });
-    
-    // Fungsi untuk preview gambar
+
     function previewImage(event) {
         const input = event.target;
         const previewContainer = document.getElementById('photoPreviewContainer');
@@ -568,7 +560,6 @@
             
             reader.onload = function(e) {
                 preview.src = e.target.result;
-                // Hanya tampilkan preview jika role adalah pekerja
                 if (selectedRoleInput.value === 'pekerja') {
                     previewContainer.style.display = 'block';
                 }
@@ -588,15 +579,12 @@
             if ('{{ old('role') }}' === 'pekerja') {
                 workerOption.classList.add('selected');
                 workerExtra.style.display = "grid";
-                // ✅ Sembunyikan logo jika role pekerja dari old()
                 logoContainer.style.display = 'none';
-                // Tampilkan preview jika ada file foto yang diupload sebelumnya
                 if (document.getElementById('fotoInput').files.length > 0) {
                     document.getElementById('photoPreviewContainer').style.display = 'block';
                 }
             } else {
                 clientOption.classList.add('selected');
-                // ✅ Tampilkan logo jika role klien dari old()
                 logoContainer.style.display = 'block';
                 document.getElementById('photoPreviewContainer').style.display = 'none';
             }

@@ -14,7 +14,7 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::user();
-        return view('profile.show', compact('user'));
+        return view('profile.detail', compact('user'));
     }
 
     /**
@@ -23,7 +23,7 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        return view('profile.edit', compact('user'));
+        return view('profile.detail', compact('user'));
     }
 
     /**
@@ -56,7 +56,7 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('profile.show')
+        return redirect()->route('profile.detail')
             ->with('success', 'Profil berhasil diperbarui!');
     }
 }

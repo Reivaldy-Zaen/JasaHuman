@@ -7,6 +7,7 @@ use App\Http\Controllers\KlienController;
 use App\Http\Controllers\PekerjaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------

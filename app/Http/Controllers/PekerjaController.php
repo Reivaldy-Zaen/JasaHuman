@@ -70,3 +70,4 @@ class PekerjaController extends Controller
     return view('pekerja.profile', compact('pekerja'));
 }
 }
+    
