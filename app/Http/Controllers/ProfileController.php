@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -14,7 +15,7 @@ class ProfileController extends Controller
     public function show()
     {
         $user = Auth::user();
-        return view('profile.detail', compact('user'));
+        return view('profile.detail', compact('user')); // Pastikan view-nya 'profile.show'
     }
 
     /**
@@ -23,7 +24,7 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        return view('profile.detail', compact('user'));
+        return view('profile.edit', compact('user')); // Pastikan view-nya 'profile.edit'
     }
 
     /**
@@ -56,7 +57,7 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('profile.detail')
+        return redirect()->route('profile.detail') // Redirect ke 'profile.show'
             ->with('success', 'Profil berhasil diperbarui!');
     }
 }
