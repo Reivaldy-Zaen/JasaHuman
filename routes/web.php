@@ -78,3 +78,10 @@ Route::get('/klien', [KlienController::class, 'index'])
     // Rute untuk pendaftaran
 Route::get('/daftar', [RegisterController::class, 'showRegister'])->name('register');
 Route::post('/daftar', [RegisterController::class, 'register'])->name('register.process');
+
+// Profile routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});

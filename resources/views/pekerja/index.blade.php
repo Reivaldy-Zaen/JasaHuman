@@ -155,6 +155,7 @@
       margin-bottom: 2rem;
       box-shadow: 0 4px 16px rgba(30, 41, 59, 0.15);
       position: relative;
+      overflow: hidden;
     }
 
     .header-section h2 {
@@ -167,6 +168,31 @@
       font-size: 0.95rem;
       opacity: 0.85;
       margin-bottom: 0;
+    }
+
+    /* Logo Profil di Header */
+    .header-logo {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+      z-index: 10;
+      transition: all 0.3s ease;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .header-logo:hover {
+      transform: scale(1.05) rotate(5deg);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
     }
 
     /* Tombol Back */
@@ -366,6 +392,14 @@
         font-size: 1.5rem;
       }
       
+      .header-logo {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        top: 15px;
+        right: 15px;
+      }
+      
       .modern-card {
         margin-bottom: 1rem;
       }
@@ -423,6 +457,12 @@
 
     <!-- Header -->
     <div class="header-section">
+      <!-- Logo Profil di Pojok Kanan Atas Header -->
+      <div class="header-logo">
+        <a href="{{ route('profile.show') }}" class="header-logo"></ahref=>
+        <i class="bi bi-person-badge"></i>
+      </div>
+      
       <div class="d-flex align-items-center justify-content-between mb-3">
         @if(Auth::user()->role === 'admin')
         <a href="{{ route('dashboard.index') }}" class="btn-back">
