@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'register_screen.dart';
+
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -17,11 +19,7 @@ class LoginScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min, // supaya ketengah, nggak stretch
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.person,
-                size: 100,
-                color: Colors.green,
-              ),
+              const Icon(Icons.person, size: 100, color: Colors.green),
               const SizedBox(height: 10),
               const Text(
                 'Jasa Human',
@@ -66,7 +64,7 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 height: 55,
-                child: ElevatedButton(
+                child: ElevatedButton.icon(
                   onPressed: () {
                     // TODO: Implement login functionality
                   },
@@ -76,7 +74,8 @@ class LoginScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: const Text(
+                  icon: const Icon(Icons.login, color: Colors.white),
+                  label: const Text(
                     'Login',
                     style: TextStyle(
                       fontSize: 20,
@@ -84,6 +83,31 @@ class LoginScreen extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                'Belum punya akun?',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black87,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegisterScreen(),
+                  ),
+                );
+                  // TODO: Implement registration functionality
+                },
+                child: const Text(
+                  'Daftar disini',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.green
+                  )
                 ),
               ),
             ],
