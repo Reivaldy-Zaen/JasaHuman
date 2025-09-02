@@ -327,7 +327,7 @@
 <body>
     <div class="register-container">
         <div class="register-card">
-            <div class="logo">
+            <div class="logo" id="logoContainer">
                 <i class="fas fa-users"></i>
                 <h1>Daftar Akun Baru</h1>
             </div>
@@ -446,7 +446,7 @@
         </div>
     </div>
 
-   <script>
+<script>
     // Fungsi untuk toggle password visibility
     function togglePassword(inputId) {
         const passwordInput = document.getElementById(inputId);
@@ -471,6 +471,7 @@
     const roleSelection = document.getElementById('roleSelection');
     const selectedRoleInput = document.getElementById('selectedRole');
     const photoPreviewContainer = document.getElementById('photoPreviewContainer');
+    const logoContainer = document.getElementById('logoContainer'); // ✅ tambahan untuk kontrol logo
     
     workerOption.addEventListener('click', () => {
         workerOption.classList.add('selected');
@@ -479,6 +480,9 @@
         workerExtra.style.display = "grid"; 
         registerForm.style.display = "block";
         roleSelection.style.display = "none"; 
+
+        // ✅ Sembunyikan logo untuk pekerja
+        logoContainer.style.display = 'none';
 
         // Tampilkan preview jika sudah ada gambar
         const preview = document.getElementById('photoPreview');
@@ -495,6 +499,9 @@
         registerForm.style.display = "block"; 
         roleSelection.style.display = "none"; 
         
+        // ✅ Tampilkan logo untuk klien
+        logoContainer.style.display = 'block';
+
         // Sembunyikan preview foto untuk klien
         photoPreviewContainer.style.display = 'none';
     });
@@ -508,6 +515,9 @@
         workerExtra.style.display = "none"; 
         photoPreviewContainer.style.display = 'none';
         registerForm.reset();
+
+        // ✅ Kembalikan logo kalau ke halaman awal
+        logoContainer.style.display = 'block';
     }
     
     document.querySelectorAll('input, select').forEach(input => {
@@ -578,18 +588,23 @@
             if ('{{ old('role') }}' === 'pekerja') {
                 workerOption.classList.add('selected');
                 workerExtra.style.display = "grid";
+                // ✅ Sembunyikan logo jika role pekerja dari old()
+                logoContainer.style.display = 'none';
                 // Tampilkan preview jika ada file foto yang diupload sebelumnya
                 if (document.getElementById('fotoInput').files.length > 0) {
                     document.getElementById('photoPreviewContainer').style.display = 'block';
                 }
             } else {
                 clientOption.classList.add('selected');
+                // ✅ Tampilkan logo jika role klien dari old()
+                logoContainer.style.display = 'block';
                 document.getElementById('photoPreviewContainer').style.display = 'none';
             }
             registerForm.style.display = "block";
             roleSelection.style.display = "none";
         @endif
     @endif
-   </script>
+</script>
+
 </body>
 </html>
