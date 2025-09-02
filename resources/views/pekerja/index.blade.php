@@ -459,9 +459,10 @@
     <div class="header-section">
       <!-- Logo Profil di Pojok Kanan Atas Header -->
       <div class="header-logo">
-        <a href="{{ route('profile.show') }}" class="header-logo"></ahref=>
+    <a href="{{ route('profile.detail') }}" class="header-logo-link">
         <i class="bi bi-person-badge"></i>
-      </div>
+    </a>
+</div>
       
       <div class="d-flex align-items-center justify-content-between mb-3">
         @if(Auth::user()->role === 'admin')
