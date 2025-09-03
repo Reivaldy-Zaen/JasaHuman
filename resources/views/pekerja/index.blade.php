@@ -177,22 +177,23 @@
       right: 20px;
       width: 60px;
       height: 60px;
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      background: linear-gradient(135deg, #4b5563, #6b7280); /* Warna abu-abu gelap yang lebih netral */
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: #f3f4f6; /* Warna ikon putih lembut untuk kontras */
       font-size: 24px;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+      box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3); /* Bayangan lebih lembut */
       z-index: 10;
       transition: all 0.3s ease;
-      border: 3px solid rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.15); /* Border lebih tipis dan halus */
     }
 
     .header-logo:hover {
-      transform: scale(1.05) rotate(5deg);
-      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(107, 114, 128, 0.4); /* Bayangan lebih kuat saat hover */
+      background: linear-gradient(135deg, #6b7280, #9ca3af); /* Gradasi lebih terang saat hover */
     }
 
     /* Tombol Back */
@@ -456,13 +457,22 @@
     @endif
 
     <!-- Header -->
-    <div class="header-section">
-      <!-- Logo Profil di Pojok Kanan Atas Header -->
-      <div class="header-logo">
-    <a href="{{ route('profile.detail') }}" class="header-logo-link">
-        <i class="bi bi-person-badge"></i>
-    </a>
-</div>
+   <div class="header-section">
+    <!-- Logo Profil di Pojok Kanan Atas Header -->
+    <div class="header-logo">
+        <a href="{{ route('profile.detail') }}" class="header-logo-link">
+            @if(Auth::user()->foto)
+                <img src="{{ asset('storage/' . Auth::user()->foto) }}" 
+                     alt="Foto Profil" 
+                     class="rounded-circle"
+                     style="width:40px; height:40px; object-fit:cover;">
+            @else
+                <i class="bi bi-person-badge" style="font-size: 1.5rem;"></i>
+            @endif
+        </a>
+    </div>
+
+
       
       <div class="d-flex align-items-center justify-content-between mb-3">
         @if(Auth::user()->role === 'admin')
