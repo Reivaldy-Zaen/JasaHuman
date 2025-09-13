@@ -424,6 +424,13 @@
     .card-hover-effect:hover .worker-name {
       color: #059669;
     }
+
+    .header-logo-initials {
+      font-weight: 700;
+      font-size: 20px;
+      color: white;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body>
@@ -467,7 +474,9 @@
                      class="rounded-circle"
                      style="width:40px; height:40px; object-fit:cover;">
             @else
-                <i class="bi bi-person-badge" style="font-size: 1.5rem;"></i>
+                <div class="header-logo-initials">
+                    {{ substr(Auth::user()->name, 0, 1) }}{{ isset(explode(' ', Auth::user()->name)[1]) ? substr(explode(' ', Auth::user()->name)[1], 0, 1) : '' }}
+                </div>
             @endif
         </a>
     </div>
