@@ -54,6 +54,19 @@ class User extends Authenticatable
         return $this->hasMany(Pesanan::class, 'klien_id');
     }
 
+     public function pekerja()
+    {
+        return $this->hasOne(Pekerja::class, 'user_id'); // 'user_id' adalah foreign key di tabel pekerja
+    }
+
+    /**
+     * Mendapatkan profil klien yang dimiliki oleh user.
+     */
+    public function klien()
+    {
+        return $this->hasOne(Klien::class, 'user_id'); // 'user_id' adalah foreign key di tabel klien
+    }
+
 public function getFotoUrlAttribute()
 {
     if ($this->foto) {

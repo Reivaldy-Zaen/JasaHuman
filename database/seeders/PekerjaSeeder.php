@@ -14,6 +14,7 @@ class PekerjaSeeder extends Seeder
  public function run(): void
     {
         Pekerja::create([
+            'user_id' => 1,
             'name' => 'Lia Tang',
             'umur' => 25,
             'negara' => 'Indonesia',
@@ -21,6 +22,7 @@ class PekerjaSeeder extends Seeder
             'foto' => 'https://kaltimkita.com/po-content/uploads/raffi-ahmad-harta.jpg',
         ]);
         Pekerja::create([
+            'user_id' => 2,
             'name' => 'Jessika',
             'umur' => 15,
             'negara' => 'Rusia',
@@ -29,6 +31,7 @@ class PekerjaSeeder extends Seeder
         ]);
 
         Pekerja::create([
+            'user_id' => 3,
             'name' => 'Jane Smith',
             'umur' => 30,
             'negara' => 'Malaysia',

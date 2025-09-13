@@ -44,20 +44,42 @@ class ProfileController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        // Handle upload foto
+
         if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
-            if ($user->foto) {
-                Storage::delete('public/' . $user->foto);
+
+            if ($user->foto && Storage::disk('public')->exists($user->foto)) {
+                Storage::disk('public')->delete($user->foto);
+            }
+   
+            $roleModel = null;
+            if ($user->role === 'pekerja' && $user->pekerja) {
+                $roleModel = $user->pekerja;
+            } elseif ($user->role === 'klien' && $user->klien) {
+                $roleModel = $user->klien;
             }
             
+            if ($roleModel && $roleModel->foto && Storage::disk('public')->exists($roleModel->foto)) {
+  
+                if ($roleModel->foto !== $user->foto) {
+                    Storage::disk('public')->delete($roleModel->foto);
+                }
+            }
+
             $path = $request->file('foto')->store('profiles', 'public');
             $validated['foto'] = $path;
         }
 
         $user->update($validated);
 
-        return redirect()->route('profile.detail') // Redirect ke 'profile.show'
+        if (isset($validated['foto'])) {
+            if ($user->role === 'pekerja' && $user->pekerja) {
+                $user->pekerja->update(['foto' => $validated['foto']]);
+            } elseif ($user->role === 'klien' && $user->klien) {
+                $user->klien->update(['foto' => $validated['foto']]);
+            }
+        }
+
+        return redirect()->route('profile.detail')
             ->with('success', 'Profil berhasil diperbarui!');
     }
 }

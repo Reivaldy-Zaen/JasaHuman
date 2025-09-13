@@ -67,6 +67,7 @@ class RegisterController extends Controller
 
             if ($user->role === 'klien') {
                 $klien = Klien::create([
+                    'user_id' => $user->id,
                     'name' => $user->name, 
                     'email' => $user->email,
                     'umur' => $user->umur,
@@ -74,6 +75,7 @@ class RegisterController extends Controller
                 Log::info('Klien Created: ', $klien->toArray());
             } elseif ($user->role === 'pekerja') {
                 $pekerja = Pekerja::create([
+                    'user_id' => $user->id,
                     'name' => $user->name, 
                     'umur' => $user->umur,
                     'negara' => $user->negara,

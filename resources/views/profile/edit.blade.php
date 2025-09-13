@@ -167,9 +167,9 @@
         }
 
         // Juga bisa klik gambar untuk trigger file input
-        document.getElementById('profileImage').addEventListener('click', function() {
-            document.getElementById('fotoInput').click();
-        });
+        // document.getElementById('profileImage').addEventListener('click', function() {
+        //     document.getElementById('fotoInput').click();
+        // });
     </script>
 </body>
 </html>
