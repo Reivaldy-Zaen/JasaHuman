@@ -322,6 +322,24 @@
 .custom-file-label i {
     margin-right: 8px;
 }
+
+.loading-countries {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            color: #888;
+        }
+        
+        .loading-countries i {
+            margin-right: 8px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -421,9 +439,13 @@
 
                 <!-- Bagian tambahan hanya untuk pekerja -->
                 <div id="workerExtra" class="form-grid" style="display:none; margin-top:10px;">
+                    <!-- Input negara sebagai dropdown -->
                     <div class="input-group">
                         <i class="fas fa-globe"></i>
-                        <input type="text" name="negara" placeholder="Negara" value="{{ old('negara') }}">
+                        <select name="negara" id="negaraSelect" required>
+                            <option value="">Pilih Negara</option>
+                            <!-- Opsi negara akan diisi oleh JavaScript -->
+                        </select>
                     </div>
 
                     <!-- Input file foto HANYA untuk pekerja -->
@@ -471,6 +493,75 @@
     const photoPreviewContainer = document.getElementById('photoPreviewContainer');
     const logoContainer = document.getElementById('logoContainer'); 
     
+    // Fungsi untuk mengambil data negara dari API
+    async function loadCountries() {
+        const countrySelect = document.getElementById('negaraSelect');
+        
+        // Tampilkan loading state
+        countrySelect.innerHTML = '<option value="">Memuat data negara...</option>';
+        countrySelect.disabled = true;
+        
+        try {
+            // Menggunakan API RestCountries
+            const response = await fetch('https://restcountries.com/v3.1/all?fields=name,translations');
+            const countries = await response.json();
+            
+            // Urutkan negara berdasarkan nama
+            countries.sort((a, b) => {
+                const nameA = a.translations.ina?.common || a.name.common;
+                const nameB = b.translations.ina?.common || b.name.common;
+                return nameA.localeCompare(nameB);
+            });
+            
+            // Kosongkan select dan tambahkan opsi default
+            countrySelect.innerHTML = '<option value="">Pilih Negara</option>';
+            
+            // Tambahkan setiap negara ke dropdown
+            countries.forEach(country => {
+                const countryName = country.translations.ina?.common || country.name.common;
+                const option = document.createElement('option');
+                option.value = countryName;
+                option.textContent = countryName;
+                countrySelect.appendChild(option);
+            });
+            
+            countrySelect.disabled = false;
+            
+            // Jika ada nilai sebelumnya (setelah validasi gagal), set nilai tersebut
+            const oldValue = "{{ old('negara') }}";
+            if (oldValue) {
+                countrySelect.value = oldValue;
+            }
+            
+        } catch (error) {
+            console.error('Error loading countries:', error);
+            
+            // Fallback: tambahkan beberapa negara utama jika API gagal
+            countrySelect.innerHTML = '<option value="">Pilih Negara</option>';
+            const fallbackCountries = [
+                'Indonesia', 'Malaysia', 'Singapura', 'Thailand', 'Vietnam',
+                'Filipina', 'Jepang', 'Korea Selatan', 'China', 'India',
+                'Amerika Serikat', 'Inggris', 'Australia', 'Jerman', 'Prancis'
+            ];
+            
+            fallbackCountries.sort().forEach(country => {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                countrySelect.appendChild(option);
+            });
+            
+            countrySelect.disabled = false;
+            
+            // Jika ada nilai sebelumnya (setelah validasi gagal), set nilai tersebut
+            const oldValue = "{{ old('negara') }}";
+            if (oldValue) {
+                countrySelect.value = oldValue;
+            }
+        }
+    }
+    
+    // Event listener untuk opsi pekerja
     workerOption.addEventListener('click', () => {
         workerOption.classList.add('selected');
         clientOption.classList.remove('selected');
@@ -485,6 +576,9 @@
         if (preview.src) {
             photoPreviewContainer.style.display = 'block';
         }
+        
+        // Load countries ketika memilih opsi pekerja
+        loadCountries();
     });
     
     clientOption.addEventListener('click', () => {
@@ -571,6 +665,14 @@
         }
     }
 
+    // Panggil fungsi loadCountries ketika halaman dimuat jika role adalah pekerja
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load countries hanya jika form pekerja akan ditampilkan
+        if ("{{ old('role') }}" === 'pekerja') {
+            loadCountries();
+        }
+    });
+
     @if($errors->any())
         showAlert('error', '{{ $errors->first() }}');
 
@@ -583,6 +685,9 @@
                 if (document.getElementById('fotoInput').files.length > 0) {
                     document.getElementById('photoPreviewContainer').style.display = 'block';
                 }
+                
+                // Panggil loadCountries jika role adalah pekerja dan ada error
+                loadCountries();
             } else {
                 clientOption.classList.add('selected');
                 logoContainer.style.display = 'block';
