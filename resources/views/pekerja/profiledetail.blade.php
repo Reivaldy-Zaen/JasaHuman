@@ -15,7 +15,7 @@
     <!-- Profile Card -->
     <div class="vintage-card p-8 rounded-xl vintage-shadow">
         <div class="text-center mb-8">
-            <img src="{{ $pekerja->foto }}" class="w-32 h-32 rounded-full object-cover mx-auto border-4 border-[var(--accent)]" alt="Foto {{ $pekerja->nama }}">
+            <img src="{{ $pekerja->foto_url }}" class="w-32 h-32 rounded-full object-cover mx-auto border-4 border-[var(--accent)]" alt="Foto {{ $pekerja->nama }}">
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
