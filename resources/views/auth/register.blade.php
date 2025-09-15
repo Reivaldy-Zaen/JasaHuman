@@ -498,7 +498,7 @@
         const countrySelect = document.getElementById('negaraSelect');
         
         // Tampilkan loading state
-        countrySelect.innerHTML = '<option value="">Memuat data negara...</option>';
+        countrySelect.innerHTML = '<option value="">Negara...</option>';
         countrySelect.disabled = true;
         
         try {

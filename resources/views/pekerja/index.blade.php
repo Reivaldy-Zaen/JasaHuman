@@ -466,20 +466,16 @@
     <!-- Header -->
    <div class="header-section">
     <!-- Logo Profil di Pojok Kanan Atas Header -->
+@auth
     <div class="header-logo">
         <a href="{{ route('profile.detail') }}" class="header-logo-link">
-            @if(Auth::user()->foto)
-                <img src="{{ asset('storage/' . Auth::user()->foto) }}" 
-                     alt="Foto Profil" 
-                     class="rounded-circle"
-                     style="width:40px; height:40px; object-fit:cover;">
-            @else
-                <div class="header-logo-initials">
-                    {{ substr(Auth::user()->name, 0, 1) }}{{ isset(explode(' ', Auth::user()->name)[1]) ? substr(explode(' ', Auth::user()->name)[1], 0, 1) : '' }}
-                </div>
-            @endif
+            <img src="{{ asset('storage/' . Auth::user()->foto) }}" 
+                 alt="Foto Profil" 
+                 class="rounded-circle"
+                 style="width:40px; height:40px; object-fit:cover;">
         </a>
     </div>
+@endauth
 
 
       

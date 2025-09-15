@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage; // Untuk mengelola file
+  // Untuk membuat gambar
+
 
 class RegisterController extends Controller
 {
@@ -46,11 +49,15 @@ class RegisterController extends Controller
         }
 
         $fotoPath = null;
-        if ($request->hasFile('foto') && $request->role === 'pekerja') {
+        if ($request->hasFile('foto')) {
+            // Jika ada file foto yang diunggah, simpan seperti biasa
             $fotoPath = $request->file('foto')->store('profiles', 'public');
-            Log::info('Foto Path: ' . $fotoPath);
+            Log::info('Uploaded Foto Path: ' . $fotoPath);
+        } else {
+            // Jika tidak ada foto, buat gambar default dari inisial
+            $fotoPath = $this->createInitialImage($request->name);
+            Log::info('Generated Default Foto Path: ' . $fotoPath);
         }
-
         try {
             $user = User::create([
                 'name' => $request->name,
@@ -60,7 +67,7 @@ class RegisterController extends Controller
                 'password' => Hash::make($request->password),
                 'umur' => $request->umur ?? null,
                 'negara' => $request->negara ?? null,
-                'foto' => $fotoPath ?? null,
+                'foto' => $fotoPath,
                 'role' => $request->role,
             ]);
             Log::info('User Created: ', $user->toArray());
@@ -71,6 +78,7 @@ class RegisterController extends Controller
                     'name' => $user->name, 
                     'email' => $user->email,
                     'umur' => $user->umur,
+                    'foto' => $fotoPath,
                 ]);
                 Log::info('Klien Created: ', $klien->toArray());
             } elseif ($user->role === 'pekerja') {
@@ -99,4 +107,68 @@ class RegisterController extends Controller
             return redirect()->back()->withErrors(['error' => 'Terjadi error saat menyimpan data: ' . $e->getMessage()])->withInput();
         }
     }
+    private function createInitialImage($name)
+    {
+        $path = 'profiles/' . uniqid() . '.png';
+
+        $words = explode(' ', $name);
+        $initials = strtoupper(substr($words[0], 0, 1));
+        if (isset($words[1])) {
+            $initials .= strtoupper(substr($words[1], 0, 1));
+        }
+
+        // Ukuran gambar
+        $width = 200;
+        $height = 200;
+
+        // Buat gambar kosong
+        $image = imagecreatetruecolor($width, $height);
+
+        // Buat warna background dari hash nama
+        $bgColorHex = substr(md5($name), 0, 6);
+        $r = hexdec(substr($bgColorHex, 0, 2));
+        $g = hexdec(substr($bgColorHex, 2, 2));
+        $b = hexdec(substr($bgColorHex, 4, 2));
+        $backgroundColor = imagecolorallocate($image, $r, $g, $b);
+
+        // Warna teks (putih)
+        $textColor = imagecolorallocate($image, 255, 255, 255);
+
+        // Isi background
+        imagefill($image, 0, 0, $backgroundColor);
+
+        // Tentukan path ke file font. PENTING: Anda harus menyediakan file font ini.
+        $fontPath = public_path('fonts/arial.ttf');
+        $fontSize = 90; // Ukuran font
+
+        // Jika file font tidak ada, berikan error atau fallback
+        if (!file_exists($fontPath)) {
+            // Log::error('Font file not found: ' . $fontPath);
+            // Fallback sederhana jika font tidak ada (opsional)
+            imagestring($image, 5, 65, 90, $initials, $textColor);
+        } else {
+            // Hitung posisi agar teks berada di tengah
+            $textBox = imagettfbbox($fontSize, 0, $fontPath, $initials);
+            $textWidth = $textBox[2] - $textBox[0];
+            $textHeight = $textBox[1] - $textBox[7];
+            $x = ($width / 2) - ($textWidth / 2);
+            $y = ($height / 2) + ($textHeight / 2);
+
+            // Tulis teks ke gambar
+            imagettftext($image, $fontSize, 0, $x, $y, $textColor, $fontPath, $initials);
+        }
+
+        // Tangkap output gambar ke dalam variabel
+        ob_start();
+        imagepng($image);
+        $imageData = ob_get_clean();
+
+        // Hapus gambar dari memori
+        imagedestroy($image);
+            
+        Storage::disk('public')->put($path, $imageData);
+
+        return $path;
+    }
+    //
 }
