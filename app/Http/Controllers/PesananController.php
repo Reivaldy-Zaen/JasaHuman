@@ -77,7 +77,18 @@ public function index()
 
        public function daftarPekerja()
     {
-        $pekerja = Pekerja::all();
+        $user = Auth::user();
+        $pekerja = [];
+
+        if ($user && $user->role === 'pekerja') {
+
+            $pekerja = Pekerja::where('user_id', '!=', $user->id)->get();
+
+        } else {
+
+            $pekerja = Pekerja::all();
+        }
+
         return view('pekerja.index', compact('pekerja'));
     }
 

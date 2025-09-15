@@ -27,7 +27,7 @@
           <div class="card-body p-4">
             <!-- Foto pekerja -->
             <div class="text-center mb-4">
-              <img src="{{ $pekerja->foto }}" alt="Foto {{ $pekerja->nama }}" 
+              <img src="{{ $pekerja->foto_url }}" alt="Foto {{ $pekerja->nama }}" 
                    class="rounded-circle worker-img" 
                    style="width: 150px; height: 150px; object-fit: cover;">
             </div>
