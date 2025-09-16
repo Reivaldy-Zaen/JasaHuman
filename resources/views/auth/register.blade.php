@@ -440,9 +440,9 @@
                 <!-- Bagian tambahan hanya untuk pekerja -->
                 <div id="workerExtra" class="form-grid" style="display:none; margin-top:10px;">
                     <!-- Input negara sebagai dropdown -->
-                    <div class="input-group">
+                        <div class="input-group" id="negaraContainer" style="display: none;">
                         <i class="fas fa-globe"></i>
-                        <select name="negara" id="negaraSelect" required>
+                        <select name="negara" id="negaraSelect">
                             <option value="">Pilih Negara</option>
                             <!-- Opsi negara akan diisi oleh JavaScript -->
                         </select>
@@ -492,13 +492,14 @@
     const selectedRoleInput = document.getElementById('selectedRole');
     const photoPreviewContainer = document.getElementById('photoPreviewContainer');
     const logoContainer = document.getElementById('logoContainer'); 
+    const negaraContainer = document.getElementById('negaraContainer'); // Tambahkan variabel untuk negaraContainer
     
     // Fungsi untuk mengambil data negara dari API
     async function loadCountries() {
         const countrySelect = document.getElementById('negaraSelect');
         
         // Tampilkan loading state
-        countrySelect.innerHTML = '<option value="">Negara...</option>';
+        countrySelect.innerHTML = '<option value="">Memuat data negara...</option>';
         countrySelect.disabled = true;
         
         try {
@@ -569,6 +570,7 @@
         workerExtra.style.display = "grid"; 
         registerForm.style.display = "block";
         roleSelection.style.display = "none"; 
+        negaraContainer.style.display = "flex"; // Tampilkan negaraContainer
 
         logoContainer.style.display = 'none';
 
@@ -588,6 +590,7 @@
         workerExtra.style.display = "none"; 
         registerForm.style.display = "block"; 
         roleSelection.style.display = "none"; 
+        negaraContainer.style.display = "none"; // Sembunyikan negaraContainer
 
         logoContainer.style.display = 'block';
 
@@ -601,6 +604,7 @@
         clientOption.classList.remove('selected');
         selectedRoleInput.value = '';
         workerExtra.style.display = "none"; 
+        negaraContainer.style.display = "none"; // Sembunyikan negaraContainer
         photoPreviewContainer.style.display = 'none';
         registerForm.reset();
 
@@ -670,6 +674,7 @@
         // Load countries hanya jika form pekerja akan ditampilkan
         if ("{{ old('role') }}" === 'pekerja') {
             loadCountries();
+            negaraContainer.style.display = "flex"; // Tampilkan negaraContainer
         }
     });
 
@@ -681,6 +686,7 @@
             if ('{{ old('role') }}' === 'pekerja') {
                 workerOption.classList.add('selected');
                 workerExtra.style.display = "grid";
+                negaraContainer.style.display = "flex"; // Tampilkan negaraContainer
                 logoContainer.style.display = 'none';
                 if (document.getElementById('fotoInput').files.length > 0) {
                     document.getElementById('photoPreviewContainer').style.display = 'block';
@@ -692,6 +698,7 @@
                 clientOption.classList.add('selected');
                 logoContainer.style.display = 'block';
                 document.getElementById('photoPreviewContainer').style.display = 'none';
+                negaraContainer.style.display = "none"; // Sembunyikan negaraContainer
             }
             registerForm.style.display = "block";
             roleSelection.style.display = "none";
