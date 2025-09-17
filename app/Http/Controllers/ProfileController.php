@@ -9,27 +9,26 @@ use App\Models\User;
 
 class ProfileController extends Controller
 {
-    /**
-     * Menampilkan profil user yang sedang login
-     */
-    public function show()
-    {
-        $user = Auth::user();
-        return view('profile.detail', compact('user')); // Pastikan view-nya 'profile.show'
-    }
-
-    /**
-     * Menampilkan form edit profil
-     */
-    public function edit()
-    {
-        $user = Auth::user();
-        return view('profile.edit', compact('user')); // Pastikan view-nya 'profile.edit'
-    }
+    // ... (method show() dan edit() tidak berubah)
 
     /**
      * Mengupdate profil user
      */
+     public function show()
+    {
+
+    $user = Auth::user();
+    return view('profile.detail', compact('user')); 
+    
+    }
+    public function edit()
+    {
+
+    $user = Auth::user();
+    return view('profile.edit', compact('user'));
+
+    }
+
     public function update(Request $request)
     {
         $user = Auth::user();
@@ -41,26 +40,19 @@ class ProfileController extends Controller
             'gender' => 'required|in:Laki-laki,Perempuan',
             'umur' => 'required|integer|min:1',
             'negara' => 'required|string|max:100',
+            'about' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-
 
         if ($request->hasFile('foto')) {
 
             if ($user->foto && Storage::disk('public')->exists($user->foto)) {
                 Storage::disk('public')->delete($user->foto);
             }
-   
-            $roleModel = null;
-            if ($user->role === 'pekerja' && $user->pekerja) {
-                $roleModel = $user->pekerja;
-            } elseif ($user->role === 'klien' && $user->klien) {
-                $roleModel = $user->klien;
-            }
-            
+
+            $roleModel = $user->role === 'pekerja' ? $user->pekerja : $user->klien;
             if ($roleModel && $roleModel->foto && Storage::disk('public')->exists($roleModel->foto)) {
-  
-                if ($roleModel->foto !== $user->foto) {
+                if ($roleModel->foto !== $user->foto) { 
                     Storage::disk('public')->delete($roleModel->foto);
                 }
             }
@@ -71,12 +63,23 @@ class ProfileController extends Controller
 
         $user->update($validated);
 
+        $roleData = [
+            'name' => $validated['name'],
+            'phone' => $validated['phone'],
+            'gender' => $validated['gender'],
+            'umur' => $validated['umur'],
+            'negara' => $validated['negara'],
+            'about' => $validated['about'] ?? null,
+        ];
+
         if (isset($validated['foto'])) {
-            if ($user->role === 'pekerja' && $user->pekerja) {
-                $user->pekerja->update(['foto' => $validated['foto']]);
-            } elseif ($user->role === 'klien' && $user->klien) {
-                $user->klien->update(['foto' => $validated['foto']]);
-            }
+            $roleData['foto'] = $validated['foto'];
+        }
+
+        if ($user->role === 'pekerja' && $user->pekerja) {
+            $user->pekerja->update($roleData);
+        } elseif ($user->role === 'klien' && $user->klien) {
+            $user->klien->update($roleData);
         }
 
         return redirect()->route('profile.detail')

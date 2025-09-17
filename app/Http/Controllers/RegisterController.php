@@ -31,6 +31,7 @@ class RegisterController extends Controller
             'gender' => 'nullable|in:Laki-laki,Perempuan',
             'password' => 'required|min:6',
             'role' => 'required|in:pekerja,klien',
+            'about' => 'nullable|string',
         ];
         
         if ($request->role === 'pekerja') {
@@ -69,6 +70,7 @@ class RegisterController extends Controller
                 'negara' => $request->negara ?? null,
                 'foto' => $fotoPath,
                 'role' => $request->role,
+                'about' => $request->about ?? null,
             ]);
             Log::info('User Created: ', $user->toArray());
 

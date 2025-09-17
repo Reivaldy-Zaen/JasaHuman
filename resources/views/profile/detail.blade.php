@@ -89,6 +89,12 @@
                         <p class="mb-0">{{ $user->negara }}</p>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="info-item">
+                        <strong><i class="bi bi-globe"></i> Tentang:</strong>
+                        <p class="mb-0">{{ $user->about }}</p>
+                    </div>
+                </div>
             </div>
 
             <div class="text-center mt-4">

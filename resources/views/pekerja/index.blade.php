@@ -514,7 +514,7 @@
             
             <a href="{{ route('pekerja.profiledetail', $p->id) }}" class="block">
               <h2 class="worker-name">{{ $p->name }}</h2>
-            </a>
+            </a>k
             
             <div class="mb-2">
               @if($p->gender == 'Laki-laki')

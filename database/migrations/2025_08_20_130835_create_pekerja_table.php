@@ -19,6 +19,7 @@ public function up(): void
         $table->string('negara');
         $table->enum('gender', ['Laki-laki', 'Perempuan']);
         $table->string('foto')->nullable();
+        $table->text('about')->nullable();
         $table->timestamps();
     });
 }

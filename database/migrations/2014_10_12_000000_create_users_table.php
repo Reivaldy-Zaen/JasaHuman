@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('umur')->nullable();
             $table->string('negara')->nullable();
             $table->string('foto')->nullable();
+            $table->text('about')->nullable(); 
             $table->rememberToken();
             $table->timestamps();
         });

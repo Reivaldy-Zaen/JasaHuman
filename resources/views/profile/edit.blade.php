@@ -140,6 +140,17 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                <div class="col-md-6 mb-3">
+                    <label for="about" class="form-label">
+                        <i class="bi bi-person me-1"></i> Tentang
+                    </label>
+                    <textarea class="form-control @error('about') is-invalid @enderror" id="about" name="about" required>{{ old('about', $user->about) }}</textarea>
+                    @error('about')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+               </div>  
                 </div>
 
                 <div class="text-center mt-4">
