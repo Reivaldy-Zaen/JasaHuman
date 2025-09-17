@@ -115,11 +115,9 @@
 
         <!-- Deskripsi -->
         <div class="mt-8 pt-6 border-t border-[var(--accent)]/30">
-            <h2 class="text-2xl font-bold playfair text-[var(--text)] mb-4">Deskripsi</h2>
+            <h2 class="text-2xl font-bold playfair text-[var(--text)] mb-4">Tentang</h2>
             <p class="text-[var(--text-light)] leading-relaxed">
-                Budi Santoso adalah pekerja profesional yang berpengalaman dalam bidangnya. 
-                Berasal dari Indonesia, memiliki etos kerja yang baik dan dedikasi tinggi 
-                dalam menyelesaikan setiap tugas yang diberikan.
+               {{$pekerja->about}}
             </p>
         </div>
 
