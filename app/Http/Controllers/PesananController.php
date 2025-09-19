@@ -8,6 +8,7 @@ use App\Models\Pesanan;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Klien;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PesananController extends Controller
 {
@@ -132,37 +133,46 @@ public function index()
 
             // buat klien baru setiap kali pesan
             $klien = Klien::create([
-                'nama'  => $request->nama_pemesan,
+                'user_id' => Auth::id(),
+                'name'  => $request->nama_pemesan,
+                'umur' => $request->umur,
                 'email' => $request->email_pemesan,
                 'nomer' => $request->nomer,
             ]);
 
-            // LOGIC JAM DARI CODE 2: buat pesanan dengan jam_mulai dan durasi_jam
             $pesanan = Pesanan::create([
                 'pekerja_id'    => $pekerja_id,
                 'klien_id'      => $klien->id,
                 'nama_pemesan'  => $request->nama_pemesan,
                 'email_pemesan' => $request->email_pemesan,
                 'nomer'         => $request->nomer,
-                'nama_pekerja'  => $pekerja->nama,
-                'tanggal_pemesanan' => $request->tanggal_pemesanan, // tambahkan tanggal
-                'jam_mulai'     => $request->jam_mulai, // dari Code 2
-                'durasi_jam'    => $request->durasi_jam, // dari Code 2
-                'status'        => 'pending' // tetap menggunakan status aktif sesuai Code 1
+                'nama_pekerja'  => $pekerja->name,
+                'tanggal_pemesanan' => $request->tanggal_pemesanan, 
+                'jam_mulai'     => $request->jam_mulai, 
+                'durasi_jam'    => $request->durasi_jam, 
+                'status'        => 'pending' 
             ]);
 
             DB::commit();
 
-            // Tetap menggunakan route sukses sesuai Code 1
             return redirect()->route('pesanan.sukses');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['error' => 'Terjadi kesalahan. Silakan coba lagi.'])->withInput();
+
+            Log::error('Gagal menyimpan pesanan.', [
+                'error_message' => $e->getMessage(),
+                'file'          => $e->getFile(),
+                'line'          => $e->getLine(),
+                'pekerja_id'    => $pekerja_id,
+                'request_data'  => $request->all(),
+                'trace'         => $e->getTraceAsString() 
+            ]);
+
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat memproses pesanan Anda. Silakan coba lagi.'])->withInput();
         }
     }
-
-    // LOGIC JAM DARI CODE 2: API untuk mendapatkan jam yang tersedia
+    
     public function getAvailableTimes($pekerjaId, $tanggal = null)
     {
         $availableTimes = ['11:30', '14:05', '16:40', '19:15', '22:50'];
@@ -172,7 +182,7 @@ public function index()
          
         $bookedTimes = Pesanan::where('pekerja_id', $pekerjaId)
                             ->where('tanggal_pemesanan', $tanggal)
-                            ->whereIn('status', ['pending', 'progres']) // disesuaikan dengan status aktif
+                            ->whereIn('status', ['pending', 'progres'])
                             ->pluck('jam_mulai')
                             ->toArray();
 

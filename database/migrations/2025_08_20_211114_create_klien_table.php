@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('email');
-            $table->integer('umur');
+            $table->integer('umur')->nullable();
             $table->timestamps();
         });
     }
