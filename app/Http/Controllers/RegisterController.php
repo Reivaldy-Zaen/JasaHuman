@@ -9,10 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage; // Untuk mengelola file
-  // Untuk membuat gambar
-
-
+use Illuminate\Support\Facades\Storage; 
 class RegisterController extends Controller
 {
     public function showRegister()
@@ -24,23 +21,38 @@ class RegisterController extends Controller
     {
         Log::info('Request Data: ', $request->all());
 
+        $phoneInput = preg_replace('/[^0-9]/', '', $request->input('phone'));
+
+
+        if (substr($phoneInput, 0, 1) === '0') {
+            $phoneInput = substr($phoneInput, 1);
+        }
+        $phoneForValidation = '+62' . $phoneInput;
+        $request->merge([
+            'phone_for_validation' => $phoneForValidation,
+        ]);
+
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|max:15',
+            'phone_for_validation' => 'required|string|regex:/^\+62[0-9]{9,13}$/',
             'gender' => 'nullable|in:Laki-laki,Perempuan',
             'password' => 'required|min:6',
             'role' => 'required|in:pekerja,klien',
             'about' => 'nullable|string',
         ];
-        
+
+        $messages = [
+            'phone_for_validation.regex' => 'Format nomor telepon tidak valid. Harap masukkan 9-13 digit setelah +62.',
+        ];
+
         if ($request->role === 'pekerja') {
             $rules['umur'] = 'required|integer|min:1|max:100';
             $rules['negara'] = 'required|string';
             $rules['foto'] = 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048';
         }
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             Log::error('Validation Failed: ', $validator->errors()->toArray());
@@ -49,13 +61,13 @@ class RegisterController extends Controller
                 ->withInput();
         }
 
+        $phoneToSave = '0' . $phoneInput;
+
         $fotoPath = null;
         if ($request->hasFile('foto')) {
-            // Jika ada file foto yang diunggah, simpan seperti biasa
             $fotoPath = $request->file('foto')->store('profiles', 'public');
             Log::info('Uploaded Foto Path: ' . $fotoPath);
         } else {
-            // Jika tidak ada foto, buat gambar default dari inisial
             $fotoPath = $this->createInitialImage($request->name);
             Log::info('Generated Default Foto Path: ' . $fotoPath);
         }
@@ -63,7 +75,7 @@ class RegisterController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'phone' => $request->phone,
+                'phone' => $phoneToSave, 
                 'gender' => $request->gender,
                 'password' => Hash::make($request->password),
                 'umur' => $request->umur ?? null,
@@ -77,7 +89,7 @@ class RegisterController extends Controller
             if ($user->role === 'klien') {
                 $klien = Klien::create([
                     'user_id' => $user->id,
-                    'name' => $user->name, 
+                    'name' => $user->name,
                     'email' => $user->email,
                     'umur' => $user->umur,
                     'foto' => $fotoPath,
@@ -86,7 +98,7 @@ class RegisterController extends Controller
             } elseif ($user->role === 'pekerja') {
                 $pekerja = Pekerja::create([
                     'user_id' => $user->id,
-                    'name' => $user->name, 
+                    'name' => $user->name,
                     'umur' => $user->umur,
                     'negara' => $user->negara,
                     'gender' => $user->gender,
@@ -94,7 +106,7 @@ class RegisterController extends Controller
                 ]);
                 Log::info('Pekerja Created: ', $pekerja->toArray());
             }
-   
+
             auth()->login($user);
 
             if ($user->role === 'klien') {
@@ -109,6 +121,7 @@ class RegisterController extends Controller
             return redirect()->back()->withErrors(['error' => 'Terjadi error saat menyimpan data: ' . $e->getMessage()])->withInput();
         }
     }
+    
     private function createInitialImage($name)
     {
         $path = 'profiles/' . uniqid() . '.png';
@@ -119,58 +132,44 @@ class RegisterController extends Controller
             $initials .= strtoupper(substr($words[1], 0, 1));
         }
 
-        // Ukuran gambar
         $width = 200;
         $height = 200;
 
-        // Buat gambar kosong
         $image = imagecreatetruecolor($width, $height);
 
-        // Buat warna background dari hash nama
         $bgColorHex = substr(md5($name), 0, 6);
         $r = hexdec(substr($bgColorHex, 0, 2));
         $g = hexdec(substr($bgColorHex, 2, 2));
         $b = hexdec(substr($bgColorHex, 4, 2));
         $backgroundColor = imagecolorallocate($image, $r, $g, $b);
 
-        // Warna teks (putih)
         $textColor = imagecolorallocate($image, 255, 255, 255);
 
-        // Isi background
         imagefill($image, 0, 0, $backgroundColor);
 
-        // Tentukan path ke file font. PENTING: Anda harus menyediakan file font ini.
         $fontPath = public_path('fonts/arial.ttf');
-        $fontSize = 90; // Ukuran font
+        $fontSize = 90;
 
-        // Jika file font tidak ada, berikan error atau fallback
         if (!file_exists($fontPath)) {
-            // Log::error('Font file not found: ' . $fontPath);
-            // Fallback sederhana jika font tidak ada (opsional)
             imagestring($image, 5, 65, 90, $initials, $textColor);
         } else {
-            // Hitung posisi agar teks berada di tengah
             $textBox = imagettfbbox($fontSize, 0, $fontPath, $initials);
             $textWidth = $textBox[2] - $textBox[0];
             $textHeight = $textBox[1] - $textBox[7];
             $x = ($width / 2) - ($textWidth / 2);
             $y = ($height / 2) + ($textHeight / 2);
 
-            // Tulis teks ke gambar
             imagettftext($image, $fontSize, 0, $x, $y, $textColor, $fontPath, $initials);
         }
 
-        // Tangkap output gambar ke dalam variabel
         ob_start();
         imagepng($image);
         $imageData = ob_get_clean();
 
-        // Hapus gambar dari memori
         imagedestroy($image);
             
         Storage::disk('public')->put($path, $imageData);
 
         return $path;
     }
-    //
 }

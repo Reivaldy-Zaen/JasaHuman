@@ -408,10 +408,20 @@
                         <input type="email" name="email" placeholder="Alamat Email" value="{{ old('email') }}" required>
                     </div>
 
-                    <div class="input-group">
-                        <i class="fas fa-phone"></i>
-                        <input type="number" name="phone" placeholder="Nomor HP" value="{{ old('phone') }}" required>
-                    </div>
+<div class="input-group" style="display: flex; align-items: center;">
+    <span class="phone-prefix" 
+          style="padding: 12px; 
+                 background-color: #f0f0f0; 
+                 border: 1px solid #ddd; 
+                 border-right: none; 
+                 border-radius: 8px 0 0 8px; 
+                 color: #555;">
+        +62
+    </span>
+    <i class="fas fa-phone" style="left: 60px;"></i>
+    <input type="tel" name="phone" placeholder="8123456789" value="{{ old('phone') }}" required 
+           style="border-radius: 0 8px 8px 0; padding-left: 45px;">
+</div>
 
                     <div class="input-group">
                         <i class="fas fa-venus-mars"></i>
