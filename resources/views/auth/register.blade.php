@@ -410,7 +410,7 @@
 
                     <div class="input-group">
                         <i class="fas fa-phone"></i>
-                        <input type="tel" name="phone" placeholder="Nomor HP" value="{{ old('phone') }}" required>
+                        <input type="number" name="phone" placeholder="Nomor HP" value="{{ old('phone') }}" required>
                     </div>
 
                     <div class="input-group">

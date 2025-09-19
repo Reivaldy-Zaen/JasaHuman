@@ -107,7 +107,7 @@
 
                     <div class="col-md-6 mb-3">
                         <label for="phone" class="form-label"><i class="bi bi-telephone me-1"></i> Nomor Telepon</label>
-                        <input type="tel" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone', $user->phone) }}">
+                        <input type="number" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone', $user->phone) }}">
                         @error('phone')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -135,10 +135,16 @@
 
                     <div class="col-md-6 mb-3">
                         <label for="negara" class="form-label"><i class="bi bi-globe me-1"></i> Negara</label>
-                        <input type="text" class="form-control @error('negara') is-invalid @enderror" id="negara" name="negara" value="{{ old('negara', $user->negara) }}" required>
-                        @error('negara')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <select class="form-control" id="negaraSelect" name="negara" required>
+                                <option value="">Memuat data negara...</option>
+                            </select>
+                            <span class="input-group-text p-0">
+                                <div class="loading-spinner" id="loadingSpinner"></div>
+                            </span>
+                        </div>
+                        <div class="invalid-feedback" id="negaraError"></div>
                     </div>
                 <div class="col-md-6 mb-3">
                     <label for="about" class="form-label">
@@ -177,10 +183,89 @@
             }
         }
 
-        // Juga bisa klik gambar untuk trigger file input
-        // document.getElementById('profileImage').addEventListener('click', function() {
-        //     document.getElementById('fotoInput').click();
-        // });
+        async function loadCountries() {
+            const countrySelect = document.getElementById('negaraSelect');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            
+            // Tampilkan loading spinner
+            loadingSpinner.style.display = 'inline-block';
+            countrySelect.innerHTML = '<option value="">Memuat data negara...</option>';
+            countrySelect.disabled = true;
+            
+            try {
+                // Menggunakan API RestCountries untuk mendapatkan daftar negara
+                const response = await fetch('https://restcountries.com/v3.1/all?fields=name,translations');
+                const countries = await response.json();
+                
+                // Urutkan negara berdasarkan nama
+                countries.sort((a, b) => {
+                    return a.name.common.localeCompare(b.name.common);
+                });
+                
+                // Kosongkan select dan tambahkan opsi default
+                countrySelect.innerHTML = '<option value="">Pilih Negara</option>';
+                
+                // Tambahkan opsi untuk setiap negara
+                countries.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.name.common;
+                    option.textContent = country.translations.ind?.common || country.name.common;
+                    
+                    // Set selected untuk Indonesia
+                    if (country.name.common === 'Indonesia') {
+                        option.selected = true;
+                    }
+                    
+                    countrySelect.appendChild(option);
+                });
+                
+                countrySelect.disabled = false;
+            } catch (error) {
+                console.error('Gagal memuat data negara:', error);
+                countrySelect.innerHTML = '<option value="">Gagal memuat data. Silakan refresh halaman.</option>';
+                
+                // Fallback: tambahkan beberapa negara utama jika API gagal
+                const fallbackCountries = [
+                    'Indonesia', 'Malaysia', 'Singapura', 'Thailand', 'Vietnam',
+                    'Amerika Serikat', 'Inggris', 'Jepang', 'Australia', 'China'
+                ];
+                
+                fallbackCountries.sort().forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country;
+                    option.textContent = country;
+                    if (country === 'Indonesia') {
+                        option.selected = true;
+                    }
+                    countrySelect.appendChild(option);
+                });
+                
+                countrySelect.disabled = false;
+            } finally {
+                // Sembunyikan loading spinner
+                loadingSpinner.style.display = 'none';
+            }
+        }
+        
+        // Fungsi untuk mencari negara
+        function filterCountries() {
+            const input = document.getElementById('countrySearch');
+            const filter = input.value.toUpperCase();
+            const select = document.getElementById('negaraSelect');
+            const options = select.getElementsByTagName('option');
+            
+            for (let i = 0; i < options.length; i++) {
+                const txtValue = options[i].textContent || options[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    options[i].style.display = '';
+                } else {
+                    options[i].style.display = 'none';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadCountries);
+
     </script>
 </body>
 </html>
